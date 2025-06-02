@@ -14,15 +14,26 @@ struct PersistenceController {
     static let preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+        
+        // Beispiel-Manuals für Preview erstellen
+        let sampleTitles = [
+            "iPhone 15 Bedienungsanleitung",
+            "MacBook Pro Benutzerhandbuch",
+            "AirPods Pro Manual",
+            "iPad Air Anleitung"
+        ]
+        
+        for (index, title) in sampleTitles.enumerated() {
+            let manual = Manual(context: viewContext)
+            manual.title = title
+            manual.fileName = "\(title.lowercased().replacingOccurrences(of: " ", with: "_")).pdf"
+            manual.dateAdded = Date().addingTimeInterval(TimeInterval(-index * 86400)) // Verschiedene Daten
+            manual.fileData = Data() // Leere Daten für Preview
         }
+        
         do {
             try viewContext.save()
         } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
@@ -38,9 +49,6 @@ struct PersistenceController {
         }
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-
                 /*
                  Typical reasons for an error here include:
                  * The parent directory does not exist, cannot be created, or disallows writing.

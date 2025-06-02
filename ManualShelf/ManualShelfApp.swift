@@ -13,7 +13,7 @@ struct ManualShelfApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ManualsListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

@@ -3,7 +3,14 @@
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
+    <entity name="Manual" representedClassName="Manual" syncable="YES" codeGenerationType="class">
+        <attribute name="title" optional="NO" attributeType="String"/>
+        <attribute name="fileName" optional="NO" attributeType="String"/>
+        <attribute name="dateAdded" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fileData" optional="NO" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+    </entity>
     <elements>
         <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
+        <element name="Manual" positionX="-63" positionY="-18" width="128" height="89"/>
     </elements>
 </model>
