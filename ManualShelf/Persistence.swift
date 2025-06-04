@@ -6,7 +6,7 @@
 //
 
 import CoreData
-import CloudKit // Wieder aktiviert
+// import CloudKit // Temporär deaktiviert
 
 struct PersistenceController {
     static let shared = PersistenceController()
@@ -42,31 +42,23 @@ struct PersistenceController {
         return result
     }()
 
-    // Zurück zu NSPersistentCloudKitContainer
-    let container: NSPersistentCloudKitContainer
+    // Zurück zu NSPersistentContainer temporär
+    let container: NSPersistentContainer
     // Definiere den Container Identifier hier, um Konsistenz zu gewährleisten
-    private let cloudKitContainerIdentifier = "iCloud.com.chrisbram.ManualShelf"
+    // private let cloudKitContainerIdentifier = "iCloud.com.chrisbram.ManualShelf"
 
     init(inMemory: Bool = false) {
-        container = NSPersistentCloudKitContainer(name: "ManualShelf")
+        container = NSPersistentContainer(name: "ManualShelf")
         
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
-            // CloudKit-Konfiguration wiederhergestellt
-            guard let description = container.persistentStoreDescriptions.first else {
-                fatalError("### Failed to retrieve a persistent store description.")
+            // CloudKit Integration temporär deaktiviert
+            if let description = container.persistentStoreDescriptions.first {
+                description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+                description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+                // CloudKit-spezifische Konfiguration entfernt
             }
-            
-            description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-            description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-            
-            // NSPersistentCloudKitContainerOptions setzen
-            let options = NSPersistentCloudKitContainerOptions(containerIdentifier: cloudKitContainerIdentifier)
-            
-            // allowsCellularAccess hier auf den Optionen setzen - AUSKOMMENTIERT, da in der Doku für Xcode 16.4 SDK nicht gefunden
-            // options.allowsCellularAccess = (AppSettings.shared.syncPreference == .wifiAndCellular)
-            description.cloudKitContainerOptions = options
         }
         
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -75,13 +67,9 @@ struct PersistenceController {
             }
         })
         
+        // Core Data Konfiguration für bessere Performance
         container.viewContext.automaticallyMergesChangesFromParent = true
-        // CloudKit-spezifische Konfiguration für Query Generations
-        do {
-            try container.viewContext.setQueryGenerationFrom(.current)
-        } catch {
-            fatalError("### Failed to pin viewContext to the current generation: \(error)")
-        }
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
     
     // Methode zum Aktualisieren der Mobilfunkzugriffs-Einstellung in AppSettings

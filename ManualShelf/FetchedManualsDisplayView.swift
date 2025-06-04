@@ -35,7 +35,7 @@ struct FetchedManualsDisplayView: View {
             } else {
                 List {
                     ForEach(manuals) { manual in
-                        NavigationLink(destination: PDFViewerView(manual: manual)) {
+                        NavigationLink(destination: ManualDisplayView(manual: manual)) {
                             HStack(spacing: 12) {
                                 Image(systemName: "doc.text.fill")
                                     .font(.title2)

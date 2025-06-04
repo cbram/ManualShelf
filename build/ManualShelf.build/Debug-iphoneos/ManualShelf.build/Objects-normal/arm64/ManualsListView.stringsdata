@@ -1,0 +1,48 @@
+{
+  "source": "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/ManualsListView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Suche nach Titel oder Datei",
+        "location": {
+          "startingColumn": 52,
+          "startingLine": 36
+        }
+      },
+      {
+        "comment": "",
+        "key": "ManualShelf",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 37
+        }
+      },
+      {
+        "comment": "",
+        "key": "Sortieren",
+        "location": {
+          "startingColumn": 32,
+          "startingLine": 56
+        }
+      },
+      {
+        "comment": "",
+        "key": "Wählen Sie ein Manual aus",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 88
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tippen Sie auf ein Manual in der Liste, um es zu öffnen",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 91
+        }
+      }
+    ]
+  },
+  "version": 1
+}

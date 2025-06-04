@@ -15,8 +15,9 @@ struct AddManualView: View {
     
     @State private var title = ""
     @State private var showingDocumentPicker = false
-    @State private var selectedPDFData: Data?
+    @State private var selectedFileData: Data?
     @State private var selectedFileName = ""
+    @State private var selectedFileType: UTType?
     
     @State private var showingAlert = false
     @State private var alertTitle = "Fehler"
@@ -34,24 +35,24 @@ struct AddManualView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("PDF-Datei")
+                    Text("Manual-Datei (PDF oder JPEG)")
                         .font(.headline)
                     
                     Button(action: { showingDocumentPicker = true }) {
                         HStack {
-                            Image(systemName: selectedPDFData == nil ? "doc.badge.plus" : "doc.text.fill")
-                                .foregroundColor(selectedPDFData == nil ? .accentColor : .green)
+                            Image(systemName: selectedFileData == nil ? "doc.badge.plus" : "doc.text.fill")
+                                .foregroundColor(selectedFileData == nil ? .accentColor : .green)
                                 .font(.title2)
                             
-                            Text(selectedFileName.isEmpty ? "PDF-Datei auswählen" : selectedFileName)
+                            Text(selectedFileName.isEmpty ? "Datei auswählen (PDF, JPEG)" : selectedFileName)
                                 .foregroundColor(selectedFileName.isEmpty ? .secondary : .primary)
                                 .lineLimit(1)
                                 .truncationMode(.middle)
                             
                             Spacer()
                             
-                            if selectedPDFData != nil {
-                                Button(action: clearPDFSelection) {
+                            if selectedFileData != nil {
+                                Button(action: clearFileSelection) {
                                     Image(systemName: "xmark.circle.fill")
                                         .foregroundColor(.gray)
                                         .font(.title2)
@@ -93,10 +94,11 @@ struct AddManualView: View {
                 }
             }
             .sheet(isPresented: $showingDocumentPicker) {
-                DocumentPicker(selectedPDFData: $selectedPDFData, 
+                DocumentPicker(selectedFileData: $selectedFileData, 
                                selectedFileName: $selectedFileName,
+                               selectedFileType: $selectedFileType,
                                onError: { errorMsg in
-                                    self.alertTitle = "Fehler beim Laden der PDF"
+                                    self.alertTitle = "Fehler beim Laden der Datei"
                                     self.alertMessage = errorMsg
                                     self.showingAlert = true
                                })
@@ -111,18 +113,20 @@ struct AddManualView: View {
     
     private var canSave: Bool {
         !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && 
-        selectedPDFData != nil
+        selectedFileData != nil &&
+        selectedFileType != nil
     }
     
-    private func clearPDFSelection() {
-        selectedPDFData = nil
+    private func clearFileSelection() {
+        selectedFileData = nil
         selectedFileName = ""
+        selectedFileType = nil
     }
     
     private func saveManual() {
-        guard let pdfData = selectedPDFData else { 
+        guard let fileData = selectedFileData, let fileType = selectedFileType else { 
             self.alertTitle = "Fehler beim Speichern"
-            self.alertMessage = "Keine PDF-Daten zum Speichern vorhanden."
+            self.alertMessage = "Keine Datei oder Dateityp zum Speichern vorhanden."
             self.showingAlert = true
             return
         }
@@ -131,7 +135,9 @@ struct AddManualView: View {
         manual.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
         manual.fileName = selectedFileName
         manual.dateAdded = Date()
-        manual.fileData = pdfData
+        manual.fileData = fileData
+        manual.fileType = fileType.preferredFilenameExtension
+        manual.pdfRotationDegrees = 0 // Standard-Rotation für neue Manuals
         
         do {
             try viewContext.save()
@@ -145,13 +151,14 @@ struct AddManualView: View {
 }
 
 struct DocumentPicker: UIViewControllerRepresentable {
-    @Binding var selectedPDFData: Data?
+    @Binding var selectedFileData: Data?
     @Binding var selectedFileName: String
+    @Binding var selectedFileType: UTType?
     var onError: ((String) -> Void)?
     @Environment(\.presentationMode) var presentationMode
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf])
+        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf, UTType.jpeg])
         picker.delegate = context.coordinator
         picker.allowsMultipleSelection = false
         return picker
@@ -173,6 +180,29 @@ struct DocumentPicker: UIViewControllerRepresentable {
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             guard let url = urls.first else { return }
             
+            guard let typeIdentifier = try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier,
+                  let utType = UTType(typeIdentifier) else {
+                DispatchQueue.main.async {
+                    self.parent.selectedFileData = nil
+                    self.parent.selectedFileName = ""
+                    self.parent.selectedFileType = nil
+                    let userMessage = "Der Dateityp konnte nicht bestimmt werden."
+                    self.parent.onError?(userMessage)
+                }
+                return
+            }
+
+            guard [UTType.pdf, UTType.jpeg].contains(utType) else {
+                DispatchQueue.main.async {
+                    self.parent.selectedFileData = nil
+                    self.parent.selectedFileName = ""
+                    self.parent.selectedFileType = nil
+                    let userMessage = "Nicht unterstützter Dateityp: \(utType.localizedDescription ?? "Unbekannt")"
+                    self.parent.onError?(userMessage)
+                }
+                return
+            }
+            
             var accessError: Error?
             let didStartAccessing = url.startAccessingSecurityScopedResource()
             defer { if didStartAccessing { url.stopAccessingSecurityScopedResource() } }
@@ -181,8 +211,9 @@ struct DocumentPicker: UIViewControllerRepresentable {
                 do {
                     let data = try Data(contentsOf: url)
                     DispatchQueue.main.async {
-                        self.parent.selectedPDFData = data
+                        self.parent.selectedFileData = data
                         self.parent.selectedFileName = url.lastPathComponent
+                        self.parent.selectedFileType = utType
                     }
                 } catch {
                     accessError = error
@@ -193,9 +224,10 @@ struct DocumentPicker: UIViewControllerRepresentable {
             
             if let error = accessError {
                 DispatchQueue.main.async {
-                    self.parent.selectedPDFData = nil
+                    self.parent.selectedFileData = nil
                     self.parent.selectedFileName = ""
-                    let userMessage = "Die ausgewählte PDF-Datei konnte nicht geladen werden. (\(error.localizedDescription))"
+                    self.parent.selectedFileType = nil
+                    let userMessage = "Die ausgewählte Datei konnte nicht geladen werden. (\(error.localizedDescription))"
                     self.parent.onError?(userMessage)
                 }
             }

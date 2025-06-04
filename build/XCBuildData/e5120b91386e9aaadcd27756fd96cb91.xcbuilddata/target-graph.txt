@@ -1,0 +1,2 @@
+Target dependency graph (1 target)
+Target 'ManualShelf' in project 'ManualShelf' (no dependencies)

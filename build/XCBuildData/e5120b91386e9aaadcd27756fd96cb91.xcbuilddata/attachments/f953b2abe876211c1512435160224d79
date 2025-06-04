@@ -1,0 +1,168 @@
+{
+  "" : {
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf-master.dia",
+    "emit-module-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf-master-emit-module.dia",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf-master.swiftdeps"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/AddManualView.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AddManualView.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AddManualView.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AddManualView.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AddManualView.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AddManualView.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AddManualView.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AddManualView.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AddManualView~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/AppSettings.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AppSettings.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AppSettings.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AppSettings.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AppSettings.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AppSettings.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AppSettings.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AppSettings.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/AppSettings~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/CloudKitSyncManager.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncManager.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncManager.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncManager.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncManager.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncManager.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncManager.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncManager.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncManager~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/CloudKitSyncStatusView.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncStatusView.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncStatusView.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncStatusView.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncStatusView.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncStatusView.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncStatusView.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncStatusView.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/CloudKitSyncStatusView~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/ContentView.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ContentView.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ContentView~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/FetchedManualsDisplayView.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/FetchedManualsDisplayView.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/FetchedManualsDisplayView.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/FetchedManualsDisplayView.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/FetchedManualsDisplayView.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/FetchedManualsDisplayView.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/FetchedManualsDisplayView.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/FetchedManualsDisplayView.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/FetchedManualsDisplayView~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/ManualDisplayView.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualDisplayView.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualDisplayView.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualDisplayView.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualDisplayView.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualDisplayView.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualDisplayView.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualDisplayView.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualDisplayView~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/ManualShelfApp.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelfApp.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelfApp.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelfApp.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelfApp.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelfApp.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelfApp.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelfApp.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelfApp~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/ManualsListView.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualsListView.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualsListView.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualsListView.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualsListView.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualsListView.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualsListView.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualsListView.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualsListView~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/Persistence.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Persistence.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Persistence.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Persistence.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Persistence.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Persistence.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Persistence.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Persistence.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Persistence~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/SettingsView.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SettingsView.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SettingsView.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SettingsView.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SettingsView.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SettingsView.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SettingsView.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SettingsView.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SettingsView~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/SortOption.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SortOption.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SortOption.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SortOption.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SortOption.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SortOption.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SortOption.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SortOption.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/SortOption~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/DerivedSources/CoreDataGenerated/ManualShelf/Manual+CoreDataClass.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataClass.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataClass.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataClass.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataClass.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataClass.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/DerivedSources/CoreDataGenerated/ManualShelf/Manual+CoreDataProperties.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataProperties.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataProperties.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataProperties.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataProperties.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/Manual+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/DerivedSources/CoreDataGenerated/ManualShelf/ManualShelf+CoreDataModel.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf+CoreDataModel.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf+CoreDataModel.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf+CoreDataModel.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf+CoreDataModel.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf+CoreDataModel.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf+CoreDataModel.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf+CoreDataModel.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/ManualShelf+CoreDataModel~partial.swiftmodule"
+  },
+  "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/build/ManualShelf.build/Debug-iphoneos/ManualShelf.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}

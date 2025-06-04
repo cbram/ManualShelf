@@ -36,9 +36,10 @@ struct ManualsListView: View {
             .searchable(text: $searchText, prompt: "Suche nach Titel oder Datei")
             .navigationTitle("ManualShelf") // NavigationTitle für die primäre Ansicht der Navigation
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    CloudKitSyncStatusView()
-                }
+                // Entfernt: CloudKitSyncStatusView temporär deaktiviert
+                // ToolbarItemGroup(placement: .navigationBarLeading) {
+                //     CloudKitSyncStatusView()
+                // }
                 
                 // Obere rechte Toolbar: Nur noch Add und Edit Button
                 ToolbarItemGroup(placement: .navigationBarTrailing) {

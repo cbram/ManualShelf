@@ -1,0 +1,32 @@
+{
+  "source": "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/FetchedManualsDisplayView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Keine Manuals vorhanden",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 26
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tippe auf das Plus-Symbol (+), um dein erstes Manual hinzuzufügen, oder ändere deine Filter-/Sortiereinstellungen.",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 29
+        }
+      },
+      {
+        "comment": "",
+        "key": "Hinzugefügt: %@",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 55
+        }
+      }
+    ]
+  },
+  "version": 1
+}

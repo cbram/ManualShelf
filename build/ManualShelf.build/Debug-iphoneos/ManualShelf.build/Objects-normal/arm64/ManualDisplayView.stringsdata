@@ -1,0 +1,16 @@
+{
+  "source": "/Users/chbram/Documents/Arduino/ManualShelf/ManualShelf/ManualShelf/ManualDisplayView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Datei nicht darstellbar",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 70
+        }
+      }
+    ]
+  },
+  "version": 1
+}
