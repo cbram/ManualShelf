@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import CloudKit // Wieder aktiviert
 
 struct PersistenceController {
     static let shared = PersistenceController()
@@ -28,6 +29,7 @@ struct PersistenceController {
             manual.title = title
             manual.fileName = "\(title.lowercased().replacingOccurrences(of: " ", with: "_")).pdf"
             manual.dateAdded = Date().addingTimeInterval(TimeInterval(-index * 86400)) // Verschiedene Daten
+            manual.pdfRotationDegrees = 0
             manual.fileData = Data() // Leere Daten für Preview
         }
         
@@ -40,26 +42,55 @@ struct PersistenceController {
         return result
     }()
 
-    let container: NSPersistentContainer
+    // Zurück zu NSPersistentCloudKitContainer
+    let container: NSPersistentCloudKitContainer
+    // Definiere den Container Identifier hier, um Konsistenz zu gewährleisten
+    private let cloudKitContainerIdentifier = "iCloud.com.chrisbram.ManualShelf"
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "ManualShelf")
+        container = NSPersistentCloudKitContainer(name: "ManualShelf")
+        
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        } else {
+            // CloudKit-Konfiguration wiederhergestellt
+            guard let description = container.persistentStoreDescriptions.first else {
+                fatalError("### Failed to retrieve a persistent store description.")
+            }
+            
+            description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+            description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+            
+            // NSPersistentCloudKitContainerOptions setzen
+            let options = NSPersistentCloudKitContainerOptions(containerIdentifier: cloudKitContainerIdentifier)
+            
+            // allowsCellularAccess hier auf den Optionen setzen - AUSKOMMENTIERT, da in der Doku für Xcode 16.4 SDK nicht gefunden
+            // options.allowsCellularAccess = (AppSettings.shared.syncPreference == .wifiAndCellular)
+            description.cloudKitContainerOptions = options
         }
+        
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        
         container.viewContext.automaticallyMergesChangesFromParent = true
+        // CloudKit-spezifische Konfiguration für Query Generations
+        do {
+            try container.viewContext.setQueryGenerationFrom(.current)
+        } catch {
+            fatalError("### Failed to pin viewContext to the current generation: \(error)")
+        }
+    }
+    
+    // Methode zum Aktualisieren der Mobilfunkzugriffs-Einstellung in AppSettings
+    func updateCloudKitContainerCellularAccess(allowed: Bool) {
+        if allowed {
+            AppSettings.shared.syncPreference = .wifiAndCellular // Passe dies ggf. an deine AppSettings an
+        } else {
+            AppSettings.shared.syncPreference = .wifiOnly      // Passe dies ggf. an deine AppSettings an
+        }
+        print("Die Einstellung für den Mobilfunkzugriff wurde auf '\\(allowed)' geändert. Die Änderung wird beim nächsten App-Start oder bei einer Neuinitialisierung des Core Data Stacks wirksam.")
     }
 }

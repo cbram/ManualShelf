@@ -17,7 +17,9 @@ struct AddManualView: View {
     @State private var showingDocumentPicker = false
     @State private var selectedPDFData: Data?
     @State private var selectedFileName = ""
+    
     @State private var showingAlert = false
+    @State private var alertTitle = "Fehler"
     @State private var alertMessage = ""
     
     var body: some View {
@@ -37,12 +39,28 @@ struct AddManualView: View {
                     
                     Button(action: { showingDocumentPicker = true }) {
                         HStack {
-                            Image(systemName: "doc.badge.plus")
+                            Image(systemName: selectedPDFData == nil ? "doc.badge.plus" : "doc.text.fill")
+                                .foregroundColor(selectedPDFData == nil ? .accentColor : .green)
+                                .font(.title2)
+                            
                             Text(selectedFileName.isEmpty ? "PDF-Datei auswählen" : selectedFileName)
                                 .foregroundColor(selectedFileName.isEmpty ? .secondary : .primary)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                            
                             Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.secondary)
+                            
+                            if selectedPDFData != nil {
+                                Button(action: clearPDFSelection) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.gray)
+                                        .font(.title2)
+                                }
+                                .padding(.leading, 5)
+                            } else {
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.secondary)
+                            }
                         }
                         .padding()
                         .background(Color(.systemGray6))
@@ -75,9 +93,15 @@ struct AddManualView: View {
                 }
             }
             .sheet(isPresented: $showingDocumentPicker) {
-                DocumentPicker(selectedPDFData: $selectedPDFData, selectedFileName: $selectedFileName)
+                DocumentPicker(selectedPDFData: $selectedPDFData, 
+                               selectedFileName: $selectedFileName,
+                               onError: { errorMsg in
+                                    self.alertTitle = "Fehler beim Laden der PDF"
+                                    self.alertMessage = errorMsg
+                                    self.showingAlert = true
+                               })
             }
-            .alert("Fehler", isPresented: $showingAlert) {
+            .alert(alertTitle, isPresented: $showingAlert) {
                 Button("OK") { }
             } message: {
                 Text(alertMessage)
@@ -90,8 +114,18 @@ struct AddManualView: View {
         selectedPDFData != nil
     }
     
+    private func clearPDFSelection() {
+        selectedPDFData = nil
+        selectedFileName = ""
+    }
+    
     private func saveManual() {
-        guard let pdfData = selectedPDFData else { return }
+        guard let pdfData = selectedPDFData else { 
+            self.alertTitle = "Fehler beim Speichern"
+            self.alertMessage = "Keine PDF-Daten zum Speichern vorhanden."
+            self.showingAlert = true
+            return
+        }
         
         let manual = Manual(context: viewContext)
         manual.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -103,8 +137,9 @@ struct AddManualView: View {
             try viewContext.save()
             presentationMode.wrappedValue.dismiss()
         } catch {
-            alertMessage = "Fehler beim Speichern: \(error.localizedDescription)"
-            showingAlert = true
+            self.alertTitle = "Fehler beim Speichern"
+            self.alertMessage = "Das Manual konnte nicht gespeichert werden: \(error.localizedDescription)"
+            self.showingAlert = true
         }
     }
 }
@@ -112,6 +147,7 @@ struct AddManualView: View {
 struct DocumentPicker: UIViewControllerRepresentable {
     @Binding var selectedPDFData: Data?
     @Binding var selectedFileName: String
+    var onError: ((String) -> Void)?
     @Environment(\.presentationMode) var presentationMode
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
@@ -137,24 +173,35 @@ struct DocumentPicker: UIViewControllerRepresentable {
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             guard let url = urls.first else { return }
             
-            if url.startAccessingSecurityScopedResource() {
-                defer { url.stopAccessingSecurityScopedResource() }
-                
+            var accessError: Error?
+            let didStartAccessing = url.startAccessingSecurityScopedResource()
+            defer { if didStartAccessing { url.stopAccessingSecurityScopedResource() } }
+            
+            if didStartAccessing {
                 do {
                     let data = try Data(contentsOf: url)
                     DispatchQueue.main.async {
                         self.parent.selectedPDFData = data
                         self.parent.selectedFileName = url.lastPathComponent
-                        self.parent.presentationMode.wrappedValue.dismiss()
                     }
                 } catch {
-                    print("Fehler beim Laden der PDF: \(error)")
+                    accessError = error
+                }
+            } else {
+                accessError = NSError(domain: NSCocoaErrorDomain, code: NSFileReadNoPermissionError, userInfo: [NSLocalizedDescriptionKey: "Keine Berechtigung zum Lesen der Datei."])
+            }
+            
+            if let error = accessError {
+                DispatchQueue.main.async {
+                    self.parent.selectedPDFData = nil
+                    self.parent.selectedFileName = ""
+                    let userMessage = "Die ausgewählte PDF-Datei konnte nicht geladen werden. (\(error.localizedDescription))"
+                    self.parent.onError?(userMessage)
                 }
             }
         }
         
         func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-            parent.presentationMode.wrappedValue.dismiss()
         }
     }
 }

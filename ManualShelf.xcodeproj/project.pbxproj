@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		76EDCDEF2DF074F500D4A8D3 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7606A27C2DF053D900D2DED2 /* CloudKit.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		7656114C2DED63AF00CCB4C4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,14 +28,29 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7606A27A2DF053B200D2DED2 /* ClockKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ClockKit.framework; path = System/Library/Frameworks/ClockKit.framework; sourceTree = SDKROOT; };
+		7606A27C2DF053D900D2DED2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		765611392DED63AE00CCB4C4 /* ManualShelf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManualShelf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7656114B2DED63AF00CCB4C4 /* ManualShelfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManualShelfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		765611552DED63AF00CCB4C4 /* ManualShelfUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManualShelfUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		76E838752DF03C7400586D88 /* Exceptions for "ManualShelf" folder in "ManualShelf" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 765611382DED63AE00CCB4C4 /* ManualShelf */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7656113B2DED63AE00CCB4C4 /* ManualShelf */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				76E838752DF03C7400586D88 /* Exceptions for "ManualShelf" folder in "ManualShelf" target */,
+			);
 			path = ManualShelf;
 			sourceTree = "<group>";
 		};
@@ -52,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76EDCDEF2DF074F500D4A8D3 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +92,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7606A2792DF0539700D2DED2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7606A27C2DF053D900D2DED2 /* CloudKit.framework */,
+				7606A27A2DF053B200D2DED2 /* ClockKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		765611302DED63AE00CCB4C4 = {
 			isa = PBXGroup;
 			children = (
 				7656113B2DED63AE00CCB4C4 /* ManualShelf */,
 				7656114E2DED63AF00CCB4C4 /* ManualShelfTests */,
 				765611582DED63AF00CCB4C4 /* ManualShelfUITests */,
+				7606A2792DF0539700D2DED2 /* Frameworks */,
 				7656113A2DED63AE00CCB4C4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -395,11 +425,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ManualShelf/ManualShelf.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MA9BMRX8TH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ManualShelf/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -427,11 +460,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ManualShelf/ManualShelf.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MA9BMRX8TH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ManualShelf/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
