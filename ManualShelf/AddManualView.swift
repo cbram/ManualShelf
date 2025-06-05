@@ -180,24 +180,36 @@ struct DocumentPicker: UIViewControllerRepresentable {
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             guard let url = urls.first else { return }
             
-            guard let typeIdentifier = try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier,
-                  let utType = UTType(typeIdentifier) else {
+            let typeIdentifier = try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier
+            let ext = url.pathExtension.lowercased()
+            print("[DEBUG] typeIdentifier: \(String(describing: typeIdentifier)), extension: \(ext)")
+            
+            var utType: UTType? = nil
+            if let typeIdentifier = typeIdentifier, let detectedUTType = UTType(typeIdentifier) {
+                utType = detectedUTType
+            } else if ext == "pdf" {
+                utType = UTType.pdf
+            } else if ext == "jpeg" || ext == "jpg" {
+                utType = UTType.jpeg
+            }
+            
+            guard let validUTType = utType else {
                 DispatchQueue.main.async {
                     self.parent.selectedFileData = nil
                     self.parent.selectedFileName = ""
                     self.parent.selectedFileType = nil
-                    let userMessage = "Der Dateityp konnte nicht bestimmt werden."
+                    let userMessage = "Der Dateityp konnte nicht bestimmt werden (keine typeIdentifier und keine bekannte Endung)."
                     self.parent.onError?(userMessage)
                 }
                 return
             }
 
-            guard [UTType.pdf, UTType.jpeg].contains(utType) else {
+            guard [UTType.pdf, UTType.jpeg].contains(validUTType) else {
                 DispatchQueue.main.async {
                     self.parent.selectedFileData = nil
                     self.parent.selectedFileName = ""
                     self.parent.selectedFileType = nil
-                    let userMessage = "Nicht unterstützter Dateityp: \(utType.localizedDescription ?? "Unbekannt")"
+                    let userMessage = "Nicht unterstützter Dateityp: \(validUTType.localizedDescription ?? "Unbekannt")"
                     self.parent.onError?(userMessage)
                 }
                 return
@@ -213,7 +225,7 @@ struct DocumentPicker: UIViewControllerRepresentable {
                     DispatchQueue.main.async {
                         self.parent.selectedFileData = data
                         self.parent.selectedFileName = url.lastPathComponent
-                        self.parent.selectedFileType = utType
+                        self.parent.selectedFileType = validUTType
                     }
                 } catch {
                     accessError = error

@@ -105,6 +105,7 @@ struct PDFKitView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> PDFView {
         let pdfView = PDFView()
+        pdfView.translatesAutoresizingMaskIntoConstraints = false
         if let document = PDFDocument(data: data) {
             pdfView.document = document
             applyRotation(to: document, angle: rotationAngle, forView: pdfView)
