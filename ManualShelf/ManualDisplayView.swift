@@ -24,14 +24,17 @@ struct ManualDisplayView: View {
             $0.dateAdded ?? Date.distantPast < $1.dateAdded ?? Date.distantPast
         }
         // Dateien werden nach Hinzufügedatum sortiert angezeigt
-        List(files) { file in
-            NavigationLink(destination: FileDisplayView(manualFile: file)) {
-                HStack {
-                    Image(systemName: file.fileType == UTType.pdf.preferredFilenameExtension ? "doc.text.fill" : "photo.fill")
-                        .foregroundColor(.accentColor)
-                    Text(file.fileName ?? "Unbenannte Datei")
+        List {
+            ForEach(files) { file in
+                NavigationLink(destination: FileDisplayView(manualFile: file)) {
+                    HStack {
+                        Image(systemName: file.fileType == UTType.pdf.preferredFilenameExtension ? "doc.text.fill" : "photo.fill")
+                            .foregroundColor(.accentColor)
+                        Text(file.fileName ?? "Unbenannte Datei")
+                    }
                 }
             }
+            .onDelete(perform: deleteFiles)
         }
         .navigationTitle(manual.title ?? "Dateien")
         .navigationBarTitleDisplayMode(.inline)
@@ -83,13 +86,53 @@ struct ManualDisplayView: View {
             self.showingAlert = true
         }
     }
+    
+    // Neue Funktion zum Löschen einzelner Dateien aus dem Manual
+    private func deleteFiles(at offsets: IndexSet) {
+        let fileSet = manual.files as? Set<ManualFile> ?? []
+        let files = fileSet.sorted {
+            $0.dateAdded ?? Date.distantPast < $1.dateAdded ?? Date.distantPast
+        }
+        for index in offsets {
+            let file = files[index]
+            manual.removeFromFiles(file)
+            viewContext.delete(file)
+        }
+        do {
+            try viewContext.save()
+        } catch {
+            self.alertTitle = "Fehler beim Löschen"
+            self.alertMessage = "Die Datei konnte nicht entfernt werden: \(error.localizedDescription)"
+            self.showingAlert = true
+        }
+    }
 }
 
 // FileDisplayView zeigt eine einzelne Datei (PDF oder Bild) an und ermöglicht ggf. das Drehen von PDFs.
 struct FileDisplayView: View {
     @ObservedObject var manualFile: ManualFile
     @Environment(\.managedObjectContext) private var viewContext
+
+    // State für die Galerie
+    @State private var currentIndex: Int = 0
+    private var imageFiles: [ManualFile] = []
     
+    // Initializer, um imageFiles und currentIndex zu setzen
+    init(manualFile: ManualFile) {
+        self.manualFile = manualFile
+        if let manual = manualFile.manual,
+           let fileSet = manual.files as? Set<ManualFile> {
+            let images = fileSet
+                .filter { file in
+                    let type = file.fileType?.lowercased() ?? ""
+                    return type == "jpg" || type == "jpeg" || type == "png"
+                }
+                .sorted { $0.dateAdded ?? Date.distantPast < $1.dateAdded ?? Date.distantPast }
+            self.imageFiles = images
+            self._currentIndex = State(initialValue: images.firstIndex(where: { $0.objectID == manualFile.objectID }) ?? 0)
+        }
+    }
+
     var body: some View {
         Group {
             if let fileData = manualFile.fileData, !fileData.isEmpty {
@@ -98,17 +141,56 @@ struct FileDisplayView: View {
                 } else if manualFile.fileType?.lowercased() == UTType.jpeg.preferredFilenameExtension || 
                           manualFile.fileType?.lowercased() == "jpg" ||
                           manualFile.fileType?.lowercased() == UTType.png.preferredFilenameExtension {
-                    if let uiImage = UIImage(data: fileData) {
+                    if imageFiles.count > 1 {
+                        VStack {
+                            TabView(selection: $currentIndex) {
+                                ForEach(Array(imageFiles.enumerated()), id: \ .element.objectID) { (idx, file) in
+                                    if let data = file.fileData, let uiImage = UIImage(data: data) {
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .tag(idx)
+                                    } else {
+                                        errorView(message: "Das Bild konnte nicht geladen werden.")
+                                    }
+                                }
+                            }
+                            .tabViewStyle(PageTabViewStyle())
+                            HStack(alignment: .center, spacing: 32) {
+                                Button(action: {
+                                    if currentIndex > 0 { currentIndex -= 1 }
+                                }) {
+                                    Image(systemName: "chevron.left.circle.fill")
+                                        .font(.system(size: 36))
+                                        .opacity(currentIndex > 0 ? 0.8 : 0.3)
+                                }
+                                .disabled(currentIndex == 0)
+                                Text("\(currentIndex + 1) von \(imageFiles.count)")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                    .frame(minWidth: 80)
+                                Button(action: {
+                                    if currentIndex < imageFiles.count - 1 { currentIndex += 1 }
+                                }) {
+                                    Image(systemName: "chevron.right.circle.fill")
+                                        .font(.system(size: 36))
+                                        .opacity(currentIndex < imageFiles.count - 1 ? 0.8 : 0.3)
+                                }
+                                .disabled(currentIndex == imageFiles.count - 1)
+                            }
+                            .padding(.top, 12)
+                        }
+                    } else if let first = imageFiles.first, let data = first.fileData, let uiImage = UIImage(data: data) {
                         ScrollView {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFit()
                         }
                     } else {
-                        errorView(message: "Das JPEG-Bild konnte nicht geladen werden.")
+                        errorView(message: "Das JPEG-/PNG-Bild konnte nicht geladen werden.")
                     }
                 } else {
-                    errorView(message: "Dateityp \"\(manualFile.fileType ?? "Unbekannt")\" wird nicht unterstützt.")
+                    errorView(message: "Dateityp \(manualFile.fileType ?? "Unbekannt") wird nicht unterstützt.")
                 }
             } else {
                 errorView(message: "Für diese Datei wurden keine Daten gespeichert.")

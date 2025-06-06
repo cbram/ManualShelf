@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreTelephony
+import UIKit
 
 struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -60,18 +61,12 @@ struct SettingsView: View {
     
     /// Prüft, ob das Gerät Mobilfunk unterstützt.
     private func isCellularAvailable() -> Bool {
-        let networkInfo = CTTelephonyNetworkInfo()
-        if let carrier = networkInfo.serviceSubscriberCellularProviders?.first?.value {
-            // Die Abfrage des Carrier-Namens ist eine Vereinfachung. Sie ist für die
-            // meisten Fälle ausreichend, kann aber bei Geräten wie iPads mit reiner
-            // eSIM-Fähigkeit ungenau sein.
-            return carrier.carrierName != nil
-        }
-        // Fallback für Geräte, die die Information anders bereitstellen.
-        #if os(iOS)
-        return networkInfo.dataServiceIdentifier != nil
+        #if targetEnvironment(simulator)
+        // Im Simulator immer true für Testzwecke
+        return true
         #else
-        return false // macOS, watchOS, etc. unterstützen kein Mobilfunk in diesem Sinne.
+        // Prüfe, ob das Gerät ein iPhone ist (alle iPhones haben Mobilfunk)
+        return UIDevice.current.userInterfaceIdiom == .phone
         #endif
     }
 }

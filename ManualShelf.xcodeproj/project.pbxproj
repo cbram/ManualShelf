@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		76EDCDEF2DF074F500D4A8D3 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7606A27C2DF053D900D2DED2 /* CloudKit.framework */; };
+		76F78C012DF2FBC10079C560 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76F78C002DF2FBC10079C560 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		765611392DED63AE00CCB4C4 /* ManualShelf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManualShelf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7656114B2DED63AF00CCB4C4 /* ManualShelfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManualShelfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		765611552DED63AF00CCB4C4 /* ManualShelfUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManualShelfUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		76F78C002DF2FBC10079C560 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -104,6 +106,7 @@
 		765611302DED63AE00CCB4C4 = {
 			isa = PBXGroup;
 			children = (
+				76F78C002DF2FBC10079C560 /* LaunchScreen.storyboard */,
 				7656113B2DED63AE00CCB4C4 /* ManualShelf */,
 				7656114E2DED63AF00CCB4C4 /* ManualShelfTests */,
 				765611582DED63AF00CCB4C4 /* ManualShelfUITests */,
@@ -242,6 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76F78C012DF2FBC10079C560 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,6 +429,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = ManualShelf/ManualShelf.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -432,6 +437,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ManualShelf/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ManualShelf;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -460,6 +466,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = ManualShelf/ManualShelf.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -467,6 +474,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ManualShelf/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ManualShelf;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
