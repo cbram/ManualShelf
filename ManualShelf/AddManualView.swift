@@ -9,18 +9,23 @@ import SwiftUI
 import CoreData
 import UniformTypeIdentifiers
 
+private struct PickedFile: Identifiable {
+    let id = UUID()
+    let data: Data
+    let name: String
+    let type: UTType
+}
+
 struct AddManualView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) private var presentationMode
     
-    @State private var title = ""
+    @State private var title: String = ""
+    @State private var pickedFiles: [PickedFile] = []
+    
     @State private var showingDocumentPicker = false
-    @State private var selectedFileData: Data?
-    @State private var selectedFileName = ""
-    @State private var selectedFileType: UTType?
-    
     @State private var showingAlert = false
-    @State private var alertTitle = "Fehler"
+    @State private var alertTitle = ""
     @State private var alertMessage = ""
     
     var body: some View {
@@ -35,45 +40,53 @@ struct AddManualView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Manual-Datei (PDF oder JPEG)")
+                    Text("Dateien")
                         .font(.headline)
                     
-                    Button(action: { showingDocumentPicker = true }) {
-                        HStack {
-                            Image(systemName: selectedFileData == nil ? "doc.badge.plus" : "doc.text.fill")
-                                .foregroundColor(selectedFileData == nil ? .accentColor : .green)
-                                .font(.title2)
-                            
-                            Text(selectedFileName.isEmpty ? "Datei auswählen (PDF, JPEG)" : selectedFileName)
-                                .foregroundColor(selectedFileName.isEmpty ? .secondary : .primary)
-                                .lineLimit(1)
-                                .truncationMode(.middle)
-                            
-                            Spacer()
-                            
-                            if selectedFileData != nil {
-                                Button(action: clearFileSelection) {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.gray)
-                                        .font(.title2)
+                    VStack {
+                        // Liste der ausgewählten Dateien
+                        if !pickedFiles.isEmpty {
+                            ForEach(pickedFiles) { file in
+                                HStack {
+                                    Image(systemName: file.type == .pdf ? "doc.text.fill" : "photo.fill")
+                                        .foregroundColor(.green)
+                                    Text(file.name)
+                                        .lineLimit(1)
+                                        .truncationMode(.middle)
+                                    Spacer()
+                                    Button(action: { removeFile(file) }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.gray)
+                                    }
                                 }
-                                .padding(.leading, 5)
-                            } else {
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                            }
+                        }
+                        
+                        // Button zum Hinzufügen
+                        Button(action: { showingDocumentPicker = true }) {
+                            HStack {
+                                Image(systemName: "doc.badge.plus")
+                                    .foregroundColor(.accentColor)
+                                Text("Weitere Datei hinzufügen...")
+                                Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.secondary)
                             }
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(8)
                         }
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
+                        .foregroundColor(.primary)
                     }
-                    .foregroundColor(.primary)
                 }
                 
                 Spacer()
                 
                 Button(action: saveManual) {
-                    Text("Manual hinzufügen")
+                    Text("Manual speichern")
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -97,11 +110,10 @@ struct AddManualView: View {
                 DocumentPickerView { result in
                     switch result {
                     case .success(let (data, name, type)):
-                        self.selectedFileData = data
-                        self.selectedFileName = name
-                        self.selectedFileType = type
+                        let newFile = PickedFile(data: data, name: name, type: type)
+                        pickedFiles.append(newFile)
                     case .failure(let error):
-                        self.alertTitle = "Fehler beim Laden der Datei"
+                        self.alertTitle = "Fehler beim Laden"
                         self.alertMessage = error.localizedDescription
                         self.showingAlert = true
                     }
@@ -116,37 +128,34 @@ struct AddManualView: View {
     }
     
     private var canSave: Bool {
-        !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && 
-        selectedFileData != nil &&
-        selectedFileType != nil
+        !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !pickedFiles.isEmpty
     }
     
-    private func clearFileSelection() {
-        selectedFileData = nil
-        selectedFileName = ""
-        selectedFileType = nil
+    private func removeFile(_ file: PickedFile) {
+        pickedFiles.removeAll { $0.id == file.id }
     }
     
     private func saveManual() {
-        guard let fileData = selectedFileData, let fileType = selectedFileType else { 
+        guard canSave else {
             self.alertTitle = "Fehler beim Speichern"
-            self.alertMessage = "Keine Datei oder Dateityp zum Speichern vorhanden."
+            self.alertMessage = "Bitte geben Sie einen Titel an und wählen Sie mindestens eine Datei aus."
             self.showingAlert = true
             return
         }
         
         let manual = Manual(context: viewContext)
         manual.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        manual.dateAdded = Date() // Das Hinzufügedatum des Manuals selbst
+        manual.dateAdded = Date()
 
-        let manualFile = ManualFile(context: viewContext)
-        manualFile.fileName = selectedFileName
-        manualFile.fileData = fileData
-        manualFile.fileType = fileType.preferredFilenameExtension
-        manualFile.pdfRotationDegrees = 0 // Standard-Rotation für neue Dateien
-        manualFile.dateAdded = Date() // Hinzufügedatum der Datei
-        
-        manual.addToFiles(manualFile) // Verknüpft die Datei mit dem Manual
+        for file in pickedFiles {
+            let manualFile = ManualFile(context: viewContext)
+            manualFile.fileName = file.name
+            manualFile.fileData = file.data
+            manualFile.fileType = file.type.preferredFilenameExtension
+            manualFile.pdfRotationDegrees = 0
+            manualFile.dateAdded = Date()
+            manual.addToFiles(manualFile)
+        }
         
         do {
             try viewContext.save()

@@ -6,52 +6,38 @@
 //
 
 import SwiftUI
-import CoreData
 
 struct ManualsListView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @State private var showingAddManual = false
-    @State private var showingSettingsView = false // Zustand für die Settings-Ansicht
-    
-    // Zustand für die aktuelle Sortierung
+    @State private var showingAddManualView = false
+    @State private var showingSettingsView = false
     @State private var currentSortOption: SortOption = .dateAddedDescending
-    @State private var searchText: String = "" // Zustand für den Suchtext
-    
-    // Die @FetchRequest wird in eine Sub-View verschoben
-    // @FetchRequest(
-    //     sortDescriptors: [NSSortDescriptor(keyPath: \Manual.dateAdded, ascending: false)],
-    //     animation: .default)
-    // private var manuals: FetchedResults<Manual>
-    
+    @State private var searchText: String = ""
+
     var body: some View {
         NavigationView {
-            // Die FetchedManualsDisplayView zeigt die gefilterte und sortierte Liste an.
-            // Sie wird jetzt auch mit dem Suchprädikat initialisiert.
-            FetchedManualsDisplayView(
-                sortDescriptors: currentSortOption.sortDescriptors, 
-                predicate: createPredicate() // NSPredicate wird hier erstellt
-            )
-            // Der .searchable Modifier wird direkt hier angewendet, um die Suchleiste bereitzustellen.
-            // Der Suchtext wird an $searchText gebunden.
-            .searchable(text: $searchText, prompt: "Suche nach Titel oder Datei")
-            .navigationTitle("ManualShelf") // NavigationTitle für die primäre Ansicht der Navigation
+            VStack {
+                // Die FetchedManualsDisplayView zeigt die gefilterte und sortierte Liste an.
+                FetchedManualsDisplayView(
+                    sortDescriptors: currentSortOption.sortDescriptors, 
+                    predicate: createPredicate()
+                )
+                .searchable(text: $searchText, prompt: "Suche nach Titel oder Datei")
+            }
+            .navigationTitle("ManualShelf")
             .toolbar {
-                // Entfernt: CloudKitSyncStatusView temporär deaktiviert
-                // ToolbarItemGroup(placement: .navigationBarLeading) {
-                //     CloudKitSyncStatusView()
-                // }
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    CloudKitSyncStatusView()
+                }
                 
-                // Obere rechte Toolbar: Nur noch Add und Edit Button
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button(action: { showingAddManual = true }) {
+                    Button(action: { showingAddManualView = true }) {
                         Image(systemName: "plus")
                     }
                     EditButton()
                 }
-                
-                // Untere Toolbar: Filter-Button links, Settings-Button rechts
+
                 ToolbarItemGroup(placement: .bottomBar) {
-                    // Menu-Button für die Sortierung (Filter-Icon) jetzt links
                     Menu {
                         Picker("Sortieren", selection: $currentSortOption) {
                             ForEach(SortOption.allCases) { option in
@@ -62,25 +48,23 @@ struct ManualsListView: View {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                     }
 
-                    Spacer() // Schiebt das Settings-Icon nach rechts
+                    Spacer()
 
-                    Button { // Settings-Icon
-                        showingSettingsView = true
-                    } label: {
+                    Button(action: { showingSettingsView = true }) {
                         Image(systemName: "gearshape.fill")
                     }
                 }
             }
-            .sheet(isPresented: $showingAddManual) {
-                AddManualView()
-                    .environment(\.managedObjectContext, viewContext)
+            .sheet(isPresented: $showingAddManualView) {
+                NavigationView {
+                    AddManualView()
+                }
             }
-            // Sheet für die Einstellungen
             .sheet(isPresented: $showingSettingsView) {
                 SettingsView()
             }
             
-            // Standard Detail View für iPad (rechte Spalte, wenn nichts ausgewählt ist)
+            // Standard Detail View für iPad
             VStack {
                 Image(systemName: "books.vertical")
                     .font(.system(size: 60))
@@ -88,32 +72,21 @@ struct ManualsListView: View {
                 Text("Wählen Sie ein Manual aus")
                     .font(.title2)
                     .foregroundColor(.secondary)
-                Text("Tippen Sie auf ein Manual in der Liste, um es zu öffnen")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
             }
         }
-        .navigationViewStyle(DoubleColumnNavigationViewStyle()) // Behält den iPad-Stil bei
+        .navigationViewStyle(DoubleColumnNavigationViewStyle())
     }
     
-    // Hilfsfunktion zum Erstellen des Prädikats für die Suche
     private func createPredicate() -> NSPredicate? {
         if searchText.isEmpty {
             return nil
         } else {
-            // Sucht in 'title' UND 'fileName'. '[cd]' bedeutet case- und diacritic-insensitive.
-            return NSPredicate(format: "title CONTAINS[cd] %@ OR fileName CONTAINS[cd] %@", searchText, searchText)
+            return NSPredicate(format: "title CONTAINS[cd] %@ OR ANY files.fileName CONTAINS[cd] %@", searchText, searchText)
         }
     }
-    
-    // Die deleteManuals Funktion wird in FetchedManualsDisplayView benötigt, da sie auf die FetchedResults zugreift.
-    // private func deleteManuals(offsets: IndexSet) { ... }
 }
 
-// Preview muss ggf. angepasst werden, wenn die Hauptlogik ausgelagert wird.
 #Preview {
-   ManualsListView()
-       .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    ManualsListView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 } 
