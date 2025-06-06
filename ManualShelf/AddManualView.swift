@@ -28,6 +28,14 @@ struct AddManualView: View {
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     
+    // Tagging-States
+    @FetchRequest(
+        entity: ManualTag.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \ManualTag.name, ascending: true)]
+    ) var allTags: FetchedResults<ManualTag>
+    @State private var tagInput: String = ""
+    @State private var selectedTags: [ManualTag] = []
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -38,6 +46,40 @@ struct AddManualView: View {
                     
                     TextField("z.B. iPhone 15 Bedienungsanleitung", text: $title)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                }
+                
+                // Tag-Auswahl
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Tags")
+                        .font(.headline)
+                    // Chips für ausgewählte Tags
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(selectedTags, id: \.self) { tag in
+                                HStack(spacing: 4) {
+                                    Text(tag.name ?? "")
+                                    Button(action: { selectedTags.removeAll { $0 == tag } }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                    }
+                                }
+                                .padding(6)
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(12)
+                            }
+                        }
+                    }
+                    // Tag-Eingabefeld mit Autovervollständigung
+                    TextField("Tag hinzufügen...", text: $tagInput, onCommit: { addTagIfNeeded() })
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    // Vorschläge
+                    if !tagInput.isEmpty {
+                        ForEach(allTags.filter { $0.name?.lowercased().contains(tagInput.lowercased()) == true && !selectedTags.contains($0) }, id: \.self) { tag in
+                            Button(tag.name ?? "") {
+                                selectedTags.append(tag)
+                                tagInput = ""
+                            }
+                        }
+                    }
                 }
                 
                 // Bereich zur Dateiauswahl und Anzeige der gewählten Dateien
@@ -162,6 +204,8 @@ struct AddManualView: View {
             manualFile.fileType = file.type.preferredFilenameExtension
             manualFile.pdfRotationDegrees = 0
             manualFile.dateAdded = Date()
+            // Tags zuweisen
+            manualFile.manualTags = NSSet(array: selectedTags)
             manual.addToFiles(manualFile)
         }
         
@@ -173,6 +217,23 @@ struct AddManualView: View {
             self.alertMessage = "Das Manual konnte nicht gespeichert werden: \(error.localizedDescription)"
             self.showingAlert = true
         }
+    }
+    
+    // Hilfsfunktion zum Hinzufügen eines neuen Tags
+    private func addTagIfNeeded() {
+        let trimmed = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        if let existing = allTags.first(where: { $0.name?.lowercased() == trimmed.lowercased() }) {
+            if !selectedTags.contains(existing) {
+                selectedTags.append(existing)
+            }
+        } else {
+            let newTag = ManualTag(context: viewContext)
+            newTag.name = trimmed
+            selectedTags.append(newTag)
+            try? viewContext.save()
+        }
+        tagInput = ""
     }
 }
 

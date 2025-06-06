@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7632F6592DF3919000F17117 /* ManualFile+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632F6552DF3919000F17117 /* ManualFile+CoreDataClass.swift */; };
+		7632F65A2DF3919000F17117 /* ManualFile+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632F6562DF3919000F17117 /* ManualFile+CoreDataProperties.swift */; };
+		7632F65B2DF3919000F17117 /* ManualTag+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632F6572DF3919000F17117 /* ManualTag+CoreDataClass.swift */; };
+		7632F65C2DF3919000F17117 /* ManualTag+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632F6582DF3919000F17117 /* ManualTag+CoreDataProperties.swift */; };
 		76EDCDEF2DF074F500D4A8D3 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7606A27C2DF053D900D2DED2 /* CloudKit.framework */; };
 		76F78C012DF2FBC10079C560 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76F78C002DF2FBC10079C560 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -31,6 +35,10 @@
 /* Begin PBXFileReference section */
 		7606A27A2DF053B200D2DED2 /* ClockKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ClockKit.framework; path = System/Library/Frameworks/ClockKit.framework; sourceTree = SDKROOT; };
 		7606A27C2DF053D900D2DED2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		7632F6552DF3919000F17117 /* ManualFile+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManualFile+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7632F6562DF3919000F17117 /* ManualFile+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManualFile+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7632F6572DF3919000F17117 /* ManualTag+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManualTag+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7632F6582DF3919000F17117 /* ManualTag+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManualTag+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		765611392DED63AE00CCB4C4 /* ManualShelf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManualShelf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7656114B2DED63AF00CCB4C4 /* ManualShelfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManualShelfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		765611552DED63AF00CCB4C4 /* ManualShelfUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManualShelfUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +114,10 @@
 		765611302DED63AE00CCB4C4 = {
 			isa = PBXGroup;
 			children = (
+				7632F6552DF3919000F17117 /* ManualFile+CoreDataClass.swift */,
+				7632F6562DF3919000F17117 /* ManualFile+CoreDataProperties.swift */,
+				7632F6572DF3919000F17117 /* ManualTag+CoreDataClass.swift */,
+				7632F6582DF3919000F17117 /* ManualTag+CoreDataProperties.swift */,
 				76F78C002DF2FBC10079C560 /* LaunchScreen.storyboard */,
 				7656113B2DED63AE00CCB4C4 /* ManualShelf */,
 				7656114E2DED63AF00CCB4C4 /* ManualShelfTests */,
@@ -270,6 +282,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7632F6592DF3919000F17117 /* ManualFile+CoreDataClass.swift in Sources */,
+				7632F65A2DF3919000F17117 /* ManualFile+CoreDataProperties.swift in Sources */,
+				7632F65B2DF3919000F17117 /* ManualTag+CoreDataClass.swift in Sources */,
+				7632F65C2DF3919000F17117 /* ManualTag+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

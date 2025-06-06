@@ -5,12 +5,19 @@
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManualFile" inverseName="manual" inverseEntity="ManualFile"/>
     </entity>
-    <entity name="ManualFile" representedClassName="ManualFile" syncable="YES" codeGenerationType="class">
+    <entity name="ManualFile" representedClassName="ManualFile" syncable="YES">
         <attribute name="dateAdded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="fileData" optional="YES" attributeType="Binary"/>
         <attribute name="fileName" optional="YES" attributeType="String"/>
         <attribute name="fileType" optional="YES" attributeType="String"/>
+        <attribute name="imageRotationDegrees" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="pdfRotationDegrees" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="manual" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Manual" inverseName="files" inverseEntity="Manual"/>
+        <relationship name="manualTags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManualTag" inverseName="manuals" inverseEntity="ManualTag"/>
+    </entity>
+    <entity name="ManualTag" representedClassName="ManualTag" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="manuals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManualFile" inverseName="manualTags" inverseEntity="ManualFile"/>
     </entity>
 </model>

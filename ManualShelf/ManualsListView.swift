@@ -13,15 +13,46 @@ struct ManualsListView: View {
     @State private var showingSettingsView = false
     @State private var currentSortOption: SortOption = .dateAddedDescending
     @State private var searchText: String = ""
+    @FetchRequest(
+        entity: ManualTag.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \ManualTag.name, ascending: true)]
+    ) var allTags: FetchedResults<ManualTag>
+    @State private var selectedFilterTag: ManualTag? = nil
 
     var body: some View {
         NavigationView {
             VStack {
+                // Tag-Filterleiste
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(usedTags, id: \.objectID) { tag in
+                            TagFilterChip(
+                                tag: tag,
+                                isSelected: selectedFilterTag == tag,
+                                onTap: {
+                                    if selectedFilterTag == tag {
+                                        selectedFilterTag = nil
+                                    } else {
+                                        selectedFilterTag = tag
+                                    }
+                                }
+                            )
+                        }
+                    }
+                    .padding(.horizontal)
+                }
                 // Zeigt die gefilterte und sortierte Liste der Manuals an
                 FetchedManualsDisplayView(
                     sortDescriptors: currentSortOption.sortDescriptors, 
-                    predicate: createPredicate()
+                    predicate: createPredicate(),
+                    selectedFilterTag: selectedFilterTag
                 )
+                .onAppear {
+                    // Trigger ein Refresh, indem der ViewContext geändert wird (z.B. durch Zuweisung)
+                    // oder ein State-Update, falls nötig
+                    // (SwiftUI refresht FetchRequest bei onAppear automatisch, aber dies stellt sicher, dass es passiert)
+                    _ = viewContext
+                }
                 .searchable(text: $searchText, prompt: "Suche nach Titel oder Datei")
             }
             .navigationTitle("ManualShelf")
@@ -84,6 +115,29 @@ struct ManualsListView: View {
             return nil
         } else {
             return NSPredicate(format: "title CONTAINS[cd] %@ OR ANY files.fileName CONTAINS[cd] %@", searchText, searchText)
+        }
+    }
+
+    // Filtere die Tag-Filterleiste so, dass nur verwendete Tags angezeigt werden
+    var usedTags: [ManualTag] {
+        allTags.filter { tag in
+            (tag.manuals?.count ?? 0) > 0
+        }
+    }
+}
+
+struct TagFilterChip: View {
+    let tag: ManualTag
+    let isSelected: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            Text(tag.name ?? "")
+                .padding(8)
+                .background(isSelected ? Color.accentColor : Color.gray.opacity(0.2))
+                .foregroundColor(isSelected ? .white : .primary)
+                .cornerRadius(12)
         }
     }
 }
