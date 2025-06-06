@@ -22,6 +22,9 @@ class AppSettings: ObservableObject {
 
     @Published var syncPreference: SyncPreference {
         didSet {
+            // Verhindert eine Endlosschleife, falls der Wert erneut auf denselben Wert gesetzt wird.
+            guard oldValue != syncPreference else { return }
+            
             UserDefaults.standard.set(syncPreference.rawValue, forKey: syncPreferenceKey)
             // CloudKit Container darüber informieren
             PersistenceController.shared.updateCloudKitContainerCellularAccess(allowed: syncPreference == .wifiAndCellular)

@@ -26,10 +26,6 @@ struct ManualsListView: View {
             }
             .navigationTitle("ManualShelf")
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    CloudKitSyncStatusView()
-                }
-                
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: { showingAddManualView = true }) {
                         Image(systemName: "plus")
