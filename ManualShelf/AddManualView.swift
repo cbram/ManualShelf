@@ -94,14 +94,18 @@ struct AddManualView: View {
                 }
             }
             .sheet(isPresented: $showingDocumentPicker) {
-                DocumentPicker(selectedFileData: $selectedFileData, 
-                               selectedFileName: $selectedFileName,
-                               selectedFileType: $selectedFileType,
-                               onError: { errorMsg in
-                                    self.alertTitle = "Fehler beim Laden der Datei"
-                                    self.alertMessage = errorMsg
-                                    self.showingAlert = true
-                               })
+                DocumentPickerView { result in
+                    switch result {
+                    case .success(let (data, name, type)):
+                        self.selectedFileData = data
+                        self.selectedFileName = name
+                        self.selectedFileType = type
+                    case .failure(let error):
+                        self.alertTitle = "Fehler beim Laden der Datei"
+                        self.alertMessage = error.localizedDescription
+                        self.showingAlert = true
+                    }
+                }
             }
             .alert(alertTitle, isPresented: $showingAlert) {
                 Button("OK") { }
@@ -133,11 +137,16 @@ struct AddManualView: View {
         
         let manual = Manual(context: viewContext)
         manual.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        manual.fileName = selectedFileName
-        manual.dateAdded = Date()
-        manual.fileData = fileData
-        manual.fileType = fileType.preferredFilenameExtension
-        manual.pdfRotationDegrees = 0 // Standard-Rotation für neue Manuals
+        manual.dateAdded = Date() // Das Hinzufügedatum des Manuals selbst
+
+        let manualFile = ManualFile(context: viewContext)
+        manualFile.fileName = selectedFileName
+        manualFile.fileData = fileData
+        manualFile.fileType = fileType.preferredFilenameExtension
+        manualFile.pdfRotationDegrees = 0 // Standard-Rotation für neue Dateien
+        manualFile.dateAdded = Date() // Hinzufügedatum der Datei
+        
+        manual.addToFiles(manualFile) // Verknüpft die Datei mit dem Manual
         
         do {
             try viewContext.save()
@@ -146,106 +155,6 @@ struct AddManualView: View {
             self.alertTitle = "Fehler beim Speichern"
             self.alertMessage = "Das Manual konnte nicht gespeichert werden: \(error.localizedDescription)"
             self.showingAlert = true
-        }
-    }
-}
-
-struct DocumentPicker: UIViewControllerRepresentable {
-    @Binding var selectedFileData: Data?
-    @Binding var selectedFileName: String
-    @Binding var selectedFileType: UTType?
-    var onError: ((String) -> Void)?
-    @Environment(\.presentationMode) var presentationMode
-    
-    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf, UTType.jpeg])
-        picker.delegate = context.coordinator
-        picker.allowsMultipleSelection = false
-        return picker
-    }
-    
-    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    class Coordinator: NSObject, UIDocumentPickerDelegate {
-        let parent: DocumentPicker
-        
-        init(_ parent: DocumentPicker) {
-            self.parent = parent
-        }
-        
-        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-            guard let url = urls.first else { return }
-            
-            let typeIdentifier = try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier
-            let ext = url.pathExtension.lowercased()
-            print("[DEBUG] typeIdentifier: \(String(describing: typeIdentifier)), extension: \(ext)")
-            
-            var utType: UTType? = nil
-            if let typeIdentifier = typeIdentifier, let detectedUTType = UTType(typeIdentifier) {
-                utType = detectedUTType
-            } else if ext == "pdf" {
-                utType = UTType.pdf
-            } else if ext == "jpeg" || ext == "jpg" {
-                utType = UTType.jpeg
-            }
-            
-            guard let validUTType = utType else {
-                DispatchQueue.main.async {
-                    self.parent.selectedFileData = nil
-                    self.parent.selectedFileName = ""
-                    self.parent.selectedFileType = nil
-                    let userMessage = "Der Dateityp konnte nicht bestimmt werden (keine typeIdentifier und keine bekannte Endung)."
-                    self.parent.onError?(userMessage)
-                }
-                return
-            }
-
-            guard [UTType.pdf, UTType.jpeg].contains(validUTType) else {
-                DispatchQueue.main.async {
-                    self.parent.selectedFileData = nil
-                    self.parent.selectedFileName = ""
-                    self.parent.selectedFileType = nil
-                    let userMessage = "Nicht unterstützter Dateityp: \(validUTType.localizedDescription ?? "Unbekannt")"
-                    self.parent.onError?(userMessage)
-                }
-                return
-            }
-            
-            var accessError: Error?
-            let didStartAccessing = url.startAccessingSecurityScopedResource()
-            defer { if didStartAccessing { url.stopAccessingSecurityScopedResource() } }
-            
-            if didStartAccessing {
-                do {
-                    let data = try Data(contentsOf: url)
-                    DispatchQueue.main.async {
-                        self.parent.selectedFileData = data
-                        self.parent.selectedFileName = url.lastPathComponent
-                        self.parent.selectedFileType = validUTType
-                    }
-                } catch {
-                    accessError = error
-                }
-            } else {
-                accessError = NSError(domain: NSCocoaErrorDomain, code: NSFileReadNoPermissionError, userInfo: [NSLocalizedDescriptionKey: "Keine Berechtigung zum Lesen der Datei."])
-            }
-            
-            if let error = accessError {
-                DispatchQueue.main.async {
-                    self.parent.selectedFileData = nil
-                    self.parent.selectedFileName = ""
-                    self.parent.selectedFileType = nil
-                    let userMessage = "Die ausgewählte Datei konnte nicht geladen werden. (\(error.localizedDescription))"
-                    self.parent.onError?(userMessage)
-                }
-            }
-        }
-        
-        func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         }
     }
 }

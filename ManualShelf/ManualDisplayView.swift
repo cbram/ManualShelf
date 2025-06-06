@@ -9,23 +9,96 @@ import SwiftUI
 import PDFKit // Bleibt für PDF-Anzeige
 import UniformTypeIdentifiers // Für UTType-Konstanten
 
-struct ManualDisplayView: View { // Umbenannt von PDFViewerView
+struct ManualDisplayView: View {
     @ObservedObject var manual: Manual
     @Environment(\.managedObjectContext) private var viewContext
     
-    // pdfRotationDegrees wird nur für PDFs verwendet.
-    // Die Toolbar zum Rotieren wird auch nur für PDFs angezeigt.
+    @State private var showingAddFilePicker = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    @State private var showingAlert = false
+    
+    var body: some View {
+        // Die unsortierte Menge (Set) in ein nach Datum sortiertes Array umwandeln.
+        let fileSet = manual.files as? Set<ManualFile> ?? []
+        let files = fileSet.sorted {
+            // Sortiert nach Hinzufügedatum, älteste zuerst.
+            $0.dateAdded ?? Date.distantPast < $1.dateAdded ?? Date.distantPast
+        }
+        
+        List(files) { file in
+            NavigationLink(destination: FileDisplayView(manualFile: file)) {
+                HStack {
+                    Image(systemName: file.fileType == UTType.pdf.preferredFilenameExtension ? "doc.text.fill" : "photo.fill")
+                        .foregroundColor(.accentColor)
+                    Text(file.fileName ?? "Unbenannte Datei")
+                }
+            }
+        }
+        .navigationTitle(manual.title ?? "Dateien")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                // Hier könnte ein Button hin, um neue Dateien zum Manual hinzuzufügen
+                Button(action: {
+                    showingAddFilePicker = true
+                }) {
+                    Image(systemName: "plus")
+                }
+            }
+        }
+        .sheet(isPresented: $showingAddFilePicker) {
+            DocumentPickerView { result in
+                switch result {
+                case .success(let (data, name, type)):
+                    addFileToManual(data: data, name: name, type: type)
+                case .failure(let error):
+                    self.alertTitle = "Fehler beim Hinzufügen"
+                    self.alertMessage = error.localizedDescription
+                    self.showingAlert = true
+                }
+            }
+        }
+        .alert(alertTitle, isPresented: $showingAlert) {
+            Button("OK") { }
+        } message: {
+            Text(alertMessage)
+        }
+    }
+    
+    private func addFileToManual(data: Data, name: String, type: UTType) {
+        let newFile = ManualFile(context: viewContext)
+        newFile.fileName = name
+        newFile.fileType = type.preferredFilenameExtension
+        newFile.fileData = data
+        newFile.dateAdded = Date()
+        newFile.pdfRotationDegrees = 0
+        
+        manual.addToFiles(newFile)
+        
+        do {
+            try viewContext.save()
+        } catch {
+            self.alertTitle = "Fehler beim Speichern"
+            self.alertMessage = "Die neue Datei konnte nicht zum Manual hinzugefügt werden: \(error.localizedDescription)"
+            self.showingAlert = true
+        }
+    }
+}
 
+// NEUE VIEW: Zeigt eine einzelne Datei (PDF oder Bild) an
+struct FileDisplayView: View {
+    @ObservedObject var manualFile: ManualFile
+    @Environment(\.managedObjectContext) private var viewContext
+    
     var body: some View {
         Group {
-            if let fileData = manual.fileData, !fileData.isEmpty {
-                // Überprüfe den fileType, der als String (z.B. "pdf", "jpeg") gespeichert ist
-                if manual.fileType?.lowercased() == UTType.pdf.preferredFilenameExtension {
-                    PDFKitView(data: fileData, rotationAngle: manual.pdfRotationDegrees)
-                } else if manual.fileType?.lowercased() == UTType.jpeg.preferredFilenameExtension || manual.fileType?.lowercased() == "jpg" {
-                    // Für JPEG eine Image View verwenden
+            if let fileData = manualFile.fileData, !fileData.isEmpty {
+                if manualFile.fileType?.lowercased() == UTType.pdf.preferredFilenameExtension {
+                    PDFKitView(manualFile: manualFile)
+                } else if manualFile.fileType?.lowercased() == UTType.jpeg.preferredFilenameExtension || manualFile.fileType?.lowercased() == "jpg" {
                     if let uiImage = UIImage(data: fileData) {
-                        ScrollView { // Ermöglicht Scrollen, falls das Bild größer als der Bildschirm ist
+                        ScrollView {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFit()
@@ -34,20 +107,16 @@ struct ManualDisplayView: View { // Umbenannt von PDFViewerView
                         errorView(message: "Das JPEG-Bild konnte nicht geladen werden.")
                     }
                 } else {
-                    // Fallback, falls der Dateityp unbekannt ist oder nicht unterstützt wird
-                    errorView(message: "Dateityp \"\(manual.fileType ?? "Unbekannt")\" wird nicht unterstützt.")
+                    errorView(message: "Dateityp \"\(manualFile.fileType ?? "Unbekannt")\" wird nicht unterstützt.")
                 }
             } else {
-                // Wenn keine fileData vorhanden sind
-                errorView(message: "Für dieses Manual wurden keine Dateidaten gespeichert.")
+                errorView(message: "Für diese Datei wurden keine Daten gespeichert.")
             }
         }
-        .navigationTitle(manual.title ?? "Manual")
+        .navigationTitle(manualFile.fileName ?? "Datei")
         .navigationBarTitleDisplayMode(.inline)
-        // .edgesIgnoringSafeArea(.bottom) // Ggf. nur für PDFKitView sinnvoll, für Images prüfen
         .toolbar {
-            // Toolbar-Items nur anzeigen, wenn es ein PDF ist
-            if manual.fileType?.lowercased() == UTType.pdf.preferredFilenameExtension {
+            if manualFile.fileType?.lowercased() == UTType.pdf.preferredFilenameExtension {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: { rotatePDF(by: -90) }) {
                         Image(systemName: "rotate.left.fill")
@@ -60,13 +129,12 @@ struct ManualDisplayView: View { // Umbenannt von PDFViewerView
         }
     }
     
-    // Hilfsfunktion für die Fehleransicht
     @ViewBuilder
     private func errorView(message: String) -> some View {
         VStack(spacing: 15) {
-            Image(systemName: "exclamationmark.triangle.fill") // Allgemeineres Fehlersymbol
+            Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 70))
-                .foregroundColor(.orange) // Auffälligere Farbe für Fehler
+                .foregroundColor(.orange)
             Text("Datei nicht darstellbar")
                 .font(.title2)
                 .foregroundColor(.secondary)
@@ -79,36 +147,29 @@ struct ManualDisplayView: View { // Umbenannt von PDFViewerView
     }
     
     private func rotatePDF(by degrees: Int16) {
-        // Diese Funktion bleibt unverändert, wird aber nur für PDFs aufgerufen
-        var newRotation = manual.pdfRotationDegrees + degrees
+        var newRotation = manualFile.pdfRotationDegrees + degrees
         if newRotation >= 360 { newRotation -= 360 }
         if newRotation < 0 { newRotation += 360 }
         
-        manual.pdfRotationDegrees = newRotation
+        manualFile.pdfRotationDegrees = newRotation
         
         do {
             try viewContext.save()
         } catch {
             print("Fehler beim Speichern der PDF-Drehung: \(error.localizedDescription)")
-            // Hier könnte man dem Benutzer eine Fehlermeldung anzeigen
         }
     }
 }
 
-// PDFKitView bleibt wie es ist, da es nur für PDFs verwendet wird.
-// Es muss nicht nach ManualDisplayView.swift verschoben werden, wenn es nur hier verwendet wird,
-// aber der Übersichtlichkeit halber könnte man es tun oder als private struct definieren.
-// Fürs Erste belasse ich es hier, um den Diff klein zu halten.
 struct PDFKitView: UIViewRepresentable {
-    let data: Data
-    let rotationAngle: Int16
+    @ObservedObject var manualFile: ManualFile
     
     func makeUIView(context: Context) -> PDFView {
         let pdfView = PDFView()
         pdfView.translatesAutoresizingMaskIntoConstraints = false
-        if let document = PDFDocument(data: data) {
+        if let data = manualFile.fileData, let document = PDFDocument(data: data) {
             pdfView.document = document
-            applyRotation(to: document, angle: rotationAngle, forView: pdfView)
+            applyRotation(to: document, angle: manualFile.pdfRotationDegrees, forView: pdfView)
         }
         pdfView.autoScales = true
         pdfView.displayMode = .singlePageContinuous
@@ -121,12 +182,23 @@ struct PDFKitView: UIViewRepresentable {
     }
     
     func updateUIView(_ pdfView: PDFView, context: Context) {
-        if let document = pdfView.document {
-            applyRotation(to: document, angle: rotationAngle, forView: pdfView)
-        } else if let newDocumentData = PDFDocument(data: data) {
-            pdfView.document = newDocumentData
-            applyRotation(to: newDocumentData, angle: rotationAngle, forView: pdfView)
+        // Überprüft, ob Daten oder Rotationswinkel sich geändert haben
+        if let document = pdfView.document, manualFile.pdfRotationDegrees != pageRotation(of: document) {
+             applyRotation(to: document, angle: manualFile.pdfRotationDegrees, forView: pdfView)
+        } else if let data = manualFile.fileData, pdfView.document == nil || pdfView.document?.dataRepresentation() != data {
+            // Wenn sich die Daten geändert haben oder kein Dokument da ist
+            if let newDocument = PDFDocument(data: data) {
+                pdfView.document = newDocument
+                applyRotation(to: newDocument, angle: manualFile.pdfRotationDegrees, forView: pdfView)
+            }
         }
+    }
+    
+    private func pageRotation(of document: PDFDocument) -> Int16 {
+        if let page = document.page(at: 0) {
+            return Int16(page.rotation)
+        }
+        return 0
     }
     
     private func applyRotation(to document: PDFDocument, angle: Int16, forView pdfView: PDFView) {
@@ -147,22 +219,33 @@ struct PDFKitView: UIViewRepresentable {
             }
             pdfView.scaleFactor = currentScaleFactor
         }
-        // pdfView.autoScales = true // Kann dazu führen, dass die Skalierung zurückgesetzt wird. Testen.
     }
 }
 
-// Preview muss angepasst werden, um beide Fälle zu testen (PDF und JPEG)
 #Preview {
     let context = PersistenceController.preview.container.viewContext
     
-    // PDF Beispiel
     let pdfManual = Manual(context: context)
-    pdfManual.title = "Beispiel PDF Manual"
-    pdfManual.fileName = "beispiel.pdf"
-    pdfManual.fileType = "pdf"
+    pdfManual.title = "Beispiel Manual"
     pdfManual.dateAdded = Date()
-    pdfManual.fileData = Data() // Leere Daten für Preview
-    pdfManual.pdfRotationDegrees = 0
+    
+    // Erste Datei (PDF)
+    let pdfFile = ManualFile(context: context)
+    pdfFile.fileName = "Anleitung.pdf"
+    pdfFile.fileType = "pdf"
+    pdfFile.dateAdded = Date()
+    pdfFile.fileData = Data()
+    pdfFile.pdfRotationDegrees = 0
+    
+    // Zweite Datei (JPEG)
+    let jpgFile = ManualFile(context: context)
+    jpgFile.fileName = "Produktbild.jpeg"
+    jpgFile.fileType = "jpeg"
+    jpgFile.dateAdded = Date()
+    jpgFile.fileData = Data()
+    
+    pdfManual.addToFiles(pdfFile)
+    pdfManual.addToFiles(jpgFile)
 
     return NavigationView {
         ManualDisplayView(manual: pdfManual)
