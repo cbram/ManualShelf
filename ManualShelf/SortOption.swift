@@ -3,9 +3,8 @@ import Foundation
 enum SortOption: String, CaseIterable, Identifiable {
     case titleAscending = "Titel (A-Z)"
     case titleDescending = "Titel (Z-A)"
-    case dateAddedDescending = "Hinzugefügt (Neueste zuerst)" // Standard
+    case dateAddedDescending = "Hinzugefügt (Neueste zuerst)"
     case dateAddedAscending = "Hinzugefügt (Älteste zuerst)"
-    // Zukünftig ggf. nach Dateiname
 
     var id: String { self.rawValue }
 
@@ -13,7 +12,7 @@ enum SortOption: String, CaseIterable, Identifiable {
         switch self {
         case .titleAscending:
             return [NSSortDescriptor(keyPath: \Manual.title, ascending: true),
-                    NSSortDescriptor(keyPath: \Manual.dateAdded, ascending: false)] // Sekundäre Sortierung
+                    NSSortDescriptor(keyPath: \Manual.dateAdded, ascending: false)] // Sekundäre Sortierung bei gleichem Titel
         case .titleDescending:
             return [NSSortDescriptor(keyPath: \Manual.title, ascending: false),
                     NSSortDescriptor(keyPath: \Manual.dateAdded, ascending: false)]

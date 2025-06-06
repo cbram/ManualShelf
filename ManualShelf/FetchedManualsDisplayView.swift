@@ -53,12 +53,7 @@ struct FetchedManualsDisplayView: View {
             do {
                 try viewContext.save()
             } catch {
-                // Hier wäre eine Fehlerbehandlung für den Benutzer sinnvoll (z.B. Alert)
-                print("Fehler beim Löschen: \(error.localizedDescription)")
-                // Beispiel für Alert (müsste @State Variablen in der View haben):
-                // self.alertTitle = "Fehler beim Löschen"
-                // self.alertMessage = error.localizedDescription
-                // self.showingAlert = true
+                print("Fehler beim Löschen des Manuals: \(error.localizedDescription)")
             }
         }
     }

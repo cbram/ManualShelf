@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CloudKit // Wieder aktiviert
+import CloudKit
 
 struct CloudKitSyncStatusView: View {
     @StateObject private var syncManager = CloudKitSyncManager.shared
@@ -14,19 +14,22 @@ struct CloudKitSyncStatusView: View {
     
     var body: some View {
         HStack {
+            // Status-Icon mit Animation je nach Sync-Status
             Image(systemName: iconName)
                 .foregroundColor(iconColor)
                 .rotationEffect(shouldAnimateSyncIcon ? .degrees(359) : .degrees(0))
                 .animation(shouldAnimateSyncIcon ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default, value: shouldAnimateSyncIcon)
             
+            // Textuelle Statusbeschreibung
             Text(statusDescription)
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
+        // Tippen erzwingt eine Synchronisation
         .onTapGesture {
-            // Manueller Sync bei Tap
             syncManager.forceSynchronization()
         }
+        // Kontextmenü für weitere Sync-Aktionen
         .contextMenu {
             Button("Synchronisation erzwingen") {
                 syncManager.forceSynchronization()
@@ -41,6 +44,7 @@ struct CloudKitSyncStatusView: View {
             }
         }
         .onAppear {
+            // Status beim Anzeigen prüfen
             syncManager.checkAccountStatus()
             updateAnimationState(for: syncManager.syncStatus)
         }
@@ -49,6 +53,7 @@ struct CloudKitSyncStatusView: View {
         }
     }
     
+    // Startet oder stoppt die Icon-Animation je nach Sync-Status
     private func updateAnimationState(for status: CloudKitSyncManager.SyncStatus) {
         if status == .syncing {
             DispatchQueue.main.async {
@@ -59,6 +64,7 @@ struct CloudKitSyncStatusView: View {
         }
     }
     
+    // Liefert das passende Symbol für den aktuellen Sync-Status
     private var iconName: String {
         switch syncManager.syncStatus {
         case .unknown:
@@ -72,6 +78,7 @@ struct CloudKitSyncStatusView: View {
         }
     }
     
+    // Liefert die passende Farbe für das Status-Icon
     private var iconColor: Color {
         switch syncManager.syncStatus {
         case .unknown:
@@ -85,6 +92,7 @@ struct CloudKitSyncStatusView: View {
         }
     }
     
+    // Liefert die textuelle Beschreibung des Sync-Status
     private var statusDescription: String {
         switch syncManager.syncStatus {
         case .unknown:
@@ -105,6 +113,7 @@ struct CloudKitSyncStatusView: View {
     }
 }
 
+// Formatter für die Anzeige der letzten Synchronisation
 private let timeFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.timeStyle = .short
@@ -112,6 +121,7 @@ private let timeFormatter: DateFormatter = {
     return formatter
 }()
 
+// Vorschau für SwiftUI Previews
 #Preview {
     CloudKitSyncStatusView()
 } 

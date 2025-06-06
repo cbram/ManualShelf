@@ -50,27 +50,28 @@ struct SettingsView: View {
                     }
                 }
             }
-            // Stelle sicher, dass allowCellularSync aktualisiert wird, wenn sich die zugrundeliegende Einstellung ändert (z.B. durch andere Programmteile)
+            // Stellt sicher, dass der Toggle-Status aktuell bleibt, falls die Einstellung
+            // an anderer Stelle im Code geändert wird.
             .onReceive(appSettings.$syncPreference) { newPreference in
                 allowCellularSync = (newPreference == .wifiAndCellular)
             }
         }
     }
     
-    // Prüft, ob das Gerät Mobilfunk unterstützt
+    /// Prüft, ob das Gerät Mobilfunk unterstützt.
     private func isCellularAvailable() -> Bool {
         let networkInfo = CTTelephonyNetworkInfo()
         if let carrier = networkInfo.serviceSubscriberCellularProviders?.first?.value {
-            // Wenn ein Carrier-Name vorhanden ist, gehen wir von Mobilfunkfähigkeit aus.
-            // Dies ist eine Vereinfachung. Auf einem iPad ohne SIM aber mit eSIM-Fähigkeit
-            // könnte dies ungenau sein, aber für die meisten Fälle ausreichend.
+            // Die Abfrage des Carrier-Namens ist eine Vereinfachung. Sie ist für die
+            // meisten Fälle ausreichend, kann aber bei Geräten wie iPads mit reiner
+            // eSIM-Fähigkeit ungenau sein.
             return carrier.carrierName != nil
         }
-        // Fallback für Geräte, die die Info anders bereitstellen
+        // Fallback für Geräte, die die Information anders bereitstellen.
         #if os(iOS)
         return networkInfo.dataServiceIdentifier != nil
         #else
-        return false // macOS, watchOS, etc. haben kein 'Mobilfunk' in diesem Sinne
+        return false // macOS, watchOS, etc. unterstützen kein Mobilfunk in diesem Sinne.
         #endif
     }
 }

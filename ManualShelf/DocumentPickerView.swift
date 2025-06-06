@@ -5,6 +5,7 @@ struct DocumentPickerView: UIViewControllerRepresentable {
     var onFilePicked: (Result<(Data, String, UTType), Error>) -> Void
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
+        // Initialisiert den Dokumenten-Picker für PDF- und Bilddateien
         let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf, UTType.jpeg, UTType.png])
         picker.delegate = context.coordinator
         picker.allowsMultipleSelection = false
@@ -46,12 +47,13 @@ struct DocumentPickerView: UIViewControllerRepresentable {
                 }
             }
 
+            // Unterstützt nur PDF, JPEG und PNG
             guard let validUTType = utType, [UTType.pdf, UTType.jpeg, UTType.png].contains(validUTType) else {
                 parent.onFilePicked(.failure(PickerError.unsupportedFileType))
                 return
             }
             
-            // Greife auf die Datei zu
+            // Greife auf die Datei zu (Security Scoped Resource)
             let didStartAccessing = url.startAccessingSecurityScopedResource()
             defer { if didStartAccessing { url.stopAccessingSecurityScopedResource() } }
             
@@ -69,6 +71,7 @@ struct DocumentPickerView: UIViewControllerRepresentable {
         }
     }
     
+    // Fehler, die beim Auswählen einer Datei auftreten können
     enum PickerError: Error, LocalizedError {
         case noFileSelected
         case unsupportedFileType

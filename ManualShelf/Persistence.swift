@@ -6,12 +6,13 @@
 //
 
 import CoreData
-// import CloudKit // Temporär deaktiviert
 
 struct PersistenceController {
+    // Singleton-Instanz für die App
     static let shared = PersistenceController()
 
     @MainActor
+    // Preview-Instanz für SwiftUI Previews mit Beispieldaten (nur im Speicher)
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
@@ -36,22 +37,20 @@ struct PersistenceController {
         return result
     }()
 
-    // Zurück zu NSPersistentContainer temporär
     let container: NSPersistentCloudKitContainer
-    // Definiere den Container Identifier hier, um Konsistenz zu gewährleisten
-    // private let cloudKitContainerIdentifier = "iCloud.com.chrisbram.ManualShelf"
 
+    // Initialisiert den Core Data Stack, optional nur im Speicher (für Tests/Previews)
     init(inMemory: Bool = false) {
         container = NSPersistentCloudKitContainer(name: "ManualShelf")
         
         if inMemory {
+            // Speichert Daten nur im RAM (z.B. für Previews)
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
-            // CloudKit Integration temporär deaktiviert
+            // Aktiviert History Tracking und Remote Change Notifications für CloudKit Sync
             if let description = container.persistentStoreDescriptions.first {
                 description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
                 description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-                // CloudKit-spezifische Konfiguration entfernt
             }
         }
         
@@ -61,18 +60,19 @@ struct PersistenceController {
             }
         })
         
-        // Core Data Konfiguration für bessere Performance
+        // Stellt sicher, dass der ViewContext Änderungen aus dem übergeordneten Kontext automatisch zusammenführt.
         container.viewContext.automaticallyMergesChangesFromParent = true
+        // Bei Konflikten werden lokale Änderungen bevorzugt.
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
     
-    // Methode zum Aktualisieren der Mobilfunkzugriffs-Einstellung in AppSettings
+    // Aktualisiert die Sync-Einstellung für CloudKit (WLAN oder WLAN+Mobilfunk)
     func updateCloudKitContainerCellularAccess(allowed: Bool) {
         if allowed {
-            AppSettings.shared.syncPreference = .wifiAndCellular // Passe dies ggf. an deine AppSettings an
+            AppSettings.shared.syncPreference = .wifiAndCellular
         } else {
-            AppSettings.shared.syncPreference = .wifiOnly      // Passe dies ggf. an deine AppSettings an
+            AppSettings.shared.syncPreference = .wifiOnly
         }
-        print("Die Einstellung für den Mobilfunkzugriff wurde auf '\\(allowed)' geändert. Die Änderung wird beim nächsten App-Start oder bei einer Neuinitialisierung des Core Data Stacks wirksam.")
+        print("Die Einstellung für den Mobilfunkzugriff wurde auf '\(allowed)' geändert. Die Änderung wird beim nächsten App-Start oder bei einer Neuinitialisierung des Core Data Stacks wirksam.")
     }
 }

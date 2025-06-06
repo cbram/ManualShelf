@@ -11,6 +11,7 @@ import CoreData
 import Combine
 
 class CloudKitSyncManager: ObservableObject {
+    // Singleton-Instanz für die App
     static let shared = CloudKitSyncManager()
     
     @Published var syncStatus: SyncStatus = .unknown
@@ -19,6 +20,7 @@ class CloudKitSyncManager: ObservableObject {
     private let container = CKContainer.default()
     private var cancellables = Set<AnyCancellable>()
     
+    // Repräsentiert den aktuellen Synchronisationsstatus
     enum SyncStatus: Equatable {
         case unknown
         case syncing
@@ -47,7 +49,7 @@ class CloudKitSyncManager: ObservableObject {
     }
     
     // MARK: - Account Status
-    
+    // Prüft den iCloud-Account-Status und aktualisiert den Sync-Status entsprechend
     func checkAccountStatus() {
         container.accountStatus { [weak self] status, error in
             DispatchQueue.main.async {
@@ -76,14 +78,13 @@ class CloudKitSyncManager: ObservableObject {
     }
     
     // MARK: - Remote Change Notifications
-    
+    // Reagiert auf Änderungen, die von anderen Geräten via CloudKit kommen
     private func setupRemoteChangeNotifications() {
-        // Lauscht auf Remote-Änderungen von CloudKit
         NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange)
             .sink { [weak self] notification in
                 DispatchQueue.main.async {
                     self?.syncStatus = .syncing
-                    // Hier könnten Sie zusätzliche Logik für die Behandlung von Remote-Änderungen hinzufügen
+                    // Simuliert eine kurze Sync-Phase
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         self?.syncStatus = .synced
                         self?.lastSyncDate = Date()
@@ -94,14 +95,12 @@ class CloudKitSyncManager: ObservableObject {
     }
     
     // MARK: - Manual Sync Trigger
-    
+    // Löst eine manuelle Synchronisation aus und speichert ggf. Änderungen
     func forceSynchronization() {
         syncStatus = .syncing
         
-        // Core Data mit CloudKit synchronisieren
         let context = PersistenceController.shared.container.viewContext
         
-        // Speichere alle ausstehenden Änderungen
         if context.hasChanges {
             do {
                 try context.save()
@@ -113,7 +112,6 @@ class CloudKitSyncManager: ObservableObject {
                 syncStatus = .error("Sync-Fehler: \(error.localizedDescription)")
             }
         } else {
-            // Keine lokalen Änderungen, nur Status aktualisieren
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.checkAccountStatus()
             }
@@ -121,7 +119,7 @@ class CloudKitSyncManager: ObservableObject {
     }
     
     // MARK: - CloudKit Operations
-    
+    // Fordert Berechtigungen für CloudKit an
     func requestCloudKitPermissions() {
         container.requestApplicationPermission(.userDiscoverability) { [weak self] status, error in
             DispatchQueue.main.async {
@@ -135,15 +133,14 @@ class CloudKitSyncManager: ObservableObject {
     }
     
     // MARK: - Conflict Resolution
-    
+    // Hinweis: CloudKit übernimmt die Konfliktbehandlung automatisch
     func handleSyncConflicts() {
-        // CloudKit übernimmt automatisch die Konfliktbehandlung für Core Data
-        // Diese Methode kann für benutzerdefinierte Konfliktbehandlung erweitert werden
+        // CloudKit übernimmt automatisch die Konfliktbehandlung für Core Data.
         print("Konfliktbehandlung wird von CloudKit automatisch durchgeführt")
     }
     
     // MARK: - Debugging Helpers
-    
+    // Gibt CloudKit-Informationen für Debugging-Zwecke aus
     func printCloudKitInfo() {
         print("CloudKit Container ID: \(container.containerIdentifier ?? "unknown")")
         

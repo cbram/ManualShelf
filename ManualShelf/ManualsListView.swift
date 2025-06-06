@@ -17,7 +17,7 @@ struct ManualsListView: View {
     var body: some View {
         NavigationView {
             VStack {
-                // Die FetchedManualsDisplayView zeigt die gefilterte und sortierte Liste an.
+                // Zeigt die gefilterte und sortierte Liste der Manuals an
                 FetchedManualsDisplayView(
                     sortDescriptors: currentSortOption.sortDescriptors, 
                     predicate: createPredicate()
@@ -27,6 +27,7 @@ struct ManualsListView: View {
             .navigationTitle("ManualShelf")
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    // Öffnet das Sheet zum Hinzufügen eines neuen Manuals
                     Button(action: { showingAddManualView = true }) {
                         Image(systemName: "plus")
                     }
@@ -34,6 +35,7 @@ struct ManualsListView: View {
                 }
 
                 ToolbarItemGroup(placement: .bottomBar) {
+                    // Menü zur Auswahl der Sortieroption
                     Menu {
                         Picker("Sortieren", selection: $currentSortOption) {
                             ForEach(SortOption.allCases) { option in
@@ -46,21 +48,24 @@ struct ManualsListView: View {
 
                     Spacer()
 
+                    // Öffnet die Einstellungen
                     Button(action: { showingSettingsView = true }) {
                         Image(systemName: "gearshape.fill")
                     }
                 }
             }
+            // Sheet zum Hinzufügen eines neuen Manuals
             .sheet(isPresented: $showingAddManualView) {
                 NavigationView {
                     AddManualView()
                 }
             }
+            // Sheet für die Einstellungen
             .sheet(isPresented: $showingSettingsView) {
                 SettingsView()
             }
             
-            // Standard Detail View für iPad
+            // Platzhalter-View für iPad, wenn kein Manual ausgewählt ist
             VStack {
                 Image(systemName: "books.vertical")
                     .font(.system(size: 60))
@@ -73,6 +78,7 @@ struct ManualsListView: View {
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
     }
     
+    // Erstellt ein Predicate für die Suche nach Titel oder Dateiname
     private func createPredicate() -> NSPredicate? {
         if searchText.isEmpty {
             return nil

@@ -31,6 +31,7 @@ struct AddManualView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
+                // Eingabefeld für den Titel des Manuals
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Titel des Manuals")
                         .font(.headline)
@@ -39,12 +40,12 @@ struct AddManualView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
                 
+                // Bereich zur Dateiauswahl und Anzeige der gewählten Dateien
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Dateien")
                         .font(.headline)
                     
                     VStack {
-                        // Liste der ausgewählten Dateien
                         if !pickedFiles.isEmpty {
                             ForEach(pickedFiles) { file in
                                 HStack {
@@ -65,7 +66,7 @@ struct AddManualView: View {
                             }
                         }
                         
-                        // Button zum Hinzufügen
+                        // Button zum Hinzufügen weiterer Dateien
                         Button(action: { showingDocumentPicker = true }) {
                             HStack {
                                 Image(systemName: "doc.badge.plus")
@@ -85,6 +86,7 @@ struct AddManualView: View {
                 
                 Spacer()
                 
+                // Button zum Speichern des Manuals
                 Button(action: saveManual) {
                     Text("Manual speichern")
                         .font(.headline)
@@ -101,11 +103,13 @@ struct AddManualView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
+                    // Schließt die View ohne zu speichern
                     Button("Abbrechen") {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
+            // Öffnet den Dokumenten-Picker
             .sheet(isPresented: $showingDocumentPicker) {
                 DocumentPickerView { result in
                     switch result {
@@ -119,6 +123,7 @@ struct AddManualView: View {
                     }
                 }
             }
+            // Zeigt Fehler-Alerts an
             .alert(alertTitle, isPresented: $showingAlert) {
                 Button("OK") { }
             } message: {
@@ -127,14 +132,17 @@ struct AddManualView: View {
         }
     }
     
+    // Validiert, ob das Manual gespeichert werden kann
     private var canSave: Bool {
         !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !pickedFiles.isEmpty
     }
     
+    // Entfernt eine Datei aus der Auswahl
     private func removeFile(_ file: PickedFile) {
         pickedFiles.removeAll { $0.id == file.id }
     }
     
+    // Speichert das neue Manual und die zugehörigen Dateien im Core Data Kontext
     private func saveManual() {
         guard canSave else {
             self.alertTitle = "Fehler beim Speichern"

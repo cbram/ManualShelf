@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import PDFKit // Bleibt für PDF-Anzeige
-import UniformTypeIdentifiers // Für UTType-Konstanten
+import PDFKit // Für die Anzeige von PDF-Dateien
+import UniformTypeIdentifiers // Für die Erkennung von Dateitypen
 
 struct ManualDisplayView: View {
     @ObservedObject var manual: Manual
@@ -19,13 +19,11 @@ struct ManualDisplayView: View {
     @State private var showingAlert = false
     
     var body: some View {
-        // Die unsortierte Menge (Set) in ein nach Datum sortiertes Array umwandeln.
         let fileSet = manual.files as? Set<ManualFile> ?? []
         let files = fileSet.sorted {
-            // Sortiert nach Hinzufügedatum, älteste zuerst.
             $0.dateAdded ?? Date.distantPast < $1.dateAdded ?? Date.distantPast
         }
-        
+        // Dateien werden nach Hinzufügedatum sortiert angezeigt
         List(files) { file in
             NavigationLink(destination: FileDisplayView(manualFile: file)) {
                 HStack {
@@ -39,7 +37,6 @@ struct ManualDisplayView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                // Hier könnte ein Button hin, um neue Dateien zum Manual hinzuzufügen
                 Button(action: {
                     showingAddFilePicker = true
                 }) {
@@ -48,6 +45,7 @@ struct ManualDisplayView: View {
             }
         }
         .sheet(isPresented: $showingAddFilePicker) {
+            // Öffnet den Dokumenten-Picker zum Hinzufügen einer Datei
             DocumentPickerView { result in
                 switch result {
                 case .success(let (data, name, type)):
@@ -66,6 +64,7 @@ struct ManualDisplayView: View {
         }
     }
     
+    // Fügt eine neue Datei dem Manual hinzu und speichert sie im Core Data Kontext
     private func addFileToManual(data: Data, name: String, type: UTType) {
         let newFile = ManualFile(context: viewContext)
         newFile.fileName = name
@@ -86,7 +85,7 @@ struct ManualDisplayView: View {
     }
 }
 
-// NEUE VIEW: Zeigt eine einzelne Datei (PDF oder Bild) an
+// FileDisplayView zeigt eine einzelne Datei (PDF oder Bild) an und ermöglicht ggf. das Drehen von PDFs.
 struct FileDisplayView: View {
     @ObservedObject var manualFile: ManualFile
     @Environment(\.managedObjectContext) private var viewContext
@@ -118,6 +117,7 @@ struct FileDisplayView: View {
         .navigationTitle(manualFile.fileName ?? "Datei")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            // Toolbar für PDF-spezifische Aktionen (Drehen)
             if manualFile.fileType?.lowercased() == UTType.pdf.preferredFilenameExtension {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: { rotatePDF(by: -90) }) {
@@ -131,6 +131,7 @@ struct FileDisplayView: View {
         }
     }
     
+    // Zeigt eine Fehlermeldung an, wenn die Datei nicht angezeigt werden kann
     @ViewBuilder
     private func errorView(message: String) -> some View {
         VStack(spacing: 15) {
@@ -148,6 +149,7 @@ struct FileDisplayView: View {
         }
     }
     
+    // Dreht die PDF-Datei um die angegebene Gradzahl und speichert die Änderung
     private func rotatePDF(by degrees: Int16) {
         var newRotation = manualFile.pdfRotationDegrees + degrees
         if newRotation >= 360 { newRotation -= 360 }
@@ -163,6 +165,7 @@ struct FileDisplayView: View {
     }
 }
 
+// PDFKitView stellt eine PDF-Datei mit Rotation dar.
 struct PDFKitView: UIViewRepresentable {
     @ObservedObject var manualFile: ManualFile
     
@@ -184,11 +187,10 @@ struct PDFKitView: UIViewRepresentable {
     }
     
     func updateUIView(_ pdfView: PDFView, context: Context) {
-        // Überprüft, ob Daten oder Rotationswinkel sich geändert haben
+        // Aktualisiert die Rotation oder das Dokument, falls sich die Daten geändert haben
         if let document = pdfView.document, manualFile.pdfRotationDegrees != pageRotation(of: document) {
              applyRotation(to: document, angle: manualFile.pdfRotationDegrees, forView: pdfView)
         } else if let data = manualFile.fileData, pdfView.document == nil || pdfView.document?.dataRepresentation() != data {
-            // Wenn sich die Daten geändert haben oder kein Dokument da ist
             if let newDocument = PDFDocument(data: data) {
                 pdfView.document = newDocument
                 applyRotation(to: newDocument, angle: manualFile.pdfRotationDegrees, forView: pdfView)
@@ -196,6 +198,7 @@ struct PDFKitView: UIViewRepresentable {
         }
     }
     
+    // Gibt die Rotation der ersten Seite des Dokuments zurück
     private func pageRotation(of document: PDFDocument) -> Int16 {
         if let page = document.page(at: 0) {
             return Int16(page.rotation)
@@ -203,6 +206,7 @@ struct PDFKitView: UIViewRepresentable {
         return 0
     }
     
+    // Wendet die gewünschte Rotation auf alle Seiten des Dokuments an und stellt die Ansicht wieder her
     private func applyRotation(to document: PDFDocument, angle: Int16, forView pdfView: PDFView) {
         let currentPageIndex = pdfView.currentPage?.pageRef?.pageNumber ?? 1
         let currentScaleFactor = pdfView.scaleFactor
@@ -231,7 +235,6 @@ struct PDFKitView: UIViewRepresentable {
     pdfManual.title = "Beispiel Manual"
     pdfManual.dateAdded = Date()
     
-    // Erste Datei (PDF)
     let pdfFile = ManualFile(context: context)
     pdfFile.fileName = "Anleitung.pdf"
     pdfFile.fileType = "pdf"
@@ -239,7 +242,6 @@ struct PDFKitView: UIViewRepresentable {
     pdfFile.fileData = Data()
     pdfFile.pdfRotationDegrees = 0
     
-    // Zweite Datei (JPEG)
     let jpgFile = ManualFile(context: context)
     jpgFile.fileName = "Produktbild.jpeg"
     jpgFile.fileType = "jpeg"
