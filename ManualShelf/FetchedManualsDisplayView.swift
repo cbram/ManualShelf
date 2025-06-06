@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreData
+import UniformTypeIdentifiers
 
 struct FetchedManualsDisplayView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -36,28 +37,7 @@ struct FetchedManualsDisplayView: View {
                 List {
                     ForEach(manuals) { manual in
                         NavigationLink(destination: ManualDisplayView(manual: manual)) {
-                            HStack(spacing: 12) {
-                                Image(systemName: "doc.text.fill")
-                                    .font(.title2)
-                                    .foregroundColor(.accentColor)
-                                    .frame(width: 25, alignment: .center)
-
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(manual.title ?? "Unbekanntes Manual")
-                                        .font(.headline)
-                                        .foregroundColor(.primary)
-                                    
-                                    Text(manual.fileName ?? "")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                        .lineLimit(1)
-                                    
-                                    Text("Hinzugefügt: \(manual.dateAdded ?? Date(), formatter: dateFormatter)")
-                                        .font(.caption2)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                            .padding(.vertical, 6)
+                            ManualRow(manual: manual)
                         }
                     }
                     .onDelete(perform: deleteManuals)
@@ -84,6 +64,43 @@ struct FetchedManualsDisplayView: View {
     }
 }
 
+// Die Row-Darstellung, angepasst an die neue Datenstruktur
+struct ManualRow: View {
+    @ObservedObject var manual: Manual
+
+    var body: some View {
+        HStack(spacing: 12) {
+            let sortedFiles = (manual.files as? Set<ManualFile> ?? []).sorted {
+                $0.dateAdded ?? Date.distantPast < $1.dateAdded ?? Date.distantPast
+            }
+
+            if let firstFile = sortedFiles.first {
+                Image(systemName: firstFile.fileType == UTType.pdf.preferredFilenameExtension ? "doc.text.fill" : "photo.fill")
+                    .font(.title2)
+                    .foregroundColor(.accentColor)
+                    .frame(width: 25, alignment: .center)
+            } else {
+                Image(systemName: "doc.questionmark.fill")
+                    .font(.title2)
+                    .foregroundColor(.gray)
+                    .frame(width: 25, alignment: .center)
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(manual.title ?? "Unbekanntes Manual")
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Text("\(manual.files?.count ?? 0) Datei(en) - Hinzugefügt: \(manual.dateAdded ?? Date(), formatter: dateFormatter)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+            }
+        }
+        .padding(.vertical, 6)
+    }
+}
+
 // Der DateFormatter, der vorher in ManualsListView war.
 private let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
@@ -99,13 +116,23 @@ struct FetchedManualsDisplayView_Previews: PreviewProvider {
         let context = PersistenceController.preview.container.viewContext
         let manual1 = Manual(context: context)
         manual1.title = "Anleitung Kaffeemaschine"
-        manual1.fileName = "kaffee.pdf"
         manual1.dateAdded = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        
+        let file1 = ManualFile(context: context)
+        file1.fileName = "kaffee.pdf"
+        file1.fileType = "pdf"
+        file1.dateAdded = Date()
+        manual1.addToFiles(file1)
 
         let manual2 = Manual(context: context)
         manual2.title = "Handbuch Fernseher"
-        manual2.fileName = "tv.pdf"
         manual2.dateAdded = Date()
+        
+        let file2 = ManualFile(context: context)
+        file2.fileName = "tv.jpeg"
+        file2.fileType = "jpeg"
+        file2.dateAdded = Date()
+        manual2.addToFiles(file2)
         
         return FetchedManualsDisplayView(
             sortDescriptors: SortOption.dateAddedDescending.sortDescriptors,

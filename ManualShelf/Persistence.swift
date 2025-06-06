@@ -12,27 +12,21 @@ struct PersistenceController {
     static let shared = PersistenceController()
 
     @MainActor
-    static let preview: PersistenceController = {
+    static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        
-        // Beispiel-Manuals für Preview erstellen
-        let sampleTitles = [
-            "iPhone 15 Bedienungsanleitung",
-            "MacBook Pro Benutzerhandbuch",
-            "AirPods Pro Manual",
-            "iPad Air Anleitung"
-        ]
-        
-        for (index, title) in sampleTitles.enumerated() {
-            let manual = Manual(context: viewContext)
-            manual.title = title
-            manual.fileName = "\(title.lowercased().replacingOccurrences(of: " ", with: "_")).pdf"
-            manual.dateAdded = Date().addingTimeInterval(TimeInterval(-index * 86400)) // Verschiedene Daten
-            manual.pdfRotationDegrees = 0
-            manual.fileData = Data() // Leere Daten für Preview
+        for i in 0..<5 {
+            let newItem = Manual(context: viewContext)
+            newItem.title = "Beispiel-Manual \(i)"
+            newItem.dateAdded = Date()
+            
+            let newFile = ManualFile(context: viewContext)
+            newFile.fileName = "datei_\(i).pdf"
+            newFile.fileType = "pdf"
+            newFile.dateAdded = Date()
+            
+            newItem.addToFiles(newFile)
         }
-        
         do {
             try viewContext.save()
         } catch {
@@ -43,12 +37,12 @@ struct PersistenceController {
     }()
 
     // Zurück zu NSPersistentContainer temporär
-    let container: NSPersistentContainer
+    let container: NSPersistentCloudKitContainer
     // Definiere den Container Identifier hier, um Konsistenz zu gewährleisten
     // private let cloudKitContainerIdentifier = "iCloud.com.chrisbram.ManualShelf"
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "ManualShelf")
+        container = NSPersistentCloudKitContainer(name: "ManualShelf")
         
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
