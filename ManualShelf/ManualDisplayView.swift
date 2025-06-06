@@ -115,6 +115,7 @@ struct FileDisplayView: View {
 
     // State für die Galerie
     @State private var currentIndex: Int = 0
+    @State private var imageRotationDegrees: Double = 0 // NEU: Bildrotation
     private var imageFiles: [ManualFile] = []
     
     // Initializer, um imageFiles und currentIndex zu setzen
@@ -149,6 +150,7 @@ struct FileDisplayView: View {
                                         Image(uiImage: uiImage)
                                             .resizable()
                                             .scaledToFit()
+                                            .rotationEffect(.degrees(idx == currentIndex ? imageRotationDegrees : 0)) // NEU
                                             .tag(idx)
                                     } else {
                                         errorView(message: "Das Bild konnte nicht geladen werden.")
@@ -158,7 +160,7 @@ struct FileDisplayView: View {
                             .tabViewStyle(PageTabViewStyle())
                             HStack(alignment: .center, spacing: 32) {
                                 Button(action: {
-                                    if currentIndex > 0 { currentIndex -= 1 }
+                                    if currentIndex > 0 { currentIndex -= 1; imageRotationDegrees = 0 }
                                 }) {
                                     Image(systemName: "chevron.left.circle.fill")
                                         .font(.system(size: 36))
@@ -170,7 +172,7 @@ struct FileDisplayView: View {
                                     .foregroundColor(.secondary)
                                     .frame(minWidth: 80)
                                 Button(action: {
-                                    if currentIndex < imageFiles.count - 1 { currentIndex += 1 }
+                                    if currentIndex < imageFiles.count - 1 { currentIndex += 1; imageRotationDegrees = 0 }
                                 }) {
                                     Image(systemName: "chevron.right.circle.fill")
                                         .font(.system(size: 36))
@@ -185,6 +187,7 @@ struct FileDisplayView: View {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFit()
+                                .rotationEffect(.degrees(imageRotationDegrees)) // NEU
                         }
                     } else {
                         errorView(message: "Das JPEG-/PNG-Bild konnte nicht geladen werden.")
@@ -199,13 +202,24 @@ struct FileDisplayView: View {
         .navigationTitle(manualFile.fileName ?? "Datei")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            // Toolbar für PDF-spezifische Aktionen (Drehen)
+            // Toolbar für PDF- und Bild-spezifische Aktionen (Drehen)
             if manualFile.fileType?.lowercased() == UTType.pdf.preferredFilenameExtension {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: { rotatePDF(by: -90) }) {
                         Image(systemName: "rotate.left.fill")
                     }
                     Button(action: { rotatePDF(by: 90) }) {
+                        Image(systemName: "rotate.right.fill")
+                    }
+                }
+            } else if manualFile.fileType?.lowercased() == UTType.jpeg.preferredFilenameExtension ||
+                      manualFile.fileType?.lowercased() == "jpg" ||
+                      manualFile.fileType?.lowercased() == UTType.png.preferredFilenameExtension {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Button(action: { rotateImage(by: -90) }) {
+                        Image(systemName: "rotate.left.fill")
+                    }
+                    Button(action: { rotateImage(by: 90) }) {
                         Image(systemName: "rotate.right.fill")
                     }
                 }
@@ -244,6 +258,14 @@ struct FileDisplayView: View {
         } catch {
             print("Fehler beim Speichern der PDF-Drehung: \(error.localizedDescription)")
         }
+    }
+    
+    // NEU: Funktion zum Drehen des Bildes
+    private func rotateImage(by degrees: Double) {
+        var newRotation = imageRotationDegrees + degrees
+        if newRotation >= 360 { newRotation -= 360 }
+        if newRotation < 0 { newRotation += 360 }
+        imageRotationDegrees = newRotation
     }
 }
 
