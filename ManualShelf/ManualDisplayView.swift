@@ -96,7 +96,9 @@ struct FileDisplayView: View {
             if let fileData = manualFile.fileData, !fileData.isEmpty {
                 if manualFile.fileType?.lowercased() == UTType.pdf.preferredFilenameExtension {
                     PDFKitView(manualFile: manualFile)
-                } else if manualFile.fileType?.lowercased() == UTType.jpeg.preferredFilenameExtension || manualFile.fileType?.lowercased() == "jpg" {
+                } else if manualFile.fileType?.lowercased() == UTType.jpeg.preferredFilenameExtension || 
+                          manualFile.fileType?.lowercased() == "jpg" ||
+                          manualFile.fileType?.lowercased() == UTType.png.preferredFilenameExtension {
                     if let uiImage = UIImage(data: fileData) {
                         ScrollView {
                             Image(uiImage: uiImage)

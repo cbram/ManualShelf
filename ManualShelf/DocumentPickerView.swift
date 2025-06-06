@@ -5,7 +5,7 @@ struct DocumentPickerView: UIViewControllerRepresentable {
     var onFilePicked: (Result<(Data, String, UTType), Error>) -> Void
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf, UTType.jpeg])
+        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf, UTType.jpeg, UTType.png])
         picker.delegate = context.coordinator
         picker.allowsMultipleSelection = false
         return picker
@@ -41,10 +41,12 @@ struct DocumentPickerView: UIViewControllerRepresentable {
                     utType = UTType.pdf
                 } else if ext == "jpeg" || ext == "jpg" {
                     utType = UTType.jpeg
+                } else if ext == "png" {
+                    utType = UTType.png
                 }
             }
 
-            guard let validUTType = utType, [UTType.pdf, UTType.jpeg].contains(validUTType) else {
+            guard let validUTType = utType, [UTType.pdf, UTType.jpeg, UTType.png].contains(validUTType) else {
                 parent.onFilePicked(.failure(PickerError.unsupportedFileType))
                 return
             }
