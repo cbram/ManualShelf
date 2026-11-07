@@ -16,25 +16,28 @@ class CloudKitSyncManager: ObservableObject {
     static let shared = CloudKitSyncManager()
     
     @Published var syncStatus: SyncStatus = .unknown
-    @Published var lastSyncDate: Date?
+    // Time of the last store change that arrived via CloudKit, not of a completed sync
+    @Published var lastRemoteChangeDate: Date?
     
     private let container = CKContainer.default()
     private var cancellables = Set<AnyCancellable>()
     
-    // Repräsentiert den aktuellen Synchronisationsstatus
+    // Repräsentiert den aktuellen Synchronisationsstatus.
+    // The app cannot observe sync progress; it only knows whether the iCloud account
+    // is available and when a remote change has reached the local store.
     enum SyncStatus: Equatable {
         case unknown
-        case syncing
-        case synced
+        case changesReceived
+        case accountAvailable
         case error(String)
         
         static func == (lhs: CloudKitSyncManager.SyncStatus, rhs: CloudKitSyncManager.SyncStatus) -> Bool {
             switch (lhs, rhs) {
             case (.unknown, .unknown):
                 return true
-            case (.syncing, .syncing):
+            case (.changesReceived, .changesReceived):
                 return true
-            case (.synced, .synced):
+            case (.accountAvailable, .accountAvailable):
                 return true
             case (.error(let lError), .error(let rError)):
                 return lError == rError
@@ -44,6 +47,8 @@ class CloudKitSyncManager: ObservableObject {
         }
     }
     
+    private static let changesReceivedDisplayDuration: TimeInterval = 2
+
     private init() {
         setupRemoteChangeNotifications()
         checkAccountStatus()
@@ -64,8 +69,7 @@ class CloudKitSyncManager: ObservableObject {
                 
                 switch status {
                 case .available:
-                    manager?.syncStatus = .synced
-                    manager?.lastSyncDate = Date()
+                    manager?.syncStatus = .accountAvailable
                 case .noAccount:
                     manager?.syncStatus = .error("Kein iCloud-Account")
                 case .restricted:
@@ -88,38 +92,32 @@ class CloudKitSyncManager: ObservableObject {
         NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.syncStatus = .syncing
-                // Simuliert eine kurze Sync-Phase
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    self?.syncStatus = .synced
-                    self?.lastSyncDate = Date()
+                self?.syncStatus = .changesReceived
+                self?.lastRemoteChangeDate = Date()
+                // Show the hint briefly, then return to the account state
+                DispatchQueue.main.asyncAfter(deadline: .now() + Self.changesReceivedDisplayDuration) {
+                    self?.syncStatus = .accountAvailable
                 }
             }
             .store(in: &cancellables)
     }
     
     // MARK: - Manual Sync Trigger
-    // Löst eine manuelle Synchronisation aus und speichert ggf. Änderungen
+    // Saves pending changes of the view context and re-checks the account.
+    // NSPersistentCloudKitContainer exports after a save on its own schedule;
+    // there is no API to force an immediate sync.
     func forceSynchronization() {
-        syncStatus = .syncing
-        
         let context = PersistenceController.shared.container.viewContext
         
         if context.hasChanges {
             do {
                 try context.save()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.syncStatus = .synced
-                    self.lastSyncDate = Date()
-                }
             } catch {
-                syncStatus = .error("Sync-Fehler: \(error.localizedDescription)")
-            }
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.checkAccountStatus()
+                syncStatus = .error("Speicherfehler: \(error.localizedDescription)")
+                return
             }
         }
+        checkAccountStatus()
     }
     
     // MARK: - Conflict Resolution

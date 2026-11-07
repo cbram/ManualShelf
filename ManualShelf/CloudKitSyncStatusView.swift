@@ -10,15 +10,12 @@ import CloudKit
 
 struct CloudKitSyncStatusView: View {
     @StateObject private var syncManager = CloudKitSyncManager.shared
-    @State private var shouldAnimateSyncIcon = false
     
     var body: some View {
         HStack {
             // Status-Icon mit Animation je nach Sync-Status
             Image(systemName: iconName)
                 .foregroundColor(iconColor)
-                .rotationEffect(shouldAnimateSyncIcon ? .degrees(359) : .degrees(0))
-                .animation(shouldAnimateSyncIcon ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default, value: shouldAnimateSyncIcon)
             
             // Textuelle Statusbeschreibung
             Text(statusDescription)
@@ -39,28 +36,13 @@ struct CloudKitSyncStatusView: View {
                 syncManager.checkAccountStatus()
             }
             
-            if let lastSync = syncManager.lastSyncDate {
-                Text("Letzte Sync: \(lastSync, formatter: timeFormatter)")
+            if let lastChange = syncManager.lastRemoteChangeDate {
+                Text("Zuletzt Änderungen empfangen: \(lastChange, formatter: timeFormatter)")
             }
         }
         .onAppear {
             // Status beim Anzeigen prüfen
             syncManager.checkAccountStatus()
-            updateAnimationState(for: syncManager.syncStatus)
-        }
-        .onChange(of: syncManager.syncStatus) { _, newStatus in
-            updateAnimationState(for: newStatus)
-        }
-    }
-    
-    // Startet oder stoppt die Icon-Animation je nach Sync-Status
-    private func updateAnimationState(for status: CloudKitSyncManager.SyncStatus) {
-        if status == .syncing {
-            DispatchQueue.main.async {
-                self.shouldAnimateSyncIcon = true
-            }
-        } else {
-            self.shouldAnimateSyncIcon = false
         }
     }
     
@@ -69,10 +51,10 @@ struct CloudKitSyncStatusView: View {
         switch syncManager.syncStatus {
         case .unknown:
             return "questionmark.circle"
-        case .syncing:
-            return "arrow.triangle.2.circlepath"
-        case .synced:
-            return "checkmark.circle.fill"
+        case .changesReceived:
+            return "arrow.down.circle.fill"
+        case .accountAvailable:
+            return "icloud.fill"
         case .error:
             return "exclamationmark.triangle.fill"
         }
@@ -83,9 +65,9 @@ struct CloudKitSyncStatusView: View {
         switch syncManager.syncStatus {
         case .unknown:
             return .gray
-        case .syncing:
+        case .changesReceived:
             return .blue
-        case .synced:
+        case .accountAvailable:
             return .green
         case .error:
             return .red
@@ -97,15 +79,15 @@ struct CloudKitSyncStatusView: View {
         switch syncManager.syncStatus {
         case .unknown:
             return "Status unbekannt"
-        case .syncing:
-            return "Synchronisiert..."
-        case .synced:
-            if let lastSync = syncManager.lastSyncDate {
+        case .changesReceived:
+            return "Änderungen empfangen"
+        case .accountAvailable:
+            if let lastChange = syncManager.lastRemoteChangeDate {
                 let formatter = RelativeDateTimeFormatter()
                 formatter.unitsStyle = .short
-                return "Sync: \(formatter.localizedString(for: lastSync, relativeTo: Date()))"
+                return "iCloud verfügbar · Änderungen empfangen \(formatter.localizedString(for: lastChange, relativeTo: Date()))"
             } else {
-                return "Synchronisiert"
+                return "iCloud verfügbar"
             }
         case .error(let message):
             return "Fehler: \(message)"
