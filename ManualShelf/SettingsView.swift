@@ -35,11 +35,8 @@ struct SettingsView: View {
                 
                 // Hier könnten zukünftig weitere Einstellungen hinzugefügt werden
                 Section(header: Text("App-Informationen")) {
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text(Bundle.main.appVersion ?? "N/A")
-                    }
+                    LabeledContent("Version", value: Self.appVersionString)
+                        .monospacedDigit()
                 }
             }
             .navigationTitle("Einstellungen")
@@ -59,6 +56,15 @@ struct SettingsView: View {
         }
     }
     
+    /// Version, build number and commit from the bundle, e.g. "1.1.0 (147 · b275e0f)".
+    /// Build number and commit are stamped into Info.plist by Scripts/stamp-build-version.sh.
+    private static var appVersionString: String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
+        let commit = Bundle.main.object(forInfoDictionaryKey: "GitCommit") as? String ?? "unknown"
+        return "\(version) (\(build) · \(commit))"
+    }
+
     /// Prüft, ob das Gerät Mobilfunk unterstützt.
     private func isCellularAvailable() -> Bool {
         #if targetEnvironment(simulator)
@@ -68,13 +74,6 @@ struct SettingsView: View {
         // Prüfe, ob das Gerät ein iPhone ist (alle iPhones haben Mobilfunk)
         return UIDevice.current.userInterfaceIdiom == .phone
         #endif
-    }
-}
-
-// Kleine Erweiterung für Bundle, um die App-Version einfach abzurufen
-extension Bundle {
-    var appVersion: String? {
-        self.infoDictionary?["CFBundleShortVersionString"] as? String
     }
 }
 
