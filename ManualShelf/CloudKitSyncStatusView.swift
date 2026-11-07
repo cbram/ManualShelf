@@ -48,7 +48,7 @@ struct CloudKitSyncStatusView: View {
             syncManager.checkAccountStatus()
             updateAnimationState(for: syncManager.syncStatus)
         }
-        .onChange(of: syncManager.syncStatus) { newStatus in
+        .onChange(of: syncManager.syncStatus) { _, newStatus in
             updateAnimationState(for: newStatus)
         }
     }

@@ -17,7 +17,7 @@ struct SettingsView: View {
             Form {
                 Section(header: Text("iCloud Synchronisation")) {
                     Toggle("Mobilfunk-Synchronisation erlauben", isOn: $allowCellularSync)
-                        .onChange(of: allowCellularSync) { newValue in
+                        .onChange(of: allowCellularSync) { _, newValue in
                             appSettings.syncPreference = newValue ? .wifiAndCellular : .wifiOnly
                             // Rufe die Methode im PersistenceController auf, um die Änderung ggf. weiterzuverarbeiten
                             // Diese Methode aktualisiert intern AppSettings und gibt eine Log-Meldung aus.
