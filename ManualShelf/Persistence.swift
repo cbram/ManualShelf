@@ -65,15 +65,4 @@ struct PersistenceController {
         // Bei Konflikten werden lokale Änderungen bevorzugt.
         container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     }
-    
-    // Aktualisiert die Sync-Einstellung für CloudKit (WLAN oder WLAN+Mobilfunk)
-    @MainActor
-    func updateCloudKitContainerCellularAccess(allowed: Bool) {
-        if allowed {
-            AppSettings.shared.syncPreference = .wifiAndCellular
-        } else {
-            AppSettings.shared.syncPreference = .wifiOnly
-        }
-        print("Die Einstellung für den Mobilfunkzugriff wurde auf '\(allowed)' geändert. Die Änderung wird beim nächsten App-Start oder bei einer Neuinitialisierung des Core Data Stacks wirksam.")
-    }
 }

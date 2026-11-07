@@ -1,36 +1,16 @@
 import SwiftUI
-import CoreTelephony
-import UIKit
 
 struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject private var appSettings = AppSettings.shared
-    @State private var allowCellularSync: Bool
-
-    // Initializer, um allowCellularSync basierend auf AppSettings zu setzen
-    init() {
-        _allowCellularSync = State(initialValue: AppSettings.shared.syncPreference == .wifiAndCellular)
-    }
 
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("iCloud Synchronisation")) {
-                    Toggle("Mobilfunk-Synchronisation erlauben", isOn: $allowCellularSync)
-                        .onChange(of: allowCellularSync) { _, newValue in
-                            appSettings.syncPreference = newValue ? .wifiAndCellular : .wifiOnly
-                            // Rufe die Methode im PersistenceController auf, um die Änderung ggf. weiterzuverarbeiten
-                            // Diese Methode aktualisiert intern AppSettings und gibt eine Log-Meldung aus.
-                            PersistenceController.shared.updateCloudKitContainerCellularAccess(allowed: newValue)
-                        }
-                        .disabled(!isCellularAvailable())
-                    Text("Wenn aktiviert, werden Daten auch über Mobilfunk synchronisiert. Andernfalls nur über WLAN. Änderungen werden beim nächsten App-Start oder bei der nächsten Synchronisierungsprüfung wirksam.")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                
                 Section(header: Text("Synchronisation Status")) {
                     CloudKitSyncStatusView()
+                    Text("Ist auf dem Gerät ein iCloud-Konto angemeldet, synchronisiert ManualShelf automatisch über deine private iCloud-Datenbank. Abschalten lässt sich das in den Einstellungen des Geräts unter iCloud.")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
                 
                 // Hier könnten zukünftig weitere Einstellungen hinzugefügt werden
@@ -48,11 +28,6 @@ struct SettingsView: View {
                     }
                 }
             }
-            // Stellt sicher, dass der Toggle-Status aktuell bleibt, falls die Einstellung
-            // an anderer Stelle im Code geändert wird.
-            .onReceive(appSettings.$syncPreference) { newPreference in
-                allowCellularSync = (newPreference == .wifiAndCellular)
-            }
         }
     }
     
@@ -63,17 +38,6 @@ struct SettingsView: View {
         let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
         let commit = Bundle.main.object(forInfoDictionaryKey: "GitCommit") as? String ?? "unknown"
         return "\(version) (\(build) · \(commit))"
-    }
-
-    /// Prüft, ob das Gerät Mobilfunk unterstützt.
-    private func isCellularAvailable() -> Bool {
-        #if targetEnvironment(simulator)
-        // Im Simulator immer true für Testzwecke
-        return true
-        #else
-        // Prüfe, ob das Gerät ein iPhone ist (alle iPhones haben Mobilfunk)
-        return UIDevice.current.userInterfaceIdiom == .phone
-        #endif
     }
 }
 
