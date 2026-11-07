@@ -1,6 +1,6 @@
 # SPEC-003 — ManualShelf 1.3.0: Vorschau, Download per URL, Titelvorschlag, Export
 
-**Status:** In Arbeit (F1–F12 entschieden; #4 gestrichen 07.11.) · **Bau:** Kai · **Abnahme:** Christian
+**Status:** Gebaut auf main, wartet auf Christians Abnahme (#4 gestrichen 07.11.) · **Bau:** Kai · **Abnahme:** Christian
 **Version:** 1.3.0 (neue Funktionen ⇒ Minor), Tag `v1.3.0` erst nach Christians Abnahme
 **Umfang:** GitHub-Issues #3, #8, #9, #13 (#4 gestrichen 07.11.)
 
@@ -137,6 +137,16 @@ Reihenfolge im Bau: #9 → #13 → #3 → #8, je Issue ein Commit; danach `MARKE
 - 07.11.2026: F1–F12 von Christian nach Empfehlung entschieden; F4: Christian liefert die Icon-Dateien, Plan B
   (Ableitung durch Kai) nur auf seinen Wunsch. Bau #9 → #13 → #3 → #8 gestartet.
 - 07.11.2026: #4 von Christian gestrichen (E4).
+- 07.11.2026: gebaut (Kai), je Issue ein Commit: #9 Titelvorschlag (`bc623a9`), #13 Teilen (`90ead65`),
+  #3 Vorschaubilder (`ccd6769`, Umrandung `a0b6c79` nach Screenshot: weiße PDF-Seiten waren auf Weiß unsichtbar),
+  #8 Download per URL inkl. Datenschutztexte (`4f83349`), README (`bfa8467`), Version 1.3.0 (`ded7b8a`).
+  - Tests: neu `ManualTitleSuggestionTests`, `FileExportTests`, `FileThumbnailTests`, `URLDownloadTests`
+    (Adresse, Typ-Erkennung, Dateiname, Status, Größe, Fehlerabbildung, deutsche Meldung); alle grün. Debug und
+    Release, Simulator und Mac: 0 Warnungen. `-exportLocalizations`: Deutsch vollständig (offen nur der App-Name).
+  - Echter Download im Simulator geprüft (w3.org-Test-PDF, 13 KB): Titel „dummy“ vorgeschlagen, Vorschaubild in
+    Liste und Detailansicht, Teilen-Knöpfe sichtbar; Fehlermeldung bei `http://` geprüft. Screenshots EN/DE über einen
+    temporären, nicht committeten UI-Test.
+  - Commit-Nachrichten nennen die Issues bewusst ohne `#`, damit GitHub keine Verweise an die Issues hängt (E2).
 - 07.11.2026, Prüfungen vor #8:
   - **F6 iCloud-Limit:** nicht schnell belegbar. Apple-Doku nennt keine aktuelle Obergrenze je Asset; Foren
     widersprechen sich (Apple-Forum: bis ≈ 50 GB je Asset bei genug iCloud-Speicher, developer.apple.com/forums/thread/827897;
