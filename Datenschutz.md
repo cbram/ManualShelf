@@ -5,28 +5,20 @@
 Hallo,  
 ich bin Christian, der Entwickler von ManualShelf. Hier erkläre ich dir in einfachen Worten, wie ManualShelf mit deinen Daten umgeht:
 
-## ManualShelf sammelt oder teilt keine persönlichen Daten
+## Was ich als Entwickler erhebe
 
-Ich erhebe keine Daten über dein Gerät, deinen Standort oder deine Nutzung der App. Es interessiert mich schlichtweg nicht.
+Nichts. ManualShelf schickt keine Daten an mich, und ich habe keinen Zugriff auf deine Manuals, Dateien oder Tags.
 
-## Dritte Dienste
+## Wo deine Manuals gespeichert werden
 
-ManualShelf nutzt keine externen Dienste, die Daten von dir erfassen könnten.  
-Die App speichert alle Manuals und Dateien auf deinem Gerät.  
-Ist auf deinem Gerät ein iCloud-Konto angemeldet, werden deine Manuals automatisch über deine private iCloud-Datenbank zwischen deinen Geräten synchronisiert. Abschalten lässt sich das in den Einstellungen des Geräts unter iCloud.  
-Es werden keine Daten an mich oder Dritte übertragen.
+- **Auf deinem Gerät:** Manuals, Dateien und Tags liegen in der Datenbank der App auf deinem Gerät.
+- **In deiner iCloud bei Apple:** Ist auf deinem Gerät ein iCloud-Konto angemeldet, werden deine Manuals automatisch über deine private iCloud-Datenbank zwischen deinen Geräten synchronisiert. Diese Datenbank gehört zu deinem Apple-Account und wird von Apple betrieben; dafür gelten die Datenschutzbestimmungen von Apple. Abschalten lässt sich die Synchronisation in den Einstellungen des Geräts unter iCloud.
 
-## Sicherheit
+## Analyse, Tracking, Werbung
 
-- Deine Manuals und Dateien werden auf deinem Gerät gespeichert.
-- Bei angemeldetem iCloud-Konto werden sie über deine private iCloud-Datenbank synchronisiert; für die Speicherung dort gelten die Bedingungen von Apple.
-- Es gibt keine Übertragung deiner Daten an andere Server oder Personen.
-
-## DSGVO (Datenschutz-Grundverordnung)
-
-Die Europäische Datenschutz-Grundverordnung (DSGVO) ist für diese App nicht relevant, da keinerlei persönliche Daten an mich oder Dritte übermittelt werden.
+ManualShelf enthält keine Analyse- oder Tracking-Funktionen und zeigt keine Werbung.
 
 ## Kontakt
 
 Bei Fragen oder Anliegen zum Datenschutz kannst du dich jederzeit über die Support-URL an mich wenden:  
-[https://github.com/cbram/ManualShelf](https://github.com/cbram/ManualShelf) 
+[https://github.com/cbram/ManualShelf](https://github.com/cbram/ManualShelf)
