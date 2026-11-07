@@ -23,6 +23,7 @@ struct ManualDisplayView: View {
     @State private var showingAlert = false
     @State private var showingAddFilePicker = false
     @State private var displayedTags: [ManualTag] = []
+    @State private var shareURLs: [URL] = []
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -95,6 +96,18 @@ struct ManualDisplayView: View {
                 }
                 .accessibilityLabel("Add File")
             }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if !shareURLs.isEmpty {
+                    ShareLink(items: shareURLs) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    .accessibilityLabel("Share All Files")
+                }
+            }
+        }
+        // Temporary copies for sharing, refreshed when files are added or removed
+        .task(id: manual.files?.count ?? 0) {
+            shareURLs = sortedFiles.compactMap { try? FileExport.temporaryURL(for: $0) }
         }
         .sheet(isPresented: $showingAddFilePicker) {
             DocumentPickerView { result in
@@ -118,6 +131,12 @@ struct ManualDisplayView: View {
         }
     }
     
+    // Files of the manual in the order they were added
+    private var sortedFiles: [ManualFile] {
+        let fileSet = manual.files as? Set<ManualFile> ?? []
+        return fileSet.sorted { $0.dateAdded ?? Date.distantPast < $1.dateAdded ?? Date.distantPast }
+    }
+
     // All tags used in this manual (across all files)
     private var usedTags: [ManualTag] {
         let files = manual.files as? Set<ManualFile> ?? []
@@ -228,6 +247,7 @@ struct FileDisplayView: View {
     @State private var imageRotationDegrees: Double = 0 // Image rotation
     @State private var imageScale: CGFloat = 1.0 // Zoom
     @State private var imageOffset: CGSize = .zero // Pan offset
+    @State private var shareURL: URL?
     private var imageFiles: [ManualFile] = []
     
     // Initializer that sets imageFiles and currentIndex
@@ -396,7 +416,21 @@ struct FileDisplayView: View {
                     .accessibilityLabel("Rotate Right")
                 }
             }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if let shareURL {
+                    ShareLink(item: shareURL)
+                }
+            }
         }
+        // Temporary copy of the shown file for sharing
+        .task(id: currentIndex) {
+            shareURL = try? FileExport.temporaryURL(for: displayedFile)
+        }
+    }
+
+    // The file currently on screen (in a gallery, the selected image)
+    private var displayedFile: ManualFile {
+        imageFiles.count > 1 && imageFiles.indices.contains(currentIndex) ? imageFiles[currentIndex] : manualFile
     }
     
     // Error message shown when the file cannot be displayed

@@ -524,6 +524,16 @@
         }
       }
     },
+    "Share All Files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Dateien teilen"
+          }
+        }
+      }
+    },
     "Sort": {
       "localizations": {
         "de": {
