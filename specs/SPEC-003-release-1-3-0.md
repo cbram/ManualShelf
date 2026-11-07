@@ -1,6 +1,6 @@
 # SPEC-003 — ManualShelf 1.3.0: Vorschau, Dark-Mode-Icon, Download per URL, Titelvorschlag, Export
 
-**Status:** Spec, offene Fragen F1–F12 bei Christian · **Bau:** Kai · **Abnahme:** Christian
+**Status:** In Arbeit (F1–F12 entschieden; #4 wartet auf Christians Icon-Dateien) · **Bau:** Kai · **Abnahme:** Christian
 **Version:** 1.3.0 (neue Funktionen ⇒ Minor), Tag `v1.3.0` erst nach Christians Abnahme
 **Umfang:** GitHub-Issues #3, #4, #8, #9, #13
 
@@ -50,7 +50,7 @@ Label `enhancement`). Die Deutung unten ist deshalb ein Vorschlag.
 - **Ist:** Kein Teilen/Exportieren (`ShareLink`, `UIActivityViewController`, `fileExporter`: 0 Treffer). Die
   Dateien existieren nur als Daten in Core Data, nicht als Dateien auf der Platte [HOCH, grep].
 
-## 3. Fragen F1–F12 mit Empfehlung
+## 3. Fragen F1–F12 (Owner-Entscheid Christian, 07.11.2026: alle nach Empfehlung; #4: Christian liefert die Icons)
 
 ### #3 Vorschau
 
@@ -131,4 +131,15 @@ Reihenfolge im Bau: #9 → #13 → #3 → #8 → #4, je Issue ein Commit; danach
 
 ## 6. Verlauf
 
-- 07.11.2026: E1–E3 von Christian; Messung und Spec (Kai). Bau wartet auf F1–F12.
+- 07.11.2026: E1–E3 von Christian; Messung und Spec (Kai, `c6c8b63`).
+- 07.11.2026: F1–F12 von Christian nach Empfehlung entschieden; F4: Christian liefert die Icon-Dateien, Plan B
+  (Ableitung durch Kai) nur auf seinen Wunsch. Bau #9 → #13 → #3 → #8 gestartet.
+- 07.11.2026, Prüfungen vor #8:
+  - **F6 iCloud-Limit:** nicht schnell belegbar. Apple-Doku nennt keine aktuelle Obergrenze je Asset; Foren
+    widersprechen sich (Apple-Forum: bis ≈ 50 GB je Asset bei genug iCloud-Speicher, developer.apple.com/forums/thread/827897;
+    ältere Referenz: 250 MB). Core Data legt zu große Werte selbst als Asset ab (developer.apple.com/forums/thread/651358).
+    ⇒ 50 MB bleibt als Vorsichtsgrenze [NIEDRIG].
+  - **F10 Netzwerk-Entitlement:** Christians signierter Mac-Build („Designed for iPad“, `Debug-iphoneos`) trägt nur die
+    iOS-Entitlements (CloudKit, Push), kein `com.apple.security.network.client`; „Designed for iPad“ nutzt das
+    iOS-Rechtemodell, ausgehende Verbindungen brauchen dort kein Entitlement [MITTEL]. Starten konnte ich die App auf
+    dem Mac nicht (ohne Signatur nicht lauffähig) ⇒ Download am Mac ist Punkt im Gerätetest.
