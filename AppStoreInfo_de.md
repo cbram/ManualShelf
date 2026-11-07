@@ -10,6 +10,11 @@ Mit ManualShelf hast du alle deine Bedienungsanleitungen immer griffbereit – e
 - Einfaches Hinzufügen von PDF-, JPG- und PNG-Dateien
 - Blättern durch mehrere Bilder pro Anleitung
 - Vollbildanzeige für PDFs und Bilder
+- **Tag-System:** Manuals und Dateien können mit Tags versehen, gefiltert und nachträglich bearbeitet werden
+- **Barrierefreies Color Coding:** Tags werden farbenblindenfreundlich und kontrastreich dargestellt
+- **Filterung & Suche:** Manuals können nach Titel, Dateiname und Tags gefiltert werden
+- **Bildrotation & Zoom:** Bilder können gedreht, gezoomt und frei verschoben werden
+- **Unbenutzte Tags werden automatisch entfernt**
 - Sortier- und Suchfunktion
 - **Automatische Synchronisation über iCloud zwischen iPhone, iPad und Mac**
 - Lokale, sichere Speicherung (keine Cloud-Pflicht, außer für Synchronisation)

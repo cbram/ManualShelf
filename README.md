@@ -10,22 +10,28 @@ ManualShelf ist eine benutzerfreundliche App, die es ermöglicht, alle wichtigen
 
 ### 📱 Hauptfunktionen
 - **📋 Übersichtliche Liste**: Alle gespeicherten Manuals in einer sortierten Liste
-- **➕ Einfaches Hinzufügen**: PDFs direkt über den integrierten Dokumentenauswähler hinzufügen
-- **📖 Vollbild-PDF-Viewer**: Manuals in voller Größe betrachten mit:
+- **➕ Einfaches Hinzufügen**: PDFs, JPGs und PNGs direkt über den integrierten Dokumentenauswähler hinzufügen
+- **🏷️ Tag-System**: Manuals und Dateien können mit Tags versehen, gefiltert und nachträglich bearbeitet werden
+- **🎨 Barrierefreies Color Coding**: Tags werden farbenblindenfreundlich und kontrastreich dargestellt
+- **🔍 Filter & Suche**: Manuals können nach Titel, Dateiname und Tags gefiltert werden
+- **📖 Vollbild-PDF- und Bild-Viewer**: Manuals in voller Größe betrachten mit:
   - 🔍 Zoom-Funktionen (0.25x - 5x)
   - 📜 Natürliches Scrollen
   - 👆 Touch-optimierte Bedienung
+  - 🔄 Bildrotation und freies Verschieben für Bilder
 
 ### 🎨 Benutzeroberfläche
 - **🌟 Modernes Design**: Folgt den iOS Design Guidelines
 - **📱 Universell**: Optimiert für iPhone, iPad und Mac
 - **🇩🇪 Deutsche Sprache**: Vollständig lokalisiert
 - **🌓 Dark Mode**: Unterstützt helle und dunkle Darstellung
+- **♿ Barrierefreie UX**: Farbenblindenfreundliche Darstellung, hohe Kontraste
 
 ### 💾 Datenverwaltung
 - **🔒 Sicher**: Lokale Speicherung mit Core Data
 - **🗂 Organisiert**: Automatische Sortierung nach Hinzufügungsdatum
 - **🗑 Aufräumen**: Einfaches Löschen nicht mehr benötigter Manuals
+- **🧹 Unbenutzte Tags werden automatisch entfernt**
 
 ## 🛠 Technische Details
 
