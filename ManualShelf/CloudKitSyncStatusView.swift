@@ -56,15 +56,22 @@ struct CloudKitSyncStatusView: View {
     private var iconColor: Color {
         switch syncManager.syncStatus {
         case .unknown:
-            return .gray
+            return Color(.systemGray)
         case .changesReceived:
-            return .blue
+            return Self.okabeItoReddishPurple
         case .accountAvailable:
-            return .green
+            return Self.okabeItoBlue
         case .error:
-            return .red
+            return Self.okabeItoVermillion
         }
     }
+
+    // Okabe-Ito palette (colour-blind safe). Each reaches at least 3:1 against both the
+    // light and the dark grouped row background. Sky blue (#56B4E9) was not used for
+    // "changes received" because it only reaches about 2.3:1 on white.
+    private static let okabeItoBlue = Color(red: 0x00 / 255, green: 0x72 / 255, blue: 0xB2 / 255)          // #0072B2
+    private static let okabeItoVermillion = Color(red: 0xD5 / 255, green: 0x5E / 255, blue: 0x00 / 255)    // #D55E00
+    private static let okabeItoReddishPurple = Color(red: 0xCC / 255, green: 0x79 / 255, blue: 0xA7 / 255) // #CC79A7
     
     // Liefert die textuelle Beschreibung des Sync-Status
     private var statusDescription: String {
