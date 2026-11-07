@@ -1,8 +1,8 @@
 # SPEC-001: Migration auf Swift 6 (Swift-6-Sprachmodus, strikte Concurrency)
 
 **Datum:** 2026-11-07
-**Owner-Freigabe:** [x] Bau beauftragt am 2026-11-07 (Christian: „offene Punkte in Ordnung bringen“) · [ ] Entscheide E1–E6 bestätigt · [ ] Abnahme bestanden
-**Status:** Gebaut auf main, wartet auf Christians Bestätigung E1–E6 und Gerätetest
+**Owner-Freigabe:** [x] Bau beauftragt am 2026-11-07 (Christian: „offene Punkte in Ordnung bringen“) · [x] Entscheide E1–E6 bestätigt am 2026-11-07 · [ ] Abnahme bestanden
+**Status:** Gebaut auf main, wartet auf Christians Gerätetest
 **Owner:** Christian · **Build:** Kai · **Abnahme:** Christian
 **Ziel-Version:** **1.1.0** (Versionsschema bereits auf main, Tag `v1.1.0` erst nach Christians Abnahme)
 **Vorbild:** GPS-Track SPEC-004, PhotoCropper SPEC-004
@@ -35,7 +35,7 @@ mit TSan gemessen].
 - Das Verhalten der App bleibt unverändert, insbesondere die iCloud-Synchronisation
   (CloudKit-Container, Store-Optionen, Merge-Policy, Statusanzeige).
 
-## 3. Entscheide (Vorschlag Kai, Bestätigung durch Christian offen)
+## 3. Entscheide (Vorschlag Kai, von Christian bestätigt am 2026-11-07)
 
 - **E1 Keine Default-Actor-Isolation:** `SWIFT_DEFAULT_ACTOR_ISOLATION` wird nicht gesetzt
   (wie PhotoTV SPEC-001). Begründung: Nur zwei Typen brauchen eine Isolation; ein
@@ -96,18 +96,20 @@ mit TSan gemessen].
 
 1. App auf iPhone/iPad und Mac bauen, Version in den Einstellungen prüfen
    (`1.1.0 (N · hash)`, ohne `+dirty`).
-2. Einstellungen öffnen: Status „Synchronisiert“ (bzw. korrekter Fehlertext ohne iCloud),
-   Mobilfunk-Schalter umlegen, App neu starten — Schalterstellung bleibt erhalten.
-3. Auf Gerät A ein Manual anlegen oder ändern, auf Gerät B prüfen, dass es ankommt und die
-   Statusanzeige kurz „synchronisiert gerade“ zeigt. Kein Absturz (Laufzeit-Isolationsprüfung).
-4. Manuellen Sync-Knopf in der Statusanzeige drücken.
+2. Einstellungen öffnen: Status „iCloud verfügbar“ (bzw. korrekter Fehlertext ohne iCloud),
+   kein Mobilfunk-Schalter mehr, Hinweistext zur automatischen Synchronisation sichtbar.
+3. Auf Gerät A ein Manual anlegen oder ändern, auf Gerät B mit offenen Einstellungen prüfen,
+   dass es ankommt und die Statusanzeige kurz „Änderungen empfangen“ zeigt. Kein Absturz
+   (Laufzeit-Isolationsprüfung).
+4. Statusanzeige antippen bzw. Kontextmenü „Synchronisation erzwingen“: kein Absturz, Status
+   bleibt „iCloud verfügbar“.
 
 ## 7. Escape-Hatches
 
 Keine. Der Swift-6-Modus kommt ohne `nonisolated(unsafe)`, `@unchecked Sendable`,
 `@preconcurrency` und `MainActor.assumeIsolated` aus.
 
-## 8. Auffälligkeiten (nicht Teil dieser Spec, Entscheid Christian)
+## 8. Auffälligkeiten (bei der Bauzeit gefunden, Entscheid Christian siehe §10)
 
 - Der Schalter „Mobilfunk-Synchronisation erlauben“ speichert nur die Einstellung;
   `updateCloudKitContainerCellularAccess` setzt keine CloudKit- oder Store-Option
@@ -138,4 +140,27 @@ Keine. Der Swift-6-Modus kommt ohne `nonisolated(unsafe)`, `@unchecked Sendable`
     ohne Overrides, jeweils 0 Fehler und 0 Warnungen: Debug und Release für iOS-Simulator und
     Mac („Designed for iPad“, unsigniert). Tests auf dem iPhone-16-Simulator grün
     (1 Unit-Test, 3 UI-Tests, alles Xcode-Vorlagen).
-  - Offen: Bestätigung E1–E6 durch Christian, Gerätetest §6.2.
+  - Offen: Gerätetest §6.2.
+- 07.11.2026 – Christian bestätigt E1–E6 und entscheidet zu §8 (siehe §10). Gebaut (Kai):
+  Mobilfunk-Schalter entfernt (`3ac6007`), Statusanzeige ehrlich (`d40549b`), Datenschutz-,
+  App-Store- und README-Text angepasst (`ce424b4`).
+
+## 10. Nachtrag 1: Mobilfunk-Schalter und Statusanzeige (Christian, 2026-11-07)
+
+- **N1 Mobilfunk-Schalter entfernt:** Toggle, `AppSettings` (samt `SyncPreference` und
+  UserDefaults-Key `syncPreferenceValue`) und `updateCloudKitContainerCellularAccess` sind weg.
+  Ein gespeicherter alter Key wird ignoriert, keine Migration. Die Einstellungen erklären
+  stattdessen, dass bei angemeldetem iCloud-Konto automatisch synchronisiert wird und sich das
+  in den Einstellungen des Geräts unter iCloud abschalten lässt.
+- **N2 Statusanzeige ehrlich:** „Synchronisiert“ heißt jetzt „iCloud verfügbar“ (= Account
+  verfügbar). Die drehende 2-s-Phase „Synchronisiert…“ ist ersetzt durch einen statischen
+  Hinweis „Änderungen empfangen“, der nur nach einer `NSPersistentStoreRemoteChange`-
+  Notification erscheint; deren Zeitpunkt ersetzt das bisherige „Letzte Sync“. Keine echten
+  Sync-Events über `eventChangedNotification` (größere Variante, nicht gewählt).
+- **N3 Manueller Sync-Knopf:** Er erzwingt keine Synchronisation (dafür gibt es keine API);
+  er speichert nur ungesicherte Änderungen des View-Kontexts und prüft den Account erneut.
+  Die vorgetäuschte „Synchronisiert…“-Phase ist entfernt, der Knopf selbst und seine
+  Beschriftung „Synchronisation erzwingen“ bleiben bis zu Christians Entscheid.
+- **N4 Texte:** Datenschutz, App-Store-Text und README beschreiben die automatische
+  Synchronisation über die private iCloud-Datenbank, ohne In-App-Schalter und ohne eigene
+  Verschlüsselungszusage.
