@@ -158,6 +158,7 @@ struct AddManualView: View {
                 DocumentPickerView { result in
                     switch result {
                     case .success(let (data, name, type)):
+                        title = ManualTitleSuggestion.title(current: title, addedFileName: name, isFirstFile: pickedFiles.isEmpty)
                         let newFile = PickedFile(data: data, name: name, type: type)
                         pickedFiles.append(newFile)
                     case .failure(let error):
