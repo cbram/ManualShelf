@@ -2,7 +2,7 @@
 
 **Datum:** 2026-11-07
 **Owner-Freigabe:** [x] Bau beauftragt am 2026-11-07 (Christian: „offene Punkte in Ordnung bringen“) · [ ] Entscheide E1–E6 bestätigt · [ ] Abnahme bestanden
-**Status:** In Arbeit
+**Status:** Gebaut auf main, wartet auf Christians Bestätigung E1–E6 und Gerätetest
 **Owner:** Christian · **Build:** Kai · **Abnahme:** Christian
 **Ziel-Version:** **1.1.0** (Versionsschema bereits auf main, Tag `v1.1.0` erst nach Christians Abnahme)
 **Vorbild:** GPS-Track SPEC-004, PhotoCropper SPEC-004
@@ -104,7 +104,8 @@ mit TSan gemessen].
 
 ## 7. Escape-Hatches
 
-Keine (Stand Phase 1, wird nach Phase 2 aktualisiert).
+Keine. Der Swift-6-Modus kommt ohne `nonisolated(unsafe)`, `@unchecked Sendable`,
+`@preconcurrency` und `MainActor.assumeIsolated` aus.
 
 ## 8. Auffälligkeiten (nicht Teil dieser Spec, Entscheid Christian)
 
@@ -118,4 +119,23 @@ Keine (Stand Phase 1, wird nach Phase 2 aktualisiert).
 
 ## 9. Verlauf
 
-- 07.11.2026 – Messung auf `d5314c4`, Spec erstellt (Kai).
+- 07.11.2026 – Messung auf `d5314c4`, Spec erstellt (Kai, `f0a58b7`).
+- 07.11.2026 – **Phasen 1 und 2 gebaut** (Kai, direkt auf main, kein Tag).
+  - **Phase 1:** Concurrency-Warnungen unter `complete`, Clean Build Debug
+    `build-for-testing`, iOS-Simulator:
+
+    | Stand | Warnungen | Commit |
+    |---|---|---|
+    | Ausgang | 23 | `d5314c4` |
+    | nach Item 1 (MainActor, `receive(on:)`, Weak-Kopie) | 1 | `4d48955` |
+    | nach Item 2 (Merge-Policy) | **0** | `4d77d07` |
+
+  - Bau-Abweichung zu E3: Im Account-Status-Callback wird die schwache Referenz vor dem
+    Main-Hop in eine Konstante kopiert (`let manager = self`), weil der Compiler die
+    schwache Variable im verschachtelten `@Sendable`-Closure sonst als geteilten
+    veränderlichen Zustand meldet. Der Main-Hop selbst bleibt `DispatchQueue.main.async`.
+  - **Phase 2:** `SWIFT_VERSION = 6.0` in allen 6 Konfigurationen (`afaa899`). Clean Builds
+    ohne Overrides, jeweils 0 Fehler und 0 Warnungen: Debug und Release für iOS-Simulator und
+    Mac („Designed for iPad“, unsigniert). Tests auf dem iPhone-16-Simulator grün
+    (1 Unit-Test, 3 UI-Tests, alles Xcode-Vorlagen).
+  - Offen: Bestätigung E1–E6 durch Christian, Gerätetest §6.2.
