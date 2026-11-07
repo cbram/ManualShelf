@@ -80,6 +80,8 @@ struct FetchedManualsDisplayView: View {
 struct ManualRow: View {
     @ObservedObject var manual: Manual
 
+    private static let thumbnailSize: CGFloat = 44
+
     // All tags of the manual (across all files)
     private var tags: [ManualTag] {
         let files = manual.files as? Set<ManualFile> ?? []
@@ -92,15 +94,12 @@ struct ManualRow: View {
                 $0.dateAdded ?? Date.distantPast < $1.dateAdded ?? Date.distantPast
             }
             if let firstFile = sortedFiles.first {
-                Image(systemName: firstFile.fileType == UTType.pdf.preferredFilenameExtension ? "doc.text.fill" : "photo.fill")
-                    .font(.title2)
-                    .foregroundColor(.accentColor)
-                    .frame(width: 25, alignment: .center)
+                FileThumbnailView(file: firstFile, size: Self.thumbnailSize)
             } else {
                 Image(systemName: "doc.questionmark.fill")
                     .font(.title2)
                     .foregroundColor(.gray)
-                    .frame(width: 25, alignment: .center)
+                    .frame(width: Self.thumbnailSize, height: Self.thumbnailSize)
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text(manual.title ?? String(localized: "Unknown Manual"))

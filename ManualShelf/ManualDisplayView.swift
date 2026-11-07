@@ -24,6 +24,8 @@ struct ManualDisplayView: View {
     @State private var showingAddFilePicker = false
     @State private var displayedTags: [ManualTag] = []
     @State private var shareURLs: [URL] = []
+
+    private static let fileThumbnailSize: CGFloat = 36
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -74,8 +76,7 @@ struct ManualDisplayView: View {
                 ForEach(files) { file in
                     NavigationLink(destination: FileDisplayView(manualFile: file)) {
                         HStack {
-                            Image(systemName: file.fileType == UTType.pdf.preferredFilenameExtension ? "doc.text.fill" : "photo.fill")
-                                .foregroundColor(.accentColor)
+                            FileThumbnailView(file: file, size: Self.fileThumbnailSize)
                             Text(file.fileName ?? String(localized: "Unnamed File"))
                         }
                     }
