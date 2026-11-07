@@ -164,3 +164,20 @@ Keine. Der Swift-6-Modus kommt ohne `nonisolated(unsafe)`, `@unchecked Sendable`
 - **N4 Texte:** Datenschutz, App-Store-Text und README beschreiben die automatische
   Synchronisation über die private iCloud-Datenbank, ohne In-App-Schalter und ohne eigene
   Verschlüsselungszusage.
+
+## 11. Nachtrag 2: Datenschutz, Sync-Knopf, Farben, Lizenz (Christian, 2026-11-07)
+
+- **N5 Datenschutz:** Apple/iCloud wird als Speicherort genannt (private iCloud-Datenbank, Apples
+  Datenschutzbestimmungen); der Entwickler erhebt nichts und hat keinen Zugriff. Gestrichen:
+  „DSGVO nicht relevant“, „keine externen Dienste“, „keine Übertragung an Dritte“. Keine
+  Analyse, kein Tracking, keine Werbung (per grep belegt: nur Apple-Frameworks, kein
+  Netzwerkcode außer CloudKit). Lücke: kein Verantwortlicher mit Anschrift, nur die
+  Support-URL — Christian entscheidet.
+- **N6 Sync-Knopf entfernt:** Tippen auf die Statuszeile und „Synchronisation erzwingen“ samt
+  `forceSynchronization()`. Der Account wird weiter beim Start des Managers, bei jedem
+  Anzeigen der Statuszeile und über „Status prüfen“ geprüft (nicht beim Wechsel in den
+  Vordergrund).
+- **N7 Statusfarben Okabe-Ito:** verfügbar `#0072B2`, Fehler `#D55E00`, Änderungen empfangen
+  `#CC79A7`, unbekannt Systemgrau; alle ≥ 3:1 auf hellen und dunklen Zeilen. Himmelblau
+  `#56B4E9` verworfen (≈ 2,3:1 auf Weiß).
+- **N8 Lizenz:** `LICENSE` (MIT, Copyright (c) 2025 Christian Bram), README-Verweis passt.
