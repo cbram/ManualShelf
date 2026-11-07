@@ -15,12 +15,16 @@ struct FileThumbnailView: View {
 
     @State private var thumbnail: UIImage?
 
+    private static let outlineWidth: CGFloat = 1
+
     var body: some View {
         Group {
             if let thumbnail {
                 Image(uiImage: thumbnail)
                     .resizable()
                     .scaledToFit()
+                    // Outline so white pages stand out from a white background
+                    .overlay(Rectangle().stroke(Color(.separator), lineWidth: Self.outlineWidth))
             } else {
                 Image(systemName: isPDF ? "doc.text.fill" : "photo.fill")
                     .font(.title2)
