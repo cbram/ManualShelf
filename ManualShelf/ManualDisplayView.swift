@@ -22,6 +22,7 @@ struct ManualDisplayView: View {
     @State private var alertMessage = ""
     @State private var showingAlert = false
     @State private var showingAddFilePicker = false
+    @State private var showingURLDownload = false
     @State private var displayedTags: [ManualTag] = []
     @State private var shareURLs: [URL] = []
 
@@ -84,15 +85,25 @@ struct ManualDisplayView: View {
                 .onDelete(perform: deleteFiles)
             }
             .listStyle(PlainListStyle())
+            .sheet(isPresented: $showingURLDownload) {
+                URLDownloadView { data, name, type in
+                    addFileToManual(data: data, name: name, type: type)
+                }
+            }
         }
         .padding()
         .navigationTitle(manual.title ?? String(localized: "Files"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    showingAddFilePicker = true
-                }) {
+                Menu {
+                    Button("Choose File", systemImage: "doc") {
+                        showingAddFilePicker = true
+                    }
+                    Button("Load from URL", systemImage: "link") {
+                        showingURLDownload = true
+                    }
+                } label: {
                     Image(systemName: "plus")
                 }
                 .accessibilityLabel("Add File")

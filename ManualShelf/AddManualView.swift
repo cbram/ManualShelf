@@ -24,6 +24,7 @@ struct AddManualView: View {
     @State private var pickedFiles: [PickedFile] = []
     
     @State private var showingDocumentPicker = false
+    @State private var showingURLDownload = false
     @State private var showingAlert = false
     @State private var alertTitle = ""
     @State private var alertMessage = ""
@@ -125,6 +126,27 @@ struct AddManualView: View {
                             .cornerRadius(8)
                         }
                         .foregroundColor(.primary)
+
+                        // Button to load a file from a web address
+                        Button(action: { showingURLDownload = true }) {
+                            HStack {
+                                Image(systemName: "link")
+                                    .foregroundColor(.accentColor)
+                                Text("Load from URL...")
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(8)
+                        }
+                        .foregroundColor(.primary)
+                        .sheet(isPresented: $showingURLDownload) {
+                            URLDownloadView { data, name, type in
+                                addPickedFile(data: data, name: name, type: type)
+                            }
+                        }
                     }
                 }
                 
@@ -158,9 +180,7 @@ struct AddManualView: View {
                 DocumentPickerView { result in
                     switch result {
                     case .success(let (data, name, type)):
-                        title = ManualTitleSuggestion.title(current: title, addedFileName: name, isFirstFile: pickedFiles.isEmpty)
-                        let newFile = PickedFile(data: data, name: name, type: type)
-                        pickedFiles.append(newFile)
+                        addPickedFile(data: data, name: name, type: type)
                     case .failure(let error):
                         self.alertTitle = String(localized: "Error Loading")
                         self.alertMessage = error.localizedDescription
@@ -182,6 +202,12 @@ struct AddManualView: View {
         !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !pickedFiles.isEmpty
     }
     
+    // Adds a picked or downloaded file and suggests the title from the first file
+    private func addPickedFile(data: Data, name: String, type: UTType) {
+        title = ManualTitleSuggestion.title(current: title, addedFileName: name, isFirstFile: pickedFiles.isEmpty)
+        pickedFiles.append(PickedFile(data: data, name: name, type: type))
+    }
+
     // Removes a file from the selection
     private func removeFile(_ file: PickedFile) {
         pickedFiles.removeAll { $0.id == file.id }

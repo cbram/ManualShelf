@@ -45,6 +45,7 @@ https://github.com/cbram/ManualShelf
 ManualShelf speichert alle Daten auf deinem Gerät.  
 Ist auf deinem Gerät ein iCloud-Konto angemeldet, werden deine Manuals automatisch über deine private iCloud-Datenbank zwischen deinen Geräten synchronisiert. Abschalten lässt sich das in den Einstellungen des Geräts unter iCloud.  
 Die private iCloud-Datenbank wird von Apple betrieben; dafür gelten die Datenschutzbestimmungen von Apple.  
+Lädst du eine Datei über eine Webadresse, ruft ManualShelf diese Adresse direkt auf; der Server dahinter erhält dabei deine IP-Adresse und die Anfrage.  
 Es werden keine Daten an den Entwickler übertragen, und der Entwickler hat keinen Zugriff auf deine Manuals.  
 Die App enthält keine Analyse- oder Tracking-Funktionen und zeigt keine Werbung.  
 Wenn du Support benötigst, kannst du dich über die Support-URL an den Entwickler wenden.  

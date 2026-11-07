@@ -181,12 +181,42 @@
         }
       }
     },
+    "Choose File": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei auswählen"
+          }
+        }
+      }
+    },
     "Done": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Fertig"
+          }
+        }
+      }
+    },
+    "Download failed: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download fehlgeschlagen: %@"
+          }
+        }
+      }
+    },
+    "Downloading...": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird geladen..."
           }
         }
       }
@@ -291,6 +321,16 @@
         }
       }
     },
+    "https://example.com/manual.pdf": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "https://example.com/anleitung.pdf"
+          }
+        }
+      }
+    },
     "iCloud available": {
       "localizations": {
         "de": {
@@ -337,6 +377,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zuletzt Änderungen empfangen: %@"
+          }
+        }
+      }
+    },
+    "Load": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laden"
+          }
+        }
+      }
+    },
+    "Load from URL": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus URL laden"
+          }
+        }
+      }
+    },
+    "Load from URL...": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus URL laden..."
           }
         }
       }
@@ -404,6 +474,16 @@
         }
       }
     },
+    "No internet connection.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Internetverbindung."
+          }
+        }
+      }
+    },
     "No Manuals": {
       "localizations": {
         "de": {
@@ -420,6 +500,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "OK"
+          }
+        }
+      }
+    },
+    "Only PDF, JPEG and PNG files are supported.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur PDF-, JPEG- und PNG-Dateien werden unterstützt."
+          }
+        }
+      }
+    },
+    "Only secure https addresses are supported.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur sichere https-Adressen werden unterstützt."
+          }
+        }
+      }
+    },
+    "PDF, JPEG or PNG, up to %lld MB.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF, JPEG oder PNG, bis %lld MB."
           }
         }
       }
@@ -614,6 +724,16 @@
         }
       }
     },
+    "The file is larger than %lld MB.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei ist größer als %lld MB."
+          }
+        }
+      }
+    },
     "The image could not be loaded.": {
       "localizations": {
         "de": {
@@ -664,12 +784,62 @@
         }
       }
     },
+    "The server did not respond in time.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat nicht rechtzeitig geantwortet."
+          }
+        }
+      }
+    },
+    "The server redirected to an insecure address.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat auf eine unsichere Adresse weitergeleitet."
+          }
+        }
+      }
+    },
+    "The server reported an error (HTTP %lld).": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat einen Fehler gemeldet (HTTP %lld)."
+          }
+        }
+      }
+    },
+    "The server sent an empty file.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Server hat eine leere Datei gesendet."
+          }
+        }
+      }
+    },
     "This file type is not supported.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Dieser Dateityp wird nicht unterstützt."
+          }
+        }
+      }
+    },
+    "This is not a valid web address.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist keine gültige Webadresse."
           }
         }
       }
