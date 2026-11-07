@@ -18,6 +18,7 @@ enum SyncPreference: Int, CaseIterable, Identifiable {
     }
 }
 
+@MainActor
 class AppSettings: ObservableObject {
     // Singleton-Instanz für globale Einstellungen
     static let shared = AppSettings()

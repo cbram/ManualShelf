@@ -10,6 +10,7 @@ import CloudKit
 import CoreData
 import Combine
 
+@MainActor
 class CloudKitSyncManager: ObservableObject {
     // Singleton-Instanz für die App
     static let shared = CloudKitSyncManager()
@@ -52,26 +53,29 @@ class CloudKitSyncManager: ObservableObject {
     // Prüft den iCloud-Account-Status und aktualisiert den Sync-Status entsprechend
     func checkAccountStatus() {
         container.accountStatus { [weak self] status, error in
+            // Copy the weak reference into a constant so the main-queue closure
+            // does not capture the mutable weak variable across threads.
+            let manager = self
             DispatchQueue.main.async {
                 if let error = error {
-                    self?.syncStatus = .error("Account-Fehler: \(error.localizedDescription)")
+                    manager?.syncStatus = .error("Account-Fehler: \(error.localizedDescription)")
                     return
                 }
                 
                 switch status {
                 case .available:
-                    self?.syncStatus = .synced
-                    self?.lastSyncDate = Date()
+                    manager?.syncStatus = .synced
+                    manager?.lastSyncDate = Date()
                 case .noAccount:
-                    self?.syncStatus = .error("Kein iCloud-Account")
+                    manager?.syncStatus = .error("Kein iCloud-Account")
                 case .restricted:
-                    self?.syncStatus = .error("iCloud eingeschränkt")
+                    manager?.syncStatus = .error("iCloud eingeschränkt")
                 case .couldNotDetermine:
-                    self?.syncStatus = .error("Status nicht ermittelbar")
+                    manager?.syncStatus = .error("Status nicht ermittelbar")
                 case .temporarilyUnavailable:
-                    self?.syncStatus = .error("Temporär nicht verfügbar")
+                    manager?.syncStatus = .error("Temporär nicht verfügbar")
                 @unknown default:
-                    self?.syncStatus = .unknown
+                    manager?.syncStatus = .unknown
                 }
             }
         }
@@ -80,15 +84,15 @@ class CloudKitSyncManager: ObservableObject {
     // MARK: - Remote Change Notifications
     // Reagiert auf Änderungen, die von anderen Geräten via CloudKit kommen
     private func setupRemoteChangeNotifications() {
+        // The notification is posted on a background thread; deliver it on main.
         NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange)
-            .sink { [weak self] notification in
-                DispatchQueue.main.async {
-                    self?.syncStatus = .syncing
-                    // Simuliert eine kurze Sync-Phase
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self?.syncStatus = .synced
-                        self?.lastSyncDate = Date()
-                    }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.syncStatus = .syncing
+                // Simuliert eine kurze Sync-Phase
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self?.syncStatus = .synced
+                    self?.lastSyncDate = Date()
                 }
             }
             .store(in: &cancellables)

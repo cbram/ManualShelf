@@ -67,6 +67,7 @@ struct PersistenceController {
     }
     
     // Aktualisiert die Sync-Einstellung für CloudKit (WLAN oder WLAN+Mobilfunk)
+    @MainActor
     func updateCloudKitContainerCellularAccess(allowed: Bool) {
         if allowed {
             AppSettings.shared.syncPreference = .wifiAndCellular
