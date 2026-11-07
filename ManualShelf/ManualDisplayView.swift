@@ -32,18 +32,22 @@ struct ManualDisplayView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(displayedTags, id: \.objectID) { tag in
+                        let tagColor = TagColor.forName(tag.name)
+                        // The remove button sits inside the chip so it shares the chip's
+                        // text colour and contrast.
                         HStack(spacing: 4) {
                             Text(tag.name ?? "")
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(TagColor.forName(tag.name).background)
-                                .foregroundColor(TagColor.forName(tag.name).foreground)
-                                .cornerRadius(12)
+                                .foregroundColor(tagColor.foreground)
                             Button(action: { removeTag(tag) }) {
                                 Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.white)
+                                    .foregroundColor(tagColor.foreground)
                             }
+                            .accessibilityLabel("Tag \(tag.name ?? "") entfernen")
                         }
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(tagColor.background)
+                        .cornerRadius(12)
                         .padding(2)
                     }
                 }
