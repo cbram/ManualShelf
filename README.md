@@ -1,6 +1,6 @@
 # ManualShelf 📚
 
-Eine moderne iOS/iPadOS/macOS App zum Sammeln und Verwalten von Bedienungsanleitungen im PDF-Format.
+Eine moderne iOS/iPadOS-App (auf dem Mac als „Designed for iPad“) zum Sammeln und Verwalten von Bedienungsanleitungen als PDF, JPG oder PNG.
 
 ## 🎯 Über das Projekt
 
@@ -29,6 +29,7 @@ ManualShelf ist eine benutzerfreundliche App, die es ermöglicht, alle wichtigen
 
 ### 💾 Datenverwaltung
 - **🔒 Sicher**: Lokale Speicherung mit Core Data
+- **☁️ iCloud-Synchronisation**: Automatischer Abgleich über CloudKit zwischen iPhone, iPad und Mac (optional auch über Mobilfunk)
 - **🗂 Organisiert**: Automatische Sortierung nach Hinzufügungsdatum
 - **🗑 Aufräumen**: Einfaches Löschen nicht mehr benötigter Manuals
 - **🧹 Unbenutzte Tags werden automatisch entfernt**
@@ -42,18 +43,19 @@ ManualShelf ist eine benutzerfreundliche App, die es ermöglicht, alle wichtigen
 - **Document Picker**: Systemintegration für Dateiauswahl
 
 ### Unterstützte Plattformen
-- iOS 15.0+
-- iPadOS 15.0+
-- macOS 12.0+
+- iOS 17.0+
+- iPadOS 17.0+
+- macOS: nur als „Designed for iPad“ auf Macs mit Apple-Chip
 
-### Dateiformat
-- 📄 **PDF**: Ausschließliche Unterstützung für PDF-Dateien
+### Dateiformate
+- 📄 **PDF**
+- 🖼 **JPG** und **PNG**
 
 ## 🚀 Installation
 
 ### Voraussetzungen
-- Xcode 14.0 oder neuer
-- iOS 15.0+ / iPadOS 15.0+ / macOS 12.0+
+- Xcode 27 oder neuer
+- iOS 17.0+ / iPadOS 17.0+ / Mac mit Apple-Chip („Designed for iPad“)
 
 ### Schritte
 1. **Repository klonen**:
@@ -68,7 +70,7 @@ ManualShelf ist eine benutzerfreundliche App, die es ermöglicht, alle wichtigen
    ```
 
 3. **Build und Run**:
-   - Wählen Sie Ihr Zielgerät (iPhone, iPad oder Mac)
+   - Wählen Sie Ihr Zielgerät (iPhone, iPad oder „My Mac (Designed for iPad)“)
    - Drücken Sie `Cmd + R` zum Starten
 
 ## 📖 Verwendung
@@ -77,12 +79,12 @@ ManualShelf ist eine benutzerfreundliche App, die es ermöglicht, alle wichtigen
 1. Öffnen Sie die ManualShelf App
 2. Tippen Sie auf das **+** Symbol oben rechts
 3. Geben Sie einen Titel für das Manual ein
-4. Wählen Sie "PDF-Datei auswählen" und navigieren Sie zu Ihrer PDF
-5. Tippen Sie auf "Manual hinzufügen"
+4. Wählen Sie „Weitere Datei hinzufügen…“ und wählen Sie eine oder mehrere PDF-, JPG- oder PNG-Dateien
+5. Tippen Sie auf „Manual speichern“
 
 ### Manual ansehen
 1. Tippen Sie auf ein Manual in der Liste
-2. Das PDF öffnet sich im Vollbild-Modus
+2. Die Datei (PDF oder Bild) öffnet sich im Vollbild-Modus
 3. Verwenden Sie Pinch-to-Zoom für Vergrößerung/Verkleinerung
 4. Scrollen Sie durch die Seiten
 
@@ -99,8 +101,9 @@ ManualShelf/
 │   ├── ManualShelfApp.swift          # Haupt-App-Datei
 │   ├── ManualsListView.swift         # Hauptansicht mit Manual-Liste
 │   ├── AddManualView.swift           # View zum Hinzufügen neuer Manuals
-│   ├── PDFViewerView.swift           # PDF-Betrachter
-│   ├── Persistence.swift            # Core Data Stack
+│   ├── ManualDisplayView.swift       # PDF- und Bild-Betrachter
+│   ├── Persistence.swift             # Core Data Stack (NSPersistentCloudKitContainer)
+│   ├── CloudKitSyncManager.swift     # iCloud-Sync-Status
 │   └── ManualShelf.xcdatamodeld/     # Core Data Modell
 ├── ManualShelfTests/                 # Unit Tests
 ├── ManualShelfUITests/               # UI Tests
@@ -109,20 +112,31 @@ ManualShelf/
 
 ## 🎨 Core Data Modell
 
-### Manual Entität
-- **title**: String - Titel des Manuals
-- **fileName**: String - Ursprünglicher Dateiname
-- **dateAdded**: Date - Hinzufügungsdatum
-- **fileData**: Binary Data - PDF-Inhalt (extern gespeichert)
+Das Modell ist für CloudKit eingerichtet (`usedWithCloudKit`), alle Attribute und Beziehungen sind optional.
+
+### Manual
+- **title**: String – Titel des Manuals
+- **dateAdded**: Date – Hinzufügungsdatum
+- **files**: to-many → ManualFile (Löschregel Nullify)
+
+### ManualFile
+- **fileName**: String – ursprünglicher Dateiname
+- **fileType**: String – Dateiendung des Typs, z. B. `pdf`, `jpeg`, `png`
+- **fileData**: Binary Data – Dateiinhalt (in der Datenbank, nicht als externe Datei)
+- **dateAdded**: Date – Hinzufügungsdatum
+- **imageRotationDegrees**: Integer 16 – Drehung für Bilder (Standard 0)
+- **pdfRotationDegrees**: Integer 16 – Drehung für PDFs (Standard 0)
+- **manual**: to-one → Manual
+- **manualTags**: to-many → ManualTag
+
+### ManualTag
+- **name**: String – Name des Tags
+- **color**: String – Farbe des Tags
+- **manuals**: to-many → ManualFile (Tags hängen an Dateien, nicht direkt am Manual)
 
 ## 🔮 Geplante Features
 
-- [ ] Kategorien für bessere Organisation
-- [ ] Suchfunktion
-- [ ] Favoriten-System
-- [ ] Export-Funktionen
-- [ ] OCR-Texterkennung für Suchindizierung
-- [ ] iCloud-Synchronisation
+Geplante Funktionen werden als [offene Issues](https://github.com/cbram/ManualShelf/issues?q=is%3Aissue+is%3Aopen) gepflegt.
 
 ## 🤝 Beitragen
 
