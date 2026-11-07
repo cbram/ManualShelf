@@ -10,7 +10,9 @@ ManualShelf keeps all your important user manuals in one place. Whether for hous
 
 ### 📱 Main features
 - **📋 Clear list**: All saved manuals in a sorted list
-- **➕ Easy adding**: Add PDFs, JPGs and PNGs straight from the built-in document picker
+- **➕ Easy adding**: Add PDFs, JPGs and PNGs from the document picker or load them from an https address (up to 50 MB); the first file's name is suggested as title
+- **🖼 Thumbnails**: Preview images of the files in the list and in the manual view
+- **📤 Sharing**: Share a single file or all files of a manual through the system share sheet
 - **🏷️ Tags**: Tag manuals and files, filter by tags and edit them later
 - **🎨 Accessible colour coding**: Tags use colour-blind-safe, high-contrast colours
 - **🔍 Filter & search**: Filter manuals by title, file name and tags
@@ -79,7 +81,7 @@ ManualShelf keeps all your important user manuals in one place. Whether for hous
 1. Open ManualShelf
 2. Tap the **+** button at the top right
 3. Enter a title for the manual
-4. Choose "Add another file..." and pick one or more PDF, JPG or PNG files
+4. Choose "Add another file..." and pick one or more PDF, JPG or PNG files, or "Load from URL..." and enter an https address
 5. Tap "Save Manual"
 
 ### View a manual
