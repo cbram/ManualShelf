@@ -36,8 +36,8 @@ struct ManualDisplayView: View {
                             Text(tag.name ?? "")
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 4)
-                                .background(colorForTag(tag))
-                                .foregroundColor(.white)
+                                .background(TagColor.forName(tag.name).background)
+                                .foregroundColor(TagColor.forName(tag.name).foreground)
                                 .cornerRadius(12)
                             Button(action: { removeTag(tag) }) {
                                 Image(systemName: "xmark.circle.fill")
@@ -210,23 +210,6 @@ struct ManualDisplayView: View {
             }
         } catch { print("Fehler beim Speichern: \(error)") }
         displayedTags = usedTags
-    }
-    
-    // Farbenblindenfreundliche Farbpalette
-    private let tagColors: [Color] = [
-        Color(red: 0.00, green: 0.45, blue: 0.70), // Blau
-        Color(red: 0.90, green: 0.63, blue: 0.00), // Orange
-        Color(red: 0.34, green: 0.71, blue: 0.91), // Türkis
-        Color(red: 0.94, green: 0.89, blue: 0.26), // Gelb
-        Color(red: 0.27, green: 0.62, blue: 0.28), // Grün
-        Color(red: 0.80, green: 0.48, blue: 0.74), // Pink
-        Color(red: 0.55, green: 0.34, blue: 0.64), // Violett
-        Color(red: 0.27, green: 0.27, blue: 0.27)  // Dunkelgrau
-    ]
-    private func colorForTag(_ tag: ManualTag) -> Color {
-        guard let name = tag.name else { return tagColors[0] }
-        let hash = abs(name.hashValue)
-        return tagColors[hash % tagColors.count]
     }
 }
 
