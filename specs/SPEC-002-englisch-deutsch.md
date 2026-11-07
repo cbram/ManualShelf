@@ -1,6 +1,6 @@
 # SPEC-002 — ManualShelf 1.2.0: Englisch als Grundsprache, Deutsch als Übersetzung
 
-**Status:** In Arbeit (F1–F8 entschieden) · **Bau:** Kai · **Abnahme:** Christian
+**Status:** Gebaut auf main, wartet auf Christians Abnahme · **Bau:** Kai · **Abnahme:** Christian
 **Version:** 1.2.0 (neue Sprache ⇒ Minor), Tag `v1.2.0` erst nach Christians Abnahme
 **Vorbild:** LyricSync SPEC-004 (`~/Code/LyricSync/specs/SPEC-004-englisch-deutsch.md`)
 
@@ -99,3 +99,14 @@ Englisch ist Grundsprache, Deutsch die Übersetzung. Die App folgt der Systemspr
 
 - 07.11.2026: E1–E4 von Christian; Messung und Spec (Kai, `cb424bc`).
 - 07.11.2026: F1–F8 von Christian nach Empfehlung entschieden; Bau gestartet (Kai). F7 als eigener Commit.
+- 07.11.2026: gebaut (Kai): Lokalisierung inkl. VoiceOver-Labels F4 (`f55836a`), Kommentare und Debug-Logs englisch
+  F7 (`8066c8c`), README englisch + Begleittexte EN/DE F5/F6 (`53c32a2`), Version 1.2.0 (`9325737`).
+  - String Catalog mit 71 Schlüsseln (davon 1 mit Plural-Varianten) plus „ManualShelf“ (nicht übersetzt).
+    `-exportLocalizations` für Deutsch: 73 Einheiten, offen nur der App-Name (`CFBundleName`,
+    `CFBundleDisplayName`, Schlüssel „ManualShelf“), gewollt. Jeder Catalog-Schlüssel kommt im Code vor (geprüft).
+  - Tests: neu `LocalizationTests` (Plural EN/DE, Platzhalter, Du-Form); alle Tests grün; Debug und Release,
+    Simulator und Mac: 0 Warnungen.
+  - Screenshots EN/DE (Liste, „Neues Manual“, Einstellungen) über einen temporären, nicht committeten UI-Test.
+  - Befund: Unsignierte Simulator-Builds (`CODE_SIGNING_ALLOWED=NO`) stürzen beim Öffnen der Einstellungen in
+    `CKContainer.default()` ab (fehlendes iCloud-Entitlement). Betrifft nur Team-Tests ohne Signatur, nicht
+    signierte Builds; Screenshots daher mit normal signiertem Simulator-Build.
