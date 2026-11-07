@@ -1,12 +1,22 @@
 import Foundation
 
 enum SortOption: String, CaseIterable, Identifiable {
-    case titleAscending = "Titel (A-Z)"
-    case titleDescending = "Titel (Z-A)"
-    case dateAddedDescending = "Hinzugefügt (Neueste zuerst)"
-    case dateAddedAscending = "Hinzugefügt (Älteste zuerst)"
+    case titleAscending
+    case titleDescending
+    case dateAddedDescending
+    case dateAddedAscending
 
     var id: String { self.rawValue }
+
+    // Localized name shown in the sort menu
+    var title: String {
+        switch self {
+        case .titleAscending: return String(localized: "Title (A-Z)")
+        case .titleDescending: return String(localized: "Title (Z-A)")
+        case .dateAddedDescending: return String(localized: "Added (Newest First)")
+        case .dateAddedAscending: return String(localized: "Added (Oldest First)")
+        }
+    }
 
     var sortDescriptors: [NSSortDescriptor] {
         switch self {

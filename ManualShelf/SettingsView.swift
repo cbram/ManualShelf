@@ -6,24 +6,24 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Synchronisation Status")) {
+                Section(header: Text("Sync Status")) {
                     CloudKitSyncStatusView()
-                    Text("Ist auf dem Gerät ein iCloud-Konto angemeldet, synchronisiert ManualShelf automatisch über deine private iCloud-Datenbank. Abschalten lässt sich das in den Einstellungen des Geräts unter iCloud.")
+                    Text("If an iCloud account is signed in on this device, ManualShelf syncs automatically through your private iCloud database. You can turn this off in the device's iCloud settings.")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
                 
                 // Hier könnten zukünftig weitere Einstellungen hinzugefügt werden
-                Section(header: Text("App-Informationen")) {
+                Section(header: Text("App Information")) {
                     LabeledContent("Version", value: Self.appVersionString)
                         .monospacedDigit()
                 }
             }
-            .navigationTitle("Einstellungen")
+            .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Fertig") {
+                    Button("Done") {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }

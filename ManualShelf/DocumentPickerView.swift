@@ -79,9 +79,9 @@ struct DocumentPickerView: UIViewControllerRepresentable {
         
         var errorDescription: String? {
             switch self {
-            case .noFileSelected: return "Es wurde keine Datei ausgewählt."
-            case .unsupportedFileType: return "Dieser Dateityp wird nicht unterstützt."
-            case .cancelled: return "Die Auswahl wurde abgebrochen."
+            case .noFileSelected: return String(localized: "No file was selected.")
+            case .unsupportedFileType: return String(localized: "This file type is not supported.")
+            case .cancelled: return String(localized: "The selection was cancelled.")
             }
         }
     }

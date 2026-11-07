@@ -63,7 +63,7 @@ class CloudKitSyncManager: ObservableObject {
             let manager = self
             DispatchQueue.main.async {
                 if let error = error {
-                    manager?.syncStatus = .error("Account-Fehler: \(error.localizedDescription)")
+                    manager?.syncStatus = .error(String(localized: "Account error: \(error.localizedDescription)"))
                     return
                 }
                 
@@ -71,13 +71,13 @@ class CloudKitSyncManager: ObservableObject {
                 case .available:
                     manager?.syncStatus = .accountAvailable
                 case .noAccount:
-                    manager?.syncStatus = .error("Kein iCloud-Account")
+                    manager?.syncStatus = .error(String(localized: "No iCloud account"))
                 case .restricted:
-                    manager?.syncStatus = .error("iCloud eingeschränkt")
+                    manager?.syncStatus = .error(String(localized: "iCloud restricted"))
                 case .couldNotDetermine:
-                    manager?.syncStatus = .error("Status nicht ermittelbar")
+                    manager?.syncStatus = .error(String(localized: "Status could not be determined"))
                 case .temporarilyUnavailable:
-                    manager?.syncStatus = .error("Temporär nicht verfügbar")
+                    manager?.syncStatus = .error(String(localized: "Temporarily unavailable"))
                 @unknown default:
                     manager?.syncStatus = .unknown
                 }

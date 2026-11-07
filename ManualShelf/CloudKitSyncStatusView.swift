@@ -24,12 +24,12 @@ struct CloudKitSyncStatusView: View {
         }
         // Kontextmenü für weitere Sync-Aktionen
         .contextMenu {
-            Button("Status prüfen") {
+            Button("Check Status") {
                 syncManager.checkAccountStatus()
             }
             
             if let lastChange = syncManager.lastRemoteChangeDate {
-                Text("Zuletzt Änderungen empfangen: \(lastChange, formatter: timeFormatter)")
+                Text("Last changes received: \(lastChange, formatter: timeFormatter)")
             }
         }
         .onAppear {
@@ -77,19 +77,19 @@ struct CloudKitSyncStatusView: View {
     private var statusDescription: String {
         switch syncManager.syncStatus {
         case .unknown:
-            return "Status unbekannt"
+            return String(localized: "Status unknown")
         case .changesReceived:
-            return "Änderungen empfangen"
+            return String(localized: "Changes received")
         case .accountAvailable:
             if let lastChange = syncManager.lastRemoteChangeDate {
                 let formatter = RelativeDateTimeFormatter()
                 formatter.unitsStyle = .short
-                return "iCloud verfügbar · Änderungen empfangen \(formatter.localizedString(for: lastChange, relativeTo: Date()))"
+                return String(localized: "iCloud available · changes received \(formatter.localizedString(for: lastChange, relativeTo: Date()))")
             } else {
-                return "iCloud verfügbar"
+                return String(localized: "iCloud available")
             }
         case .error(let message):
-            return "Fehler: \(message)"
+            return String(localized: "Error: \(message)")
         }
     }
 }

@@ -41,10 +41,10 @@ struct AddManualView: View {
             VStack(spacing: 20) {
                 // Eingabefeld für den Titel des Manuals
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Titel des Manuals")
+                    Text("Manual Title")
                         .font(.headline)
                     
-                    TextField("z.B. iPhone 15 Bedienungsanleitung", text: $title)
+                    TextField("e.g. iPhone 15 User Guide", text: $title)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
                 
@@ -61,6 +61,7 @@ struct AddManualView: View {
                                     Button(action: { selectedTags.removeAll { $0 == tag } }) {
                                         Image(systemName: "xmark.circle.fill")
                                     }
+                                    .accessibilityLabel("Remove tag \(tag.name ?? "")")
                                 }
                                 .padding(6)
                                 .background(Color.gray.opacity(0.2))
@@ -69,7 +70,7 @@ struct AddManualView: View {
                         }
                     }
                     // Tag-Eingabefeld mit Autovervollständigung
-                    TextField("Tag hinzufügen...", text: $tagInput, onCommit: { addTagIfNeeded() })
+                    TextField("Add tag...", text: $tagInput, onCommit: { addTagIfNeeded() })
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     // Vorschläge
                     if !tagInput.isEmpty {
@@ -84,7 +85,7 @@ struct AddManualView: View {
                 
                 // Bereich zur Dateiauswahl und Anzeige der gewählten Dateien
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Dateien")
+                    Text("Files")
                         .font(.headline)
                     
                     VStack {
@@ -101,6 +102,7 @@ struct AddManualView: View {
                                         Image(systemName: "xmark.circle.fill")
                                             .foregroundColor(.gray)
                                     }
+                                    .accessibilityLabel("Remove file \(file.name)")
                                 }
                                 .padding()
                                 .background(Color(.systemGray6))
@@ -113,7 +115,7 @@ struct AddManualView: View {
                             HStack {
                                 Image(systemName: "doc.badge.plus")
                                     .foregroundColor(.accentColor)
-                                Text("Weitere Datei hinzufügen...")
+                                Text("Add another file...")
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.secondary)
@@ -130,7 +132,7 @@ struct AddManualView: View {
                 
                 // Button zum Speichern des Manuals
                 Button(action: saveManual) {
-                    Text("Manual speichern")
+                    Text("Save Manual")
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -141,12 +143,12 @@ struct AddManualView: View {
                 .disabled(!canSave)
             }
             .padding()
-            .navigationTitle("Neues Manual")
+            .navigationTitle("New Manual")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     // Schließt die View ohne zu speichern
-                    Button("Abbrechen") {
+                    Button("Cancel") {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
@@ -159,7 +161,7 @@ struct AddManualView: View {
                         let newFile = PickedFile(data: data, name: name, type: type)
                         pickedFiles.append(newFile)
                     case .failure(let error):
-                        self.alertTitle = "Fehler beim Laden"
+                        self.alertTitle = String(localized: "Error Loading")
                         self.alertMessage = error.localizedDescription
                         self.showingAlert = true
                     }
@@ -187,8 +189,8 @@ struct AddManualView: View {
     // Speichert das neue Manual und die zugehörigen Dateien im Core Data Kontext
     private func saveManual() {
         guard canSave else {
-            self.alertTitle = "Fehler beim Speichern"
-            self.alertMessage = "Bitte geben Sie einen Titel an und wählen Sie mindestens eine Datei aus."
+            self.alertTitle = String(localized: "Error Saving")
+            self.alertMessage = String(localized: "Please enter a title and select at least one file.")
             self.showingAlert = true
             return
         }
@@ -213,8 +215,8 @@ struct AddManualView: View {
             try viewContext.save()
             presentationMode.wrappedValue.dismiss()
         } catch {
-            self.alertTitle = "Fehler beim Speichern"
-            self.alertMessage = "Das Manual konnte nicht gespeichert werden: \(error.localizedDescription)"
+            self.alertTitle = String(localized: "Error Saving")
+            self.alertMessage = String(localized: "The manual could not be saved: \(error.localizedDescription)")
             self.showingAlert = true
         }
     }

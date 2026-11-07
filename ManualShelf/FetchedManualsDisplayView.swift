@@ -40,10 +40,10 @@ struct FetchedManualsDisplayView: View {
                     Image(systemName: "tray.fill")
                         .font(.system(size: 60))
                         .foregroundColor(.secondary)
-                    Text("Keine Manuals vorhanden")
+                    Text("No Manuals")
                         .font(.title2)
                         .foregroundColor(.secondary)
-                    Text("Tippe auf das Plus-Symbol (+), um dein erstes Manual hinzuzufügen, oder ändere deine Filter-/Sortiereinstellungen.")
+                    Text("Tap the plus button (+) to add your first manual, or change your filter or sort settings.")
                         .font(.callout)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
@@ -103,7 +103,7 @@ struct ManualRow: View {
                     .frame(width: 25, alignment: .center)
             }
             VStack(alignment: .leading, spacing: 4) {
-                Text(manual.title ?? "Unbekanntes Manual")
+                Text(manual.title ?? String(localized: "Unknown Manual"))
                     .font(.headline)
                     .foregroundColor(.primary)
                 // Tags als farbige Chips anzeigen
@@ -124,7 +124,7 @@ struct ManualRow: View {
                         }
                     }
                 }
-                Text("\(manual.files?.count ?? 0) Datei(en) - Hinzugefügt: \(manual.dateAdded ?? Date(), formatter: dateFormatter)")
+                Text("\(String(localized: "\(manual.files?.count ?? 0) files")) - Added: \(manual.dateAdded ?? Date(), formatter: dateFormatter)")
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .lineLimit(1)

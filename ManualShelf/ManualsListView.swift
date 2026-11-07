@@ -54,7 +54,7 @@ struct ManualsListView: View {
                     // (SwiftUI refresht FetchRequest bei onAppear automatisch, aber dies stellt sicher, dass es passiert)
                     _ = viewContext
                 }
-                .searchable(text: $searchText, prompt: "Suche nach Titel oder Datei")
+                .searchable(text: $searchText, prompt: Text("Search by title or file"))
             }
             .navigationTitle("ManualShelf")
             .toolbar {
@@ -63,20 +63,22 @@ struct ManualsListView: View {
                     Button(action: { showingAddManualView = true }) {
                         Image(systemName: "plus")
                     }
+                    .accessibilityLabel("Add Manual")
                     EditButton()
                 }
 
                 ToolbarItemGroup(placement: .bottomBar) {
                     // Menü zur Auswahl der Sortieroption
                     Menu {
-                        Picker("Sortieren", selection: $currentSortOption) {
+                        Picker("Sort", selection: $currentSortOption) {
                             ForEach(SortOption.allCases) { option in
-                                Text(option.rawValue).tag(option)
+                                Text(option.title).tag(option)
                             }
                         }
                     } label: {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                     }
+                    .accessibilityLabel("Sort")
 
                     Spacer()
 
@@ -84,6 +86,7 @@ struct ManualsListView: View {
                     Button(action: { showingSettingsView = true }) {
                         Image(systemName: "gearshape.fill")
                     }
+                    .accessibilityLabel("Settings")
                 }
             }
             // Sheet zum Hinzufügen eines neuen Manuals
@@ -102,7 +105,7 @@ struct ManualsListView: View {
                 Image(systemName: "books.vertical")
                     .font(.system(size: 60))
                     .foregroundColor(.secondary)
-                Text("Wählen Sie ein Manual aus")
+                Text("Select a manual")
                     .font(.title2)
                     .foregroundColor(.secondary)
             }

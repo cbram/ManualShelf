@@ -42,7 +42,7 @@ struct ManualDisplayView: View {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(tagColor.foreground)
                             }
-                            .accessibilityLabel("Tag \(tag.name ?? "") entfernen")
+                            .accessibilityLabel("Remove tag \(tag.name ?? "")")
                         }
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -54,9 +54,9 @@ struct ManualDisplayView: View {
             }
             // Tag-Eingabefeld mit Autovervollständigung
             HStack {
-                TextField("Tag hinzufügen...", text: $tagInput, onCommit: { addTagIfNeeded() })
+                TextField("Add tag...", text: $tagInput, onCommit: { addTagIfNeeded() })
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                Button("Hinzufügen") { addTagIfNeeded() }
+                Button("Add") { addTagIfNeeded() }
                     .disabled(tagInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
             if !tagInput.isEmpty {
@@ -75,7 +75,7 @@ struct ManualDisplayView: View {
                         HStack {
                             Image(systemName: file.fileType == UTType.pdf.preferredFilenameExtension ? "doc.text.fill" : "photo.fill")
                                 .foregroundColor(.accentColor)
-                            Text(file.fileName ?? "Unbenannte Datei")
+                            Text(file.fileName ?? String(localized: "Unnamed File"))
                         }
                     }
                 }
@@ -84,7 +84,7 @@ struct ManualDisplayView: View {
             .listStyle(PlainListStyle())
         }
         .padding()
-        .navigationTitle(manual.title ?? "Dateien")
+        .navigationTitle(manual.title ?? String(localized: "Files"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -93,6 +93,7 @@ struct ManualDisplayView: View {
                 }) {
                     Image(systemName: "plus")
                 }
+                .accessibilityLabel("Add File")
             }
         }
         .sheet(isPresented: $showingAddFilePicker) {
@@ -101,7 +102,7 @@ struct ManualDisplayView: View {
                 case .success(let (data, name, type)):
                     addFileToManual(data: data, name: name, type: type)
                 case .failure(let error):
-                    self.alertTitle = "Fehler beim Hinzufügen"
+                    self.alertTitle = String(localized: "Error Adding")
                     self.alertMessage = error.localizedDescription
                     self.showingAlert = true
                 }
@@ -138,8 +139,8 @@ struct ManualDisplayView: View {
         do {
             try viewContext.save()
         } catch {
-            self.alertTitle = "Fehler beim Speichern"
-            self.alertMessage = "Die neue Datei konnte nicht zum Manual hinzugefügt werden: \(error.localizedDescription)"
+            self.alertTitle = String(localized: "Error Saving")
+            self.alertMessage = String(localized: "The new file could not be added to the manual: \(error.localizedDescription)")
             self.showingAlert = true
         }
     }
@@ -158,8 +159,8 @@ struct ManualDisplayView: View {
         do {
             try viewContext.save()
         } catch {
-            self.alertTitle = "Fehler beim Löschen"
-            self.alertMessage = "Die Datei konnte nicht entfernt werden: \(error.localizedDescription)"
+            self.alertTitle = String(localized: "Error Deleting")
+            self.alertMessage = String(localized: "The file could not be removed: \(error.localizedDescription)")
             self.showingAlert = true
         }
     }
@@ -177,7 +178,7 @@ struct ManualDisplayView: View {
                 try viewContext.save()
                 addTag(newTag)
             } catch {
-                alertTitle = "Fehler beim Hinzufügen"
+                alertTitle = String(localized: "Error Adding")
                 alertMessage = error.localizedDescription
                 showingAlert = true
             }
@@ -294,7 +295,7 @@ struct FileDisplayView: View {
                                             )
                                             .tag(idx)
                                     } else {
-                                        errorView(message: "Das Bild konnte nicht geladen werden.")
+                                        errorView(message: "The image could not be loaded.")
                                     }
                                 }
                             }
@@ -307,8 +308,9 @@ struct FileDisplayView: View {
                                         .font(.system(size: 36))
                                         .opacity(currentIndex > 0 ? 0.8 : 0.3)
                                 }
+                                .accessibilityLabel("Previous Image")
                                 .disabled(currentIndex == 0)
-                                Text("\(currentIndex + 1) von \(imageFiles.count)")
+                                Text("\(currentIndex + 1) of \(imageFiles.count)")
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                                     .frame(minWidth: 80)
@@ -319,6 +321,7 @@ struct FileDisplayView: View {
                                         .font(.system(size: 36))
                                         .opacity(currentIndex < imageFiles.count - 1 ? 0.8 : 0.3)
                                 }
+                                .accessibilityLabel("Next Image")
                                 .disabled(currentIndex == imageFiles.count - 1)
                             }
                             .padding(.top, 12)
@@ -355,16 +358,16 @@ struct FileDisplayView: View {
                                 )
                         }
                     } else {
-                        errorView(message: "Das JPEG-/PNG-Bild konnte nicht geladen werden.")
+                        errorView(message: "The JPEG/PNG image could not be loaded.")
                     }
                 } else {
-                    errorView(message: "Dateityp \(manualFile.fileType ?? "Unbekannt") wird nicht unterstützt.")
+                    errorView(message: "File type \(manualFile.fileType ?? String(localized: "Unknown")) is not supported.")
                 }
             } else {
-                errorView(message: "Für diese Datei wurden keine Daten gespeichert.")
+                errorView(message: "No data was stored for this file.")
             }
         }
-        .navigationTitle(manualFile.fileName ?? "Datei")
+        .navigationTitle(manualFile.fileName ?? String(localized: "File"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             // Toolbar für PDF- und Bild-spezifische Aktionen (Drehen)
@@ -373,9 +376,11 @@ struct FileDisplayView: View {
                     Button(action: { rotatePDF(by: -90) }) {
                         Image(systemName: "rotate.left.fill")
                     }
+                    .accessibilityLabel("Rotate Left")
                     Button(action: { rotatePDF(by: 90) }) {
                         Image(systemName: "rotate.right.fill")
                     }
+                    .accessibilityLabel("Rotate Right")
                 }
             } else if manualFile.fileType?.lowercased() == UTType.jpeg.preferredFilenameExtension ||
                       manualFile.fileType?.lowercased() == "jpg" ||
@@ -384,9 +389,11 @@ struct FileDisplayView: View {
                     Button(action: { rotateImage(by: -90) }) {
                         Image(systemName: "rotate.left.fill")
                     }
+                    .accessibilityLabel("Rotate Left")
                     Button(action: { rotateImage(by: 90) }) {
                         Image(systemName: "rotate.right.fill")
                     }
+                    .accessibilityLabel("Rotate Right")
                 }
             }
         }
@@ -394,12 +401,12 @@ struct FileDisplayView: View {
     
     // Zeigt eine Fehlermeldung an, wenn die Datei nicht angezeigt werden kann
     @ViewBuilder
-    private func errorView(message: String) -> some View {
+    private func errorView(message: LocalizedStringKey) -> some View {
         VStack(spacing: 15) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 70))
                 .foregroundColor(.orange)
-            Text("Datei nicht darstellbar")
+            Text("File Cannot Be Displayed")
                 .font(.title2)
                 .foregroundColor(.secondary)
             Text(message)
