@@ -102,24 +102,6 @@ class CloudKitSyncManager: ObservableObject {
             .store(in: &cancellables)
     }
     
-    // MARK: - Manual Sync Trigger
-    // Saves pending changes of the view context and re-checks the account.
-    // NSPersistentCloudKitContainer exports after a save on its own schedule;
-    // there is no API to force an immediate sync.
-    func forceSynchronization() {
-        let context = PersistenceController.shared.container.viewContext
-        
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                syncStatus = .error("Speicherfehler: \(error.localizedDescription)")
-                return
-            }
-        }
-        checkAccountStatus()
-    }
-    
     // MARK: - Conflict Resolution
     // Hinweis: CloudKit übernimmt die Konfliktbehandlung automatisch
     func handleSyncConflicts() {

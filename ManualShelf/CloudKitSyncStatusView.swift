@@ -22,16 +22,8 @@ struct CloudKitSyncStatusView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
-        // Tippen erzwingt eine Synchronisation
-        .onTapGesture {
-            syncManager.forceSynchronization()
-        }
         // Kontextmenü für weitere Sync-Aktionen
         .contextMenu {
-            Button("Synchronisation erzwingen") {
-                syncManager.forceSynchronization()
-            }
-            
             Button("Status prüfen") {
                 syncManager.checkAccountStatus()
             }
