@@ -1,14 +1,16 @@
-# SPEC-003 — ManualShelf 1.3.0: Vorschau, Dark-Mode-Icon, Download per URL, Titelvorschlag, Export
+# SPEC-003 — ManualShelf 1.3.0: Vorschau, Download per URL, Titelvorschlag, Export
 
-**Status:** In Arbeit (F1–F12 entschieden; #4 wartet auf Christians Icon-Dateien) · **Bau:** Kai · **Abnahme:** Christian
+**Status:** In Arbeit (F1–F12 entschieden; #4 gestrichen 07.11.) · **Bau:** Kai · **Abnahme:** Christian
 **Version:** 1.3.0 (neue Funktionen ⇒ Minor), Tag `v1.3.0` erst nach Christians Abnahme
-**Umfang:** GitHub-Issues #3, #4, #8, #9, #13
+**Umfang:** GitHub-Issues #3, #8, #9, #13 (#4 gestrichen 07.11.)
 
 ## 1. Entscheide (Christian, 07.11.2026)
 
 - **E1** 1.3.0 enthält alle offenen Issues außer #11 (Kaufdatum) und #12 (Rechnung/Garantie); die beiden entfallen.
 - **E2** Auf GitHub wird nichts an den Issues geändert (kein Schließen, kein Kommentar); das klärt Fritz mit Christian.
 - **E3** Neue Texte kommen in den String Catalog, englisch (Schlüssel) und deutsch (Du-Form), wie SPEC-002.
+- **E4** #4 (Dark-Mode-Icon) **gestrichen 07.11.** (Christian): kommt nicht in 1.3.0; die leeren Dark/Tinted-Felder im
+  Icon-Asset bleiben unverändert. F3/F4 entfallen.
 
 ## 2. Issues und Ist-Stand (gemessen auf main `e00ffae`, `gh issue view`, nur lesend)
 
@@ -22,7 +24,7 @@ Label `enhancement`). Die Deutung unten ist deshalb ein Vorschlag.
   in `FileDisplayView` (PDFKit bzw. Bildansicht mit Zoom/Drehen) [HOCH, Code].
 - **Keine** Vorschaubilder (Thumbnails) irgendwo im Code, kein Quick Look [HOCH, grep].
 
-### #4 „Add dark mode icon“
+### #4 „Add dark mode icon“ — gestrichen 07.11.
 
 - **Ist:** `AppIcon.appiconset` hat ein einziges Bild `ManualShelf.png` (1024 × 1024, ohne Alpha). Die Einträge
   für die Varianten „Dark“ und „Tinted“ sind im Asset schon angelegt, aber **leer** (kein Bild) [HOCH, Datei].
@@ -62,7 +64,7 @@ Label `enhancement`). Die Deutung unten ist deshalb ein Vorschlag.
   `imageRotationDegrees`) wird im Vorschaubild berücksichtigt. **Empfehlung:** so; ein gespeicherter Cache wäre
   ein späterer Schritt, falls lange Listen spürbar ruckeln.
 
-### #4 Dark-Mode-Icon
+### #4 Dark-Mode-Icon — gestrichen 07.11. (F3/F4 entfallen)
 
 - **F3 Varianten:** „Dark“ und „Tinted“ im bestehenden Asset befüllen (wirken ab iOS 18). Kein Umstieg auf Icon
   Composer in 1.3.0. **Empfehlung:** so.
@@ -115,11 +117,11 @@ Label `enhancement`). Die Deutung unten ist deshalb ein Vorschlag.
 | #13 Export | 2–3 h | [MITTEL] |
 | #3 Vorschaubilder | 3–5 h | [MITTEL] |
 | #8 Download per URL inkl. Tests und Datenschutztexten | 4–6 h | [MITTEL] |
-| #4 Icon-Varianten (Christian liefert / ich leite ab) | 0,5 h / 1–2 h | [HOCH] / [NIEDRIG] |
+| ~~#4 Icon-Varianten~~ (gestrichen) | — | — |
 | Texte EN/DE, Tests, Abnahme | 1–2 h | [MITTEL] |
 | **Summe** | **≈ 1,5–2 Arbeitstage** | [MITTEL] |
 
-Reihenfolge im Bau: #9 → #13 → #3 → #8 → #4, je Issue ein Commit; danach `MARKETING_VERSION = 1.3.0`.
+Reihenfolge im Bau: #9 → #13 → #3 → #8, je Issue ein Commit; danach `MARKETING_VERSION = 1.3.0`.
 
 ## 5. Abnahme
 
@@ -134,6 +136,7 @@ Reihenfolge im Bau: #9 → #13 → #3 → #8 → #4, je Issue ein Commit; danach
 - 07.11.2026: E1–E3 von Christian; Messung und Spec (Kai, `c6c8b63`).
 - 07.11.2026: F1–F12 von Christian nach Empfehlung entschieden; F4: Christian liefert die Icon-Dateien, Plan B
   (Ableitung durch Kai) nur auf seinen Wunsch. Bau #9 → #13 → #3 → #8 gestartet.
+- 07.11.2026: #4 von Christian gestrichen (E4).
 - 07.11.2026, Prüfungen vor #8:
   - **F6 iCloud-Limit:** nicht schnell belegbar. Apple-Doku nennt keine aktuelle Obergrenze je Asset; Foren
     widersprechen sich (Apple-Forum: bis ≈ 50 GB je Asset bei genug iCloud-Speicher, developer.apple.com/forums/thread/827897;
