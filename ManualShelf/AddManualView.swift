@@ -28,7 +28,7 @@ struct AddManualView: View {
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     
-    // Tagging-States
+    // Tagging state
     @FetchRequest(
         entity: ManualTag.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \ManualTag.name, ascending: true)]
@@ -39,7 +39,7 @@ struct AddManualView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                // Eingabefeld für den Titel des Manuals
+                // Title input
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Manual Title")
                         .font(.headline)
@@ -48,11 +48,11 @@ struct AddManualView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
                 
-                // Tag-Auswahl
+                // Tag selection
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Tags")
                         .font(.headline)
-                    // Chips für ausgewählte Tags
+                    // Chips for the selected tags
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(selectedTags, id: \.self) { tag in
@@ -69,10 +69,10 @@ struct AddManualView: View {
                             }
                         }
                     }
-                    // Tag-Eingabefeld mit Autovervollständigung
+                    // Tag input with autocompletion
                     TextField("Add tag...", text: $tagInput, onCommit: { addTagIfNeeded() })
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                    // Vorschläge
+                    // Suggestions
                     if !tagInput.isEmpty {
                         ForEach(allTags.filter { $0.name?.lowercased().contains(tagInput.lowercased()) == true && !selectedTags.contains($0) }, id: \.self) { tag in
                             Button(tag.name ?? "") {
@@ -83,7 +83,7 @@ struct AddManualView: View {
                     }
                 }
                 
-                // Bereich zur Dateiauswahl und Anzeige der gewählten Dateien
+                // File picking and list of picked files
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Files")
                         .font(.headline)
@@ -110,7 +110,7 @@ struct AddManualView: View {
                             }
                         }
                         
-                        // Button zum Hinzufügen weiterer Dateien
+                        // Button to add more files
                         Button(action: { showingDocumentPicker = true }) {
                             HStack {
                                 Image(systemName: "doc.badge.plus")
@@ -130,7 +130,7 @@ struct AddManualView: View {
                 
                 Spacer()
                 
-                // Button zum Speichern des Manuals
+                // Button to save the manual
                 Button(action: saveManual) {
                     Text("Save Manual")
                         .font(.headline)
@@ -147,13 +147,13 @@ struct AddManualView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    // Schließt die View ohne zu speichern
+                    // Closes the view without saving
                     Button("Cancel") {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
-            // Öffnet den Dokumenten-Picker
+            // Opens the document picker
             .sheet(isPresented: $showingDocumentPicker) {
                 DocumentPickerView { result in
                     switch result {
@@ -167,7 +167,7 @@ struct AddManualView: View {
                     }
                 }
             }
-            // Zeigt Fehler-Alerts an
+            // Shows error alerts
             .alert(alertTitle, isPresented: $showingAlert) {
                 Button("OK") { }
             } message: {
@@ -176,17 +176,17 @@ struct AddManualView: View {
         }
     }
     
-    // Validiert, ob das Manual gespeichert werden kann
+    // Whether the manual can be saved
     private var canSave: Bool {
         !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !pickedFiles.isEmpty
     }
     
-    // Entfernt eine Datei aus der Auswahl
+    // Removes a file from the selection
     private func removeFile(_ file: PickedFile) {
         pickedFiles.removeAll { $0.id == file.id }
     }
     
-    // Speichert das neue Manual und die zugehörigen Dateien im Core Data Kontext
+    // Saves the new manual and its files in the Core Data context
     private func saveManual() {
         guard canSave else {
             self.alertTitle = String(localized: "Error Saving")
@@ -206,7 +206,7 @@ struct AddManualView: View {
             manualFile.fileType = file.type.preferredFilenameExtension
             manualFile.pdfRotationDegrees = 0
             manualFile.dateAdded = Date()
-            // Tags zuweisen
+            // Assign tags
             manualFile.manualTags = NSSet(array: selectedTags)
             manual.addToFiles(manualFile)
         }
@@ -221,7 +221,7 @@ struct AddManualView: View {
         }
     }
     
-    // Hilfsfunktion zum Hinzufügen eines neuen Tags
+    // Adds the typed tag, reusing an existing one with the same name
     private func addTagIfNeeded() {
         let trimmed = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }

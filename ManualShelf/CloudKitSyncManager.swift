@@ -12,7 +12,7 @@ import Combine
 
 @MainActor
 class CloudKitSyncManager: ObservableObject {
-    // Singleton-Instanz für die App
+    // Shared instance for the app
     static let shared = CloudKitSyncManager()
     
     @Published var syncStatus: SyncStatus = .unknown
@@ -22,7 +22,7 @@ class CloudKitSyncManager: ObservableObject {
     private let container = CKContainer.default()
     private var cancellables = Set<AnyCancellable>()
     
-    // Repräsentiert den aktuellen Synchronisationsstatus.
+    // Current sync status.
     // The app cannot observe sync progress; it only knows whether the iCloud account
     // is available and when a remote change has reached the local store.
     enum SyncStatus: Equatable {
@@ -55,7 +55,7 @@ class CloudKitSyncManager: ObservableObject {
     }
     
     // MARK: - Account Status
-    // Prüft den iCloud-Account-Status und aktualisiert den Sync-Status entsprechend
+    // Checks the iCloud account status and updates the sync status accordingly
     func checkAccountStatus() {
         container.accountStatus { [weak self] status, error in
             // Copy the weak reference into a constant so the main-queue closure
@@ -86,7 +86,7 @@ class CloudKitSyncManager: ObservableObject {
     }
     
     // MARK: - Remote Change Notifications
-    // Reagiert auf Änderungen, die von anderen Geräten via CloudKit kommen
+    // Reacts to changes arriving from other devices via CloudKit
     private func setupRemoteChangeNotifications() {
         // The notification is posted on a background thread; deliver it on main.
         NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange)
@@ -103,14 +103,14 @@ class CloudKitSyncManager: ObservableObject {
     }
     
     // MARK: - Conflict Resolution
-    // Hinweis: CloudKit übernimmt die Konfliktbehandlung automatisch
+    // Note: CloudKit resolves conflicts automatically
     func handleSyncConflicts() {
-        // CloudKit übernimmt automatisch die Konfliktbehandlung für Core Data.
-        print("Konfliktbehandlung wird von CloudKit automatisch durchgeführt")
+        // CloudKit resolves Core Data conflicts automatically.
+        print("Conflict resolution is handled by CloudKit automatically")
     }
     
     // MARK: - Debugging Helpers
-    // Gibt CloudKit-Informationen für Debugging-Zwecke aus
+    // Prints CloudKit information for debugging
     func printCloudKitInfo() {
         print("CloudKit Container ID: \(container.containerIdentifier ?? "unknown")")
         

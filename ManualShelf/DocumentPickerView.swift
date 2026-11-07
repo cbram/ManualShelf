@@ -5,7 +5,7 @@ struct DocumentPickerView: UIViewControllerRepresentable {
     var onFilePicked: (Result<(Data, String, UTType), Error>) -> Void
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        // Initialisiert den Dokumenten-Picker für PDF- und Bilddateien
+        // Sets up the document picker for PDF and image files
         let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf, UTType.jpeg, UTType.png])
         picker.delegate = context.coordinator
         picker.allowsMultipleSelection = false
@@ -31,7 +31,7 @@ struct DocumentPickerView: UIViewControllerRepresentable {
                 return
             }
             
-            // Ermittle den UTType, mit Fallback auf die Dateiendung
+            // Determine the UTType, falling back to the file extension
             var utType: UTType?
             if let typeIdentifier = try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier,
                let detectedUTType = UTType(typeIdentifier) {
@@ -47,13 +47,13 @@ struct DocumentPickerView: UIViewControllerRepresentable {
                 }
             }
 
-            // Unterstützt nur PDF, JPEG und PNG
+            // Supports PDF, JPEG and PNG only
             guard let validUTType = utType, [UTType.pdf, UTType.jpeg, UTType.png].contains(validUTType) else {
                 parent.onFilePicked(.failure(PickerError.unsupportedFileType))
                 return
             }
             
-            // Greife auf die Datei zu (Security Scoped Resource)
+            // Access the file (security-scoped resource)
             let didStartAccessing = url.startAccessingSecurityScopedResource()
             defer { if didStartAccessing { url.stopAccessingSecurityScopedResource() } }
             
@@ -66,12 +66,12 @@ struct DocumentPickerView: UIViewControllerRepresentable {
         }
         
         func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-            // Optional: Ein spezieller Error für den Abbruch-Fall
+            // Optional: a dedicated error for cancellation
             // parent.onFilePicked(.failure(PickerError.cancelled))
         }
     }
     
-    // Fehler, die beim Auswählen einer Datei auftreten können
+    // Errors that can occur while picking a file
     enum PickerError: Error, LocalizedError {
         case noFileSelected
         case unsupportedFileType

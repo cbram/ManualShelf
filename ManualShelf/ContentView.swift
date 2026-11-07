@@ -12,12 +12,12 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     var body: some View {
-        // Einstiegspunkt: Zeigt die Liste aller Manuals
+        // Entry point: shows the list of all manuals
         ManualsListView()
     }
 }
 
-// Vorschau für SwiftUI Previews
+// SwiftUI preview
 #Preview {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

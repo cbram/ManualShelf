@@ -8,11 +8,11 @@
 import CoreData
 
 struct PersistenceController {
-    // Singleton-Instanz für die App
+    // Shared instance for the app
     static let shared = PersistenceController()
 
     @MainActor
-    // Preview-Instanz für SwiftUI Previews mit Beispieldaten (nur im Speicher)
+    // Preview instance with sample data for SwiftUI previews (in memory only)
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
@@ -39,15 +39,15 @@ struct PersistenceController {
 
     let container: NSPersistentCloudKitContainer
 
-    // Initialisiert den Core Data Stack, optional nur im Speicher (für Tests/Previews)
+    // Sets up the Core Data stack, optionally in memory only (tests/previews)
     init(inMemory: Bool = false) {
         container = NSPersistentCloudKitContainer(name: "ManualShelf")
         
         if inMemory {
-            // Speichert Daten nur im RAM (z.B. für Previews)
+            // Keeps data in memory only (e.g. for previews)
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
-            // Aktiviert History Tracking und Remote Change Notifications für CloudKit Sync
+            // Enables history tracking and remote change notifications for CloudKit sync
             if let description = container.persistentStoreDescriptions.first {
                 description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
                 description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
@@ -60,9 +60,9 @@ struct PersistenceController {
             }
         })
         
-        // Stellt sicher, dass der ViewContext Änderungen aus dem übergeordneten Kontext automatisch zusammenführt.
+        // Makes the view context merge changes from its parent automatically.
         container.viewContext.automaticallyMergesChangesFromParent = true
-        // Bei Konflikten werden lokale Änderungen bevorzugt.
+        // On conflicts, local changes win.
         container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     }
 }

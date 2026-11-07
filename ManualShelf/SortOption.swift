@@ -22,7 +22,7 @@ enum SortOption: String, CaseIterable, Identifiable {
         switch self {
         case .titleAscending:
             return [NSSortDescriptor(keyPath: \Manual.title, ascending: true),
-                    NSSortDescriptor(keyPath: \Manual.dateAdded, ascending: false)] // Sekundäre Sortierung bei gleichem Titel
+                    NSSortDescriptor(keyPath: \Manual.dateAdded, ascending: false)] // Secondary sort for equal titles
         case .titleDescending:
             return [NSSortDescriptor(keyPath: \Manual.title, ascending: false),
                     NSSortDescriptor(keyPath: \Manual.dateAdded, ascending: false)]

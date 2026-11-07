@@ -23,7 +23,7 @@ struct ManualsListView: View {
     var body: some View {
         NavigationView {
             VStack {
-                // Tag-Filterleiste
+                // Tag filter bar
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(usedTags, id: \.objectID) { tag in
@@ -42,16 +42,16 @@ struct ManualsListView: View {
                     }
                     .padding(.horizontal)
                 }
-                // Zeigt die gefilterte und sortierte Liste der Manuals an
+                // Shows the filtered and sorted list of manuals
                 FetchedManualsDisplayView(
                     sortDescriptors: currentSortOption.sortDescriptors, 
                     predicate: createPredicate(),
                     selectedFilterTag: selectedFilterTag
                 )
                 .onAppear {
-                    // Trigger ein Refresh, indem der ViewContext geändert wird (z.B. durch Zuweisung)
-                    // oder ein State-Update, falls nötig
-                    // (SwiftUI refresht FetchRequest bei onAppear automatisch, aber dies stellt sicher, dass es passiert)
+                    // Trigger a refresh by touching the view context (e.g. by assignment)
+                    // or by a state update if needed
+                    // (SwiftUI refreshes the fetch request on appear anyway; this makes sure it happens)
                     _ = viewContext
                 }
                 .searchable(text: $searchText, prompt: Text("Search by title or file"))
@@ -59,7 +59,7 @@ struct ManualsListView: View {
             .navigationTitle("ManualShelf")
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    // Öffnet das Sheet zum Hinzufügen eines neuen Manuals
+                    // Opens the sheet to add a new manual
                     Button(action: { showingAddManualView = true }) {
                         Image(systemName: "plus")
                     }
@@ -68,7 +68,7 @@ struct ManualsListView: View {
                 }
 
                 ToolbarItemGroup(placement: .bottomBar) {
-                    // Menü zur Auswahl der Sortieroption
+                    // Menu to choose the sort option
                     Menu {
                         Picker("Sort", selection: $currentSortOption) {
                             ForEach(SortOption.allCases) { option in
@@ -82,25 +82,25 @@ struct ManualsListView: View {
 
                     Spacer()
 
-                    // Öffnet die Einstellungen
+                    // Opens the settings
                     Button(action: { showingSettingsView = true }) {
                         Image(systemName: "gearshape.fill")
                     }
                     .accessibilityLabel("Settings")
                 }
             }
-            // Sheet zum Hinzufügen eines neuen Manuals
+            // Sheet to add a new manual
             .sheet(isPresented: $showingAddManualView) {
                 NavigationView {
                     AddManualView()
                 }
             }
-            // Sheet für die Einstellungen
+            // Sheet for the settings
             .sheet(isPresented: $showingSettingsView) {
                 SettingsView()
             }
             
-            // Platzhalter-View für iPad, wenn kein Manual ausgewählt ist
+            // Placeholder on iPad while no manual is selected
             VStack {
                 Image(systemName: "books.vertical")
                     .font(.system(size: 60))
@@ -113,7 +113,7 @@ struct ManualsListView: View {
         .navigationViewStyle(DoubleColumnNavigationViewStyle())
     }
     
-    // Erstellt ein Predicate für die Suche nach Titel oder Dateiname
+    // Builds the predicate for searching by title or file name
     private func createPredicate() -> NSPredicate? {
         if searchText.isEmpty {
             return nil
@@ -122,7 +122,7 @@ struct ManualsListView: View {
         }
     }
 
-    // Filtere die Tag-Filterleiste so, dass nur verwendete Tags angezeigt werden
+    // Limit the tag filter bar to tags that are in use
     var usedTags: [ManualTag] {
         allTags.filter { tag in
             (tag.manuals?.count ?? 0) > 0

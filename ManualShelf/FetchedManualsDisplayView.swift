@@ -5,11 +5,11 @@ import UniformTypeIdentifiers
 struct FetchedManualsDisplayView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
-    // Die @FetchRequest wird hier basierend auf den übergebenen Parametern initialisiert.
+    // The @FetchRequest is configured from the parameters passed in.
     @FetchRequest private var manuals: FetchedResults<Manual>
     var selectedFilterTag: ManualTag? = nil
 
-    // Initializer, um die FetchRequest dynamisch zu konfigurieren
+    // Initializer that configures the fetch request dynamically
     init(sortDescriptors: [NSSortDescriptor], predicate: NSPredicate?, selectedFilterTag: ManualTag?) {
         _manuals = FetchRequest<Manual>(
             sortDescriptors: sortDescriptors,
@@ -34,7 +34,7 @@ struct FetchedManualsDisplayView: View {
     }
 
     var body: some View {
-        Group { // Group wird verwendet, damit wir hier eine .toolbar für den EditButton haben könnten, falls nötig.
+        Group { // Group leaves room for a .toolbar with the EditButton if needed.
             if filteredManuals.isEmpty {
                 VStack(spacing: 20) {
                     Image(systemName: "tray.fill")
@@ -70,17 +70,17 @@ struct FetchedManualsDisplayView: View {
             do {
                 try viewContext.save()
             } catch {
-                print("Fehler beim Löschen des Manuals: \(error.localizedDescription)")
+                print("Failed to delete manual: \(error.localizedDescription)")
             }
         }
     }
 }
 
-// Die Row-Darstellung, angepasst an die neue Datenstruktur
+// Row for one manual in the list
 struct ManualRow: View {
     @ObservedObject var manual: Manual
 
-    // Liefert alle zugehörigen Tags (über alle Files)
+    // All tags of the manual (across all files)
     private var tags: [ManualTag] {
         let files = manual.files as? Set<ManualFile> ?? []
         let tags = files.flatMap { ($0.manualTags as? Set<ManualTag>) ?? [] }
@@ -106,7 +106,7 @@ struct ManualRow: View {
                 Text(manual.title ?? String(localized: "Unknown Manual"))
                     .font(.headline)
                     .foregroundColor(.primary)
-                // Tags als farbige Chips anzeigen
+                // Show tags as coloured chips
                 if !tags.isEmpty {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 4) {
@@ -134,7 +134,7 @@ struct ManualRow: View {
     }
 }
 
-// Der DateFormatter, der vorher in ManualsListView war.
+// Date formatter for the row's date line
 private let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .medium
@@ -142,10 +142,10 @@ private let dateFormatter: DateFormatter = {
     return formatter
 }()
 
-// Preview für FetchedManualsDisplayView
+// Preview for FetchedManualsDisplayView
 struct FetchedManualsDisplayView_Previews: PreviewProvider {
     static var previews: some View {
-        // Erstelle ein paar Beispieldaten für die Vorschau
+        // Create some sample data for the preview
         let context = PersistenceController.preview.container.viewContext
         let manual1 = Manual(context: context)
         manual1.title = "Anleitung Kaffeemaschine"

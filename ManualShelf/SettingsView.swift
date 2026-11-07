@@ -13,7 +13,7 @@ struct SettingsView: View {
                         .foregroundColor(.secondary)
                 }
                 
-                // Hier könnten zukünftig weitere Einstellungen hinzugefügt werden
+                // Further settings could be added here in the future
                 Section(header: Text("App Information")) {
                     LabeledContent("Version", value: Self.appVersionString)
                         .monospacedDigit()

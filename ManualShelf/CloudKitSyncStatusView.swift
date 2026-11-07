@@ -13,16 +13,16 @@ struct CloudKitSyncStatusView: View {
     
     var body: some View {
         HStack {
-            // Status-Icon mit Animation je nach Sync-Status
+            // Status icon for the current sync status
             Image(systemName: iconName)
                 .foregroundColor(iconColor)
             
-            // Textuelle Statusbeschreibung
+            // Status text
             Text(statusDescription)
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
-        // Kontextmenü für weitere Sync-Aktionen
+        // Context menu with further sync actions
         .contextMenu {
             Button("Check Status") {
                 syncManager.checkAccountStatus()
@@ -33,12 +33,12 @@ struct CloudKitSyncStatusView: View {
             }
         }
         .onAppear {
-            // Status beim Anzeigen prüfen
+            // Check the status when shown
             syncManager.checkAccountStatus()
         }
     }
     
-    // Liefert das passende Symbol für den aktuellen Sync-Status
+    // Symbol for the current sync status
     private var iconName: String {
         switch syncManager.syncStatus {
         case .unknown:
@@ -52,7 +52,7 @@ struct CloudKitSyncStatusView: View {
         }
     }
     
-    // Liefert die passende Farbe für das Status-Icon
+    // Colour of the status icon
     private var iconColor: Color {
         switch syncManager.syncStatus {
         case .unknown:
@@ -73,7 +73,7 @@ struct CloudKitSyncStatusView: View {
     private static let okabeItoVermillion = Color(red: 0xD5 / 255, green: 0x5E / 255, blue: 0x00 / 255)    // #D55E00
     private static let okabeItoReddishPurple = Color(red: 0xCC / 255, green: 0x79 / 255, blue: 0xA7 / 255) // #CC79A7
     
-    // Liefert die textuelle Beschreibung des Sync-Status
+    // Text describing the sync status
     private var statusDescription: String {
         switch syncManager.syncStatus {
         case .unknown:
@@ -94,7 +94,7 @@ struct CloudKitSyncStatusView: View {
     }
 }
 
-// Formatter für die Anzeige der letzten Synchronisation
+// Formatter for the time of the last received changes
 private let timeFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.timeStyle = .short
@@ -102,7 +102,7 @@ private let timeFormatter: DateFormatter = {
     return formatter
 }()
 
-// Vorschau für SwiftUI Previews
+// SwiftUI preview
 #Preview {
     CloudKitSyncStatusView()
 } 
