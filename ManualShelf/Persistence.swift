@@ -63,7 +63,7 @@ struct PersistenceController {
         // Stellt sicher, dass der ViewContext Änderungen aus dem übergeordneten Kontext automatisch zusammenführt.
         container.viewContext.automaticallyMergesChangesFromParent = true
         // Bei Konflikten werden lokale Änderungen bevorzugt.
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     }
     
     // Aktualisiert die Sync-Einstellung für CloudKit (WLAN oder WLAN+Mobilfunk)
