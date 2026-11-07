@@ -13,7 +13,14 @@ enum ManualTitleSuggestion {
         guard isFirstFile, current.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return current
         }
-        let baseName = (addedFileName as NSString).deletingPathExtension
+        let baseName = FileNaming.baseName(of: addedFileName)
         return baseName.isEmpty ? current : baseName
+    }
+
+    /// The title after the first file was renamed: follows the new name as long as the title
+    /// is still the untouched suggestion from the old name.
+    static func titleAfterRenaming(current: String, oldFileName: String, newFileName: String, isFirstFile: Bool) -> String {
+        guard isFirstFile, current == FileNaming.baseName(of: oldFileName) else { return current }
+        return FileNaming.baseName(of: newFileName)
     }
 }

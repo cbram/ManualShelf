@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 private struct PickedFile: Identifiable {
     let id = UUID()
     let data: Data
-    let name: String
+    var name: String
     let type: UTType
 }
 
@@ -25,6 +25,9 @@ struct AddManualView: View {
     
     @State private var showingDocumentPicker = false
     @State private var showingURLDownload = false
+    @State private var fileToRenameID: UUID?
+    @State private var renameText = ""
+    @State private var showingRename = false
     @State private var showingAlert = false
     @State private var alertTitle = ""
     @State private var alertMessage = ""
@@ -88,6 +91,14 @@ struct AddManualView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Files")
                         .font(.headline)
+                        .renameFileAlert(
+                            isPresented: $showingRename,
+                            name: $renameText,
+                            fileExtension: FileNaming.fileExtension(
+                                of: pickedFiles.first(where: { $0.id == fileToRenameID })?.name ?? "", fallback: nil
+                            ),
+                            onRename: applyRename
+                        )
                     
                     VStack {
                         if !pickedFiles.isEmpty {
@@ -108,6 +119,9 @@ struct AddManualView: View {
                                 .padding()
                                 .background(Color(.systemGray6))
                                 .cornerRadius(8)
+                                .contextMenu {
+                                    Button("Rename", systemImage: "pencil") { startRename(file) }
+                                }
                             }
                         }
                         
@@ -206,6 +220,24 @@ struct AddManualView: View {
     private func addPickedFile(data: Data, name: String, type: UTType) {
         title = ManualTitleSuggestion.title(current: title, addedFileName: name, isFirstFile: pickedFiles.isEmpty)
         pickedFiles.append(PickedFile(data: data, name: name, type: type))
+    }
+
+    // Opens the rename alert with the file's name without extension
+    private func startRename(_ file: PickedFile) {
+        fileToRenameID = file.id
+        renameText = FileNaming.baseName(of: file.name)
+        showingRename = true
+    }
+
+    // Renames a picked file; the title follows while it is still the suggestion from the first file
+    private func applyRename() {
+        guard let index = pickedFiles.firstIndex(where: { $0.id == fileToRenameID }) else { return }
+        let oldName = pickedFiles[index].name
+        let newName = FileNaming.renamed(
+            currentFileName: oldName, newBaseName: renameText, fallbackExtension: pickedFiles[index].type.preferredFilenameExtension
+        )
+        title = ManualTitleSuggestion.titleAfterRenaming(current: title, oldFileName: oldName, newFileName: newName, isFirstFile: index == 0)
+        pickedFiles[index].name = newName
     }
 
     // Removes a file from the selection

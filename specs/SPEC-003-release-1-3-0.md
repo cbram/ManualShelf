@@ -1,6 +1,6 @@
 # SPEC-003 — ManualShelf 1.3.0: Vorschau, Download per URL, Titelvorschlag, Export
 
-**Status:** Gebaut auf main, wartet auf Christians Abnahme (#4 gestrichen 07.11.) · **Bau:** Kai · **Abnahme:** Christian
+**Status:** Gerätetest 1–5 bestanden (07.11.); Nachtrag N1 gebaut, wartet auf Christians Abnahme (#4 gestrichen 07.11.) · **Bau:** Kai · **Abnahme:** Christian
 **Version:** 1.3.0 (neue Funktionen ⇒ Minor), Tag `v1.3.0` erst nach Christians Abnahme
 **Umfang:** GitHub-Issues #3, #8, #9, #13 (#4 gestrichen 07.11.)
 
@@ -108,6 +108,21 @@ Label `enhancement`). Die Deutung unten ist deshalb ein Vorschlag.
   angezeigte Datei, in der Detailansicht „Alle Dateien teilen“ für alle Dateien eines Manuals. Die Dateien werden
   dafür unter ihrem Originalnamen in den temporären Ordner geschrieben, damit der Empfänger (Dateien-App, Mail,
   AirDrop) den richtigen Namen sieht; gedreht wird beim Export nicht (Originaldatei). **Empfehlung:** so.
+
+## 3a. Nachtrag N1: Dateien umbenennen (Christian, 07.11.2026)
+
+**Anlass:** Dateinamen von PDFs aus dem Internet sind oft kryptisch. Christian hat 1.3.0 am Gerät getestet
+(Punkte 1–5 bestanden) und will die Erweiterung noch in 1.3.0; Version bleibt 1.3.0, die Build-Nummer steigt.
+
+- **N1a** Im Dialog „Aus URL laden“ gibt es ein optionales Namensfeld.
+- **N1b** In der Detailansicht hat jede Datei „Umbenennen“ (Kontextmenü und Wischen nach rechts), egal ob per URL
+  oder Picker hinzugefügt; in „Neues Manual“ ebenfalls per Kontextmenü.
+- **Regeln:** Eingegeben und angezeigt wird nur der Name ohne Endung; die Endung bleibt erhalten und wird ergänzt.
+  Der Name wird getrimmt, `/` und `:` werden durch `-` ersetzt; leer ⇒ alter bzw. Server-Name bleibt. Tippt man die
+  Endung mit, wird sie nicht verdoppelt (Kai, kleine Ergänzung). Der Titelvorschlag (#9) nimmt den eigenen Namen;
+  wird in „Neues Manual“ die erste Datei umbenannt, folgt der Titel, solange er noch der unveränderte Vorschlag ist.
+  Teilen (#13) nutzt den neuen Namen.
+- **Speicherung:** im vorhandenen Attribut `ManualFile.fileName`; keine Modelländerung, Sync wie bisher.
 
 ## 4. Aufwand (Schätzung)
 

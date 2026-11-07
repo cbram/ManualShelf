@@ -73,9 +73,7 @@ enum URLDownload {
     /// File name from the server's suggestion with an extension that matches the detected type.
     static func fileName(suggested: String?, type: UTType) -> String {
         let fallbackBaseName = "Download"
-        var name = (suggested ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-            .replacingOccurrences(of: "/", with: "-")
-            .replacingOccurrences(of: ":", with: "-")
+        var name = FileNaming.sanitized((suggested ?? "").trimmingCharacters(in: .whitespacesAndNewlines))
         if name.isEmpty { name = fallbackBaseName }
         let currentExtension = (name as NSString).pathExtension.lowercased()
         let matches = UTType(filenameExtension: currentExtension)?.conforms(to: type) ?? false

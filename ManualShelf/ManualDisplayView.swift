@@ -25,6 +25,9 @@ struct ManualDisplayView: View {
     @State private var showingURLDownload = false
     @State private var displayedTags: [ManualTag] = []
     @State private var shareURLs: [URL] = []
+    @State private var fileToRename: ManualFile?
+    @State private var renameText = ""
+    @State private var showingRename = false
 
     private static let fileThumbnailSize: CGFloat = 36
     
@@ -81,10 +84,23 @@ struct ManualDisplayView: View {
                             Text(file.fileName ?? String(localized: "Unnamed File"))
                         }
                     }
+                    .contextMenu {
+                        Button("Rename", systemImage: "pencil") { startRename(file) }
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button("Rename", systemImage: "pencil") { startRename(file) }
+                            .tint(.accentColor)
+                    }
                 }
                 .onDelete(perform: deleteFiles)
             }
             .listStyle(PlainListStyle())
+            .renameFileAlert(
+                isPresented: $showingRename,
+                name: $renameText,
+                fileExtension: FileNaming.fileExtension(of: fileToRename?.fileName ?? "", fallback: fileToRename?.fileType),
+                onRename: applyRename
+            )
             .sheet(isPresented: $showingURLDownload) {
                 URLDownloadView { data, name, type in
                     addFileToManual(data: data, name: name, type: type)
@@ -118,7 +134,7 @@ struct ManualDisplayView: View {
             }
         }
         // Temporary copies for sharing, refreshed when files are added or removed
-        .task(id: manual.files?.count ?? 0) {
+        .task(id: sortedFiles.map(\.fileName)) {
             shareURLs = sortedFiles.compactMap { try? FileExport.temporaryURL(for: $0) }
         }
         .sheet(isPresented: $showingAddFilePicker) {
@@ -143,6 +159,30 @@ struct ManualDisplayView: View {
         }
     }
     
+    // Opens the rename alert with the file's name without extension
+    private func startRename(_ file: ManualFile) {
+        fileToRename = file
+        renameText = FileNaming.baseName(of: file.fileName ?? "")
+        showingRename = true
+    }
+
+    // Saves the typed name; the extension is kept and an empty name changes nothing
+    private func applyRename() {
+        guard let file = fileToRename else { return }
+        let currentName = file.fileName ?? ""
+        let newName = FileNaming.renamed(currentFileName: currentName, newBaseName: renameText, fallbackExtension: file.fileType)
+        guard newName != currentName else { return }
+        file.fileName = newName
+        do {
+            try viewContext.save()
+        } catch {
+            viewContext.rollback()
+            alertTitle = String(localized: "Error Saving")
+            alertMessage = String(localized: "The file could not be renamed: \(error.localizedDescription)")
+            showingAlert = true
+        }
+    }
+
     // Files of the manual in the order they were added
     private var sortedFiles: [ManualFile] {
         let fileSet = manual.files as? Set<ManualFile> ?? []

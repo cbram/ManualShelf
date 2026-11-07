@@ -381,6 +381,16 @@
         }
       }
     },
+    "Leave empty to keep the server's file name.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer lassen, um den Dateinamen des Servers zu behalten."
+          }
+        }
+      }
+    },
     "Load": {
       "localizations": {
         "de": {
@@ -423,6 +433,26 @@
     },
     "ManualShelf": {
       "shouldTranslate": false
+    },
+    "Name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "Name (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name (optional)"
+          }
+        }
+      }
     },
     "New Manual": {
       "localizations": {
@@ -574,6 +604,26 @@
         }
       }
     },
+    "Rename": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umbenennen"
+          }
+        }
+      }
+    },
+    "Rename File": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei umbenennen"
+          }
+        }
+      }
+    },
     "Rotate Left": {
       "localizations": {
         "de": {
@@ -714,12 +764,32 @@
         }
       }
     },
+    "The extension .%@ is kept.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Endung .%@ bleibt erhalten."
+          }
+        }
+      }
+    },
     "The file could not be removed: %@": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
             "value": "Die Datei konnte nicht entfernt werden: %@"
+          }
+        }
+      }
+    },
+    "The file could not be renamed: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei konnte nicht umbenannt werden: %@"
           }
         }
       }

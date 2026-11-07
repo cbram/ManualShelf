@@ -13,7 +13,7 @@ enum FileExport {
     /// stored type's extension added when the name has none.
     static func exportFileName(storedName: String?, fileType: String?) -> String {
         var name = (storedName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        name = name.replacingOccurrences(of: "/", with: "-").replacingOccurrences(of: ":", with: "-")
+        name = FileNaming.sanitized(name)
         if name.isEmpty {
             name = String(localized: "File")
         }

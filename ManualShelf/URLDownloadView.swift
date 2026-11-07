@@ -12,6 +12,7 @@ struct URLDownloadView: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var addressText = ""
+    @State private var customName = ""
     @State private var downloadTask: Task<Void, Never>?
     @State private var errorMessage: String?
 
@@ -29,6 +30,13 @@ struct URLDownloadView: View {
                         .onSubmit(startDownload)
                 } footer: {
                     Text("PDF, JPEG or PNG, up to \(URLDownload.maximumSizeInMegabytes) MB.")
+                }
+                Section {
+                    TextField("Name (optional)", text: $customName)
+                        .autocorrectionDisabled()
+                        .disabled(isDownloading)
+                } footer: {
+                    Text("Leave empty to keep the server's file name.")
                 }
                 if isDownloading {
                     Section {
@@ -67,7 +75,10 @@ struct URLDownloadView: View {
         downloadTask = Task {
             do {
                 let url = try URLDownload.validatedURL(from: addressText)
-                let (data, fileName, type) = try await URLDownload.download(from: url)
+                let (data, serverFileName, type) = try await URLDownload.download(from: url)
+                let fileName = FileNaming.renamed(
+                    currentFileName: serverFileName, newBaseName: customName, fallbackExtension: type.preferredFilenameExtension
+                )
                 onDownloaded(data, fileName, type)
                 dismiss()
             } catch is CancellationError {
