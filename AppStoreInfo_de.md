@@ -17,14 +17,14 @@ Mit ManualShelf hast du alle deine Bedienungsanleitungen immer griffbereit – e
 - **Unbenutzte Tags werden automatisch entfernt**
 - Sortier- und Suchfunktion
 - **Automatische Synchronisation über iCloud zwischen iPhone, iPad und Mac**
-- Lokale, sichere Speicherung (keine Cloud-Pflicht, außer für Synchronisation)
+- Speicherung auf dem Gerät; ohne angemeldetes iCloud-Konto bleibt alles lokal
 - Modernes, anpassungsfähiges Design für iPhone, iPad und Mac
 - Dark Mode Unterstützung
 
 **Warum ManualShelf?**
 - Schluss mit Papierchaos und langem Suchen!
 - Alles digital, alles schnell auffindbar.
-- Deine Daten bleiben privat – Synchronisation erfolgt sicher über iCloud.
+- Deine Daten bleiben privat – synchronisiert wird nur über deine eigene iCloud.
 
 ---
 
@@ -41,8 +41,8 @@ https://github.com/cbram/ManualShelf
 ## Datenschutzrichtlinie
 **Datenschutzrichtlinie für ManualShelf**
 
-ManualShelf speichert alle Daten standardmäßig lokal auf deinem Gerät.  
-Wenn du die iCloud-Synchronisation aktivierst, werden deine Manuals verschlüsselt über iCloud zwischen deinen Geräten synchronisiert.  
+ManualShelf speichert alle Daten auf deinem Gerät.  
+Ist auf deinem Gerät ein iCloud-Konto angemeldet, werden deine Manuals automatisch über deine private iCloud-Datenbank zwischen deinen Geräten synchronisiert. Abschalten lässt sich das in den Einstellungen des Geräts unter iCloud.  
 Es werden keine persönlichen Daten, Dokumente oder Nutzungsinformationen an Dritte oder an den Entwickler übertragen.  
 Die App verwendet keine externen Analyse- oder Trackingdienste.  
 Wenn du Support benötigst, kannst du dich über die Support-URL an den Entwickler wenden.  

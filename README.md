@@ -29,7 +29,7 @@ ManualShelf ist eine benutzerfreundliche App, die es ermöglicht, alle wichtigen
 
 ### 💾 Datenverwaltung
 - **🔒 Sicher**: Lokale Speicherung mit Core Data
-- **☁️ iCloud-Synchronisation**: Automatischer Abgleich über CloudKit zwischen iPhone, iPad und Mac (optional auch über Mobilfunk)
+- **☁️ iCloud-Synchronisation**: Automatischer Abgleich über die private iCloud-Datenbank (CloudKit) zwischen iPhone, iPad und Mac, sobald ein iCloud-Konto angemeldet ist; abschaltbar in den Einstellungen des Geräts unter iCloud
 - **🗂 Organisiert**: Automatische Sortierung nach Hinzufügungsdatum
 - **🗑 Aufräumen**: Einfaches Löschen nicht mehr benötigter Manuals
 - **🧹 Unbenutzte Tags werden automatisch entfernt**
