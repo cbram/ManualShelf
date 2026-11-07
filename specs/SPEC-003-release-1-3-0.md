@@ -162,6 +162,10 @@ Reihenfolge im Bau: #9 → #13 → #3 → #8, je Issue ein Commit; danach `MARKE
     Liste und Detailansicht, Teilen-Knöpfe sichtbar; Fehlermeldung bei `http://` geprüft. Screenshots EN/DE über einen
     temporären, nicht committeten UI-Test.
   - Commit-Nachrichten nennen die Issues bewusst ohne `#`, damit GitHub keine Verweise an die Issues hängt (E2).
+- 07.11.2026: Christians Gerätetest 1–5 bestanden; Nachtrag N1 (Umbenennen) gebaut (Kai, `a380324`): `FileNaming`
+  (Regeln, ersetzt auch die doppelte Zeichenersetzung in Export und Download), Umbenennen-Alert, Namensfeld im
+  URL-Dialog; neue `FileNamingTests`. Debug und Release, Simulator und Mac: 0 Warnungen; 61 Testfälle grün;
+  Deutsch vollständig. Screenshots EN/DE von Namensfeld, Wischen und Umbenennen-Dialog (temporärer UI-Test).
 - 07.11.2026, Prüfungen vor #8:
   - **F6 iCloud-Limit:** nicht schnell belegbar. Apple-Doku nennt keine aktuelle Obergrenze je Asset; Foren
     widersprechen sich (Apple-Forum: bis ≈ 50 GB je Asset bei genug iCloud-Speicher, developer.apple.com/forums/thread/827897;
