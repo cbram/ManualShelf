@@ -20,6 +20,7 @@ Mit ManualShelf hast du alle deine Bedienungsanleitungen immer griffbereit – e
 - Speicherung auf dem Gerät; ohne angemeldetes iCloud-Konto bleibt alles lokal
 - Modernes, anpassungsfähiges Design für iPhone, iPad und Mac
 - Dark Mode Unterstützung
+- Englisch und Deutsch
 
 **Warum ManualShelf?**
 - Schluss mit Papierchaos und langem Suchen!

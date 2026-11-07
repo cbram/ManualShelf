@@ -1,167 +1,168 @@
 # ManualShelf 📚
 
-Eine moderne iOS/iPadOS-App (auf dem Mac als „Designed for iPad“) zum Sammeln und Verwalten von Bedienungsanleitungen als PDF, JPG oder PNG.
+A modern iOS/iPadOS app (on the Mac as "Designed for iPad") for collecting and managing user manuals as PDF, JPG or PNG.
 
-## 🎯 Über das Projekt
+## 🎯 About
 
-ManualShelf ist eine benutzerfreundliche App, die es ermöglicht, alle wichtigen Bedienungsanleitungen an einem zentralen Ort zu sammeln und zu organisieren. Egal ob für Haushaltsgeräte, Elektronik oder andere Produkte - mit ManualShelf haben Sie alle Manuals immer griffbereit.
+ManualShelf keeps all your important user manuals in one place. Whether for household appliances, electronics or anything else, your manuals are always at hand.
 
 ## ✨ Features
 
-### 📱 Hauptfunktionen
-- **📋 Übersichtliche Liste**: Alle gespeicherten Manuals in einer sortierten Liste
-- **➕ Einfaches Hinzufügen**: PDFs, JPGs und PNGs direkt über den integrierten Dokumentenauswähler hinzufügen
-- **🏷️ Tag-System**: Manuals und Dateien können mit Tags versehen, gefiltert und nachträglich bearbeitet werden
-- **🎨 Barrierefreies Color Coding**: Tags werden farbenblindenfreundlich und kontrastreich dargestellt
-- **🔍 Filter & Suche**: Manuals können nach Titel, Dateiname und Tags gefiltert werden
-- **📖 Vollbild-PDF- und Bild-Viewer**: Manuals in voller Größe betrachten mit:
-  - 🔍 Zoom-Funktionen (0.25x - 5x)
-  - 📜 Natürliches Scrollen
-  - 👆 Touch-optimierte Bedienung
-  - 🔄 Bildrotation und freies Verschieben für Bilder
+### 📱 Main features
+- **📋 Clear list**: All saved manuals in a sorted list
+- **➕ Easy adding**: Add PDFs, JPGs and PNGs straight from the built-in document picker
+- **🏷️ Tags**: Tag manuals and files, filter by tags and edit them later
+- **🎨 Accessible colour coding**: Tags use colour-blind-safe, high-contrast colours
+- **🔍 Filter & search**: Filter manuals by title, file name and tags
+- **📖 Full-screen PDF and image viewer** with:
+  - 🔍 Zoom (0.25x – 5x)
+  - 📜 Natural scrolling
+  - 👆 Touch-optimised controls
+  - 🔄 Rotation and free panning for images
 
-### 🎨 Benutzeroberfläche
-- **🌟 Modernes Design**: Folgt den iOS Design Guidelines
-- **📱 Universell**: Optimiert für iPhone, iPad und Mac
-- **🇩🇪 Deutsche Sprache**: Vollständig lokalisiert
-- **🌓 Dark Mode**: Unterstützt helle und dunkle Darstellung
-- **♿ Barrierefreie UX**: Farbenblindenfreundliche Darstellung, hohe Kontraste
+### 🎨 User interface
+- **🌟 Modern design**: Follows the iOS design guidelines
+- **📱 Universal**: Optimised for iPhone, iPad and Mac
+- **🌍 Languages**: English and German
+- **🌓 Dark Mode**: Light and dark appearance
+- **♿ Accessible**: Colour-blind-safe colours, high contrast, VoiceOver labels
 
-### 💾 Datenverwaltung
-- **🔒 Sicher**: Lokale Speicherung mit Core Data
-- **☁️ iCloud-Synchronisation**: Automatischer Abgleich über die private iCloud-Datenbank (CloudKit) zwischen iPhone, iPad und Mac, sobald ein iCloud-Konto angemeldet ist; abschaltbar in den Einstellungen des Geräts unter iCloud
-- **🗂 Organisiert**: Automatische Sortierung nach Hinzufügungsdatum
-- **🗑 Aufräumen**: Einfaches Löschen nicht mehr benötigter Manuals
-- **🧹 Unbenutzte Tags werden automatisch entfernt**
+### 💾 Data
+- **🔒 Local storage** with Core Data
+- **☁️ iCloud sync**: Automatic sync through the private iCloud database (CloudKit) between iPhone, iPad and Mac as soon as an iCloud account is signed in; can be turned off in the device's iCloud settings
+- **🗂 Organised**: Sorted by date added by default
+- **🗑 Clean-up**: Delete manuals you no longer need
+- **🧹 Unused tags are removed automatically**
 
-## 🛠 Technische Details
+## 🛠 Technical details
 
-### Architektur
-- **SwiftUI**: Moderne deklarative UI-Entwicklung
-- **Core Data**: Robuste lokale Datenspeicherung
-- **PDFKit**: Native PDF-Darstellung und -Interaktion
-- **Document Picker**: Systemintegration für Dateiauswahl
+### Architecture
+- **SwiftUI**: Declarative UI
+- **Core Data**: Local data storage
+- **PDFKit**: Native PDF display and interaction
+- **Document Picker**: System file picker
 
-### Unterstützte Plattformen
+### Supported platforms
 - iOS 17.0+
 - iPadOS 17.0+
-- macOS: nur als „Designed for iPad“ auf Macs mit Apple-Chip
+- macOS: only as "Designed for iPad" on Macs with Apple silicon
 
-### Dateiformate
+### File formats
 - 📄 **PDF**
-- 🖼 **JPG** und **PNG**
+- 🖼 **JPG** and **PNG**
 
 ## 🚀 Installation
 
-### Voraussetzungen
-- Xcode 27 oder neuer
-- iOS 17.0+ / iPadOS 17.0+ / Mac mit Apple-Chip („Designed for iPad“)
+### Requirements
+- Xcode 27 or later
+- iOS 17.0+ / iPadOS 17.0+ / Mac with Apple silicon ("Designed for iPad")
 
-### Schritte
-1. **Repository klonen**:
+### Steps
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/cbram/ManualShelf.git
    cd ManualShelf
    ```
 
-2. **Xcode öffnen**:
+2. **Open in Xcode**:
    ```bash
    open ManualShelf.xcodeproj
    ```
 
-3. **Build und Run**:
-   - Wählen Sie Ihr Zielgerät (iPhone, iPad oder „My Mac (Designed for iPad)“)
-   - Drücken Sie `Cmd + R` zum Starten
+3. **Build and run**:
+   - Choose your target device (iPhone, iPad or "My Mac (Designed for iPad)")
+   - Press `Cmd + R`
 
-## 📖 Verwendung
+## 📖 Usage
 
-### Manual hinzufügen
-1. Öffnen Sie die ManualShelf App
-2. Tippen Sie auf das **+** Symbol oben rechts
-3. Geben Sie einen Titel für das Manual ein
-4. Wählen Sie „Weitere Datei hinzufügen…“ und wählen Sie eine oder mehrere PDF-, JPG- oder PNG-Dateien
-5. Tippen Sie auf „Manual speichern“
+### Add a manual
+1. Open ManualShelf
+2. Tap the **+** button at the top right
+3. Enter a title for the manual
+4. Choose "Add another file..." and pick one or more PDF, JPG or PNG files
+5. Tap "Save Manual"
 
-### Manual ansehen
-1. Tippen Sie auf ein Manual in der Liste
-2. Die Datei (PDF oder Bild) öffnet sich im Vollbild-Modus
-3. Verwenden Sie Pinch-to-Zoom für Vergrößerung/Verkleinerung
-4. Scrollen Sie durch die Seiten
+### View a manual
+1. Tap a manual in the list
+2. The file (PDF or image) opens full screen
+3. Pinch to zoom in or out
+4. Scroll through the pages
 
-### Manual löschen
-1. Wischen Sie nach links auf einem Manual in der Liste
-2. Tippen Sie auf "Löschen"
-3. Oder verwenden Sie den "Bearbeiten"-Button für Mehrfachauswahl
+### Delete a manual
+1. Swipe left on a manual in the list
+2. Tap "Delete"
+3. Or use the "Edit" button to select several
 
-## 📁 Projektstruktur
+## 📁 Project structure
 
 ```
 ManualShelf/
 ├── ManualShelf/
-│   ├── ManualShelfApp.swift          # Haupt-App-Datei
-│   ├── ManualsListView.swift         # Hauptansicht mit Manual-Liste
-│   ├── AddManualView.swift           # View zum Hinzufügen neuer Manuals
-│   ├── ManualDisplayView.swift       # PDF- und Bild-Betrachter
-│   ├── Persistence.swift             # Core Data Stack (NSPersistentCloudKitContainer)
-│   ├── CloudKitSyncManager.swift     # iCloud-Sync-Status
-│   └── ManualShelf.xcdatamodeld/     # Core Data Modell
-├── ManualShelfTests/                 # Unit Tests
-├── ManualShelfUITests/               # UI Tests
-└── README.md                         # Diese Datei
+│   ├── ManualShelfApp.swift          # App entry point
+│   ├── ManualsListView.swift         # Main view with the list of manuals
+│   ├── AddManualView.swift           # View for adding new manuals
+│   ├── ManualDisplayView.swift       # PDF and image viewer
+│   ├── Persistence.swift             # Core Data stack (NSPersistentCloudKitContainer)
+│   ├── CloudKitSyncManager.swift     # iCloud sync status
+│   ├── Localizable.xcstrings         # UI texts (English, German)
+│   └── ManualShelf.xcdatamodeld/     # Core Data model
+├── ManualShelfTests/                 # Unit tests
+├── ManualShelfUITests/               # UI tests
+└── README.md                         # This file
 ```
 
-## 🎨 Core Data Modell
+## 🎨 Core Data model
 
-Das Modell ist für CloudKit eingerichtet (`usedWithCloudKit`), alle Attribute und Beziehungen sind optional.
+The model is set up for CloudKit (`usedWithCloudKit`); all attributes and relationships are optional.
 
 ### Manual
-- **title**: String – Titel des Manuals
-- **dateAdded**: Date – Hinzufügungsdatum
-- **files**: to-many → ManualFile (Löschregel Nullify)
+- **title**: String – title of the manual
+- **dateAdded**: Date – date added
+- **files**: to-many → ManualFile (delete rule Nullify)
 
 ### ManualFile
-- **fileName**: String – ursprünglicher Dateiname
-- **fileType**: String – Dateiendung des Typs, z. B. `pdf`, `jpeg`, `png`
-- **fileData**: Binary Data – Dateiinhalt (in der Datenbank, nicht als externe Datei)
-- **dateAdded**: Date – Hinzufügungsdatum
-- **imageRotationDegrees**: Integer 16 – Drehung für Bilder (Standard 0)
-- **pdfRotationDegrees**: Integer 16 – Drehung für PDFs (Standard 0)
+- **fileName**: String – original file name
+- **fileType**: String – file extension of the type, e.g. `pdf`, `jpeg`, `png`
+- **fileData**: Binary Data – file content (stored in the database, not as an external file)
+- **dateAdded**: Date – date added
+- **imageRotationDegrees**: Integer 16 – rotation for images (default 0)
+- **pdfRotationDegrees**: Integer 16 – rotation for PDFs (default 0)
 - **manual**: to-one → Manual
 - **manualTags**: to-many → ManualTag
 
 ### ManualTag
-- **name**: String – Name des Tags
-- **color**: String – Farbe des Tags
-- **manuals**: to-many → ManualFile (Tags hängen an Dateien, nicht direkt am Manual)
+- **name**: String – tag name
+- **color**: String – tag colour
+- **manuals**: to-many → ManualFile (tags belong to files, not directly to the manual)
 
-## 🔮 Geplante Features
+## 🔮 Planned features
 
-Geplante Funktionen werden als [offene Issues](https://github.com/cbram/ManualShelf/issues?q=is%3Aissue+is%3Aopen) gepflegt.
+Planned features are tracked as [open issues](https://github.com/cbram/ManualShelf/issues?q=is%3Aissue+is%3Aopen).
 
-## 🤝 Beitragen
+## 🤝 Contributing
 
-Beiträge sind willkommen! Bitte:
+Contributions are welcome! Please:
 
-1. Forken Sie das Repository
-2. Erstellen Sie einen Feature-Branch (`git checkout -b feature/AmazingFeature`)
-3. Committen Sie Ihre Änderungen (`git commit -m 'Add some AmazingFeature'`)
-4. Pushen Sie zum Branch (`git push origin feature/AmazingFeature`)
-5. Öffnen Sie einen Pull Request
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push the branch (`git push origin feature/AmazingFeature`)
+5. Open a pull request
 
-## 📄 Lizenz
+## 📄 License
 
-Dieses Projekt steht unter der MIT-Lizenz. Siehe [LICENSE](LICENSE) für weitere Details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
 **Christian Bram**
 - GitHub: [@cbram](https://github.com/cbram)
 
-## 🙏 Danksagungen
+## 🙏 Acknowledgements
 
-- Apple für SwiftUI und PDFKit
-- Die iOS-Entwicklergemeinschaft für Inspiration und Best Practices
+- Apple for SwiftUI and PDFKit
+- The iOS developer community for inspiration and best practices
 
 ---
 
-*Erstellt mit ❤️ und SwiftUI* 
+*Made with ❤️ and SwiftUI*
