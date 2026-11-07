@@ -118,20 +118,6 @@ class CloudKitSyncManager: ObservableObject {
         }
     }
     
-    // MARK: - CloudKit Operations
-    // Fordert Berechtigungen für CloudKit an
-    func requestCloudKitPermissions() {
-        container.requestApplicationPermission(.userDiscoverability) { [weak self] status, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self?.syncStatus = .error("Berechtigung verweigert: \(error.localizedDescription)")
-                } else if status == .granted {
-                    self?.checkAccountStatus()
-                }
-            }
-        }
-    }
-    
     // MARK: - Conflict Resolution
     // Hinweis: CloudKit übernimmt die Konfliktbehandlung automatisch
     func handleSyncConflicts() {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 import PDFKit // Für die Anzeige von PDF-Dateien
 import UniformTypeIdentifiers // Für die Erkennung von Dateitypen
 
