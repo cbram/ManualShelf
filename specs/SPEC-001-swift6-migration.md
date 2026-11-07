@@ -181,3 +181,21 @@ Keine. Der Swift-6-Modus kommt ohne `nonisolated(unsafe)`, `@unchecked Sendable`
   `#CC79A7`, unbekannt Systemgrau; alle ≥ 3:1 auf hellen und dunklen Zeilen. Himmelblau
   `#56B4E9` verworfen (≈ 2,3:1 auf Weiß).
 - **N8 Lizenz:** `LICENSE` (MIT, Copyright (c) 2025 Christian Bram), README-Verweis passt.
+
+## 12. Nachtrag 3: stabile Tag-Farben (Christian, 2026-11-07)
+
+- **Befund:** Liste (`FetchedManualsDisplayView`) und Detailansicht (`ManualDisplayView`) hatten
+  je eine eigene Palette und wählten die Farbe über `String.hashValue`, der pro Prozess neu
+  gesetzt wird ⇒ Farben wechselten bei jedem Start und zwischen den Ansichten; die Liste
+  verschob Farben zusätzlich je Zeile. In der Detailansicht war der Text immer weiß (auf Gelb
+  ≈ 1,3:1).
+- **N9 Fix:** eine gemeinsame `TagColor.forName(_:)`: Name getrimmt und kleingeschrieben (wie
+  der Tag-Abgleich der App), 64-bit FNV-1a über die UTF-8-Bytes, Index in 7 Okabe-Ito-Farben
+  ohne Schwarz. Textfarbe je Hintergrund ≥ 4,5:1: Blau `#0072B2` weiß 5,2:1; Orange `#E69F00`
+  9,3:1, Himmelblau `#56B4E9` 9,1:1, Blaugrün `#009E73` 6,1:1, Zinnober `#D55E00` 5,4:1,
+  Rötliches Purpur `#CC79A7` 6,9:1, Gelb `#F0E442` 15,9:1 jeweils schwarz. Die
+  Pro-Zeile-Eindeutigkeit entfällt bewusst (gleicher Name ⇒ gleiche Farbe überall; zwei Tags
+  einer Zeile können dieselbe Farbe haben). `ManualTag.color` bleibt unbenutzt, keine Migration.
+- **Tests:** `TagColorTests` mit fester Zuordnung (Wohnmobil 0, Garten 1, Werkzeug 3, Küche 4)
+  und Gleichheit trotz Groß-/Kleinschreibung und Leerzeichen; mit `hashValue` statt FNV-1a
+  schlagen 3 der 4 festen Zuordnungen fehl (gemessen).
