@@ -1,6 +1,6 @@
 # SPEC-002 — ManualShelf 1.2.0: Englisch als Grundsprache, Deutsch als Übersetzung
 
-**Status:** Spec, offene Fragen F1–F8 bei Christian · **Bau:** Kai · **Abnahme:** Christian
+**Status:** In Arbeit (F1–F8 entschieden) · **Bau:** Kai · **Abnahme:** Christian
 **Version:** 1.2.0 (neue Sprache ⇒ Minor), Tag `v1.2.0` erst nach Christians Abnahme
 **Vorbild:** LyricSync SPEC-004 (`~/Code/LyricSync/specs/SPEC-004-englisch-deutsch.md`)
 
@@ -63,7 +63,7 @@ Englisch ist Grundsprache, Deutsch die Übersetzung. Die App folgt der Systemspr
 - Tests: Prüfung über `xcodebuild -exportLocalizations` (jeder Schlüssel hat Deutsch, außer gleichlautenden
   Begriffen nach F1); ein Unit-Test für Plural und Platzhalter in beiden Sprachen.
 
-## 5. Offene Fragen (mit Empfehlung)
+## 5. Fragen F1–F8 (Owner-Entscheid Christian, 07.11.2026: alle nach Empfehlung)
 
 - **F1 Begriffe:** „Manual“ und „Tags“ bleiben in beiden Sprachen (gängig, schon heute so in der deutschen UI).
   Ebenso „iCloud“. **Empfehlung:** ja. Alternative wäre „Anleitung“ im Deutschen.
@@ -77,8 +77,8 @@ Englisch ist Grundsprache, Deutsch die Übersetzung. Die App folgt der Systemspr
   Arbeitsgang, sonst liest VoiceOver im Deutschen englische Symbolnamen.
 - **F5 Dateinamen der Begleittexte:** `Datenschutz.md` → `PrivacyPolicy.md` (EN) + `PrivacyPolicy.de.md` (DE);
   `AppStoreInfo_de.md` → `AppStoreInfo.md` (EN) + `AppStoreInfo.de.md` (DE). **Empfehlung:** so — ein Schema für
-  beide. Achtung: Falls die alte Datei per URL verlinkt ist (z. B. als Datenschutz-URL in App Store Connect),
-  bricht ein Umbenennen den Link ⇒ dann `Datenschutz.md` behalten und nur `PrivacyPolicy.md` dazulegen.
+  beide. Christian: `Datenschutz.md` ist nirgends verlinkt ⇒ umbenennen nach `PrivacyPolicy.de.md`, englisch neu
+  `PrivacyPolicy.md`; `AppStoreInfo_de.md` ebenso nach `AppStoreInfo.de.md`, englisch neu `AppStoreInfo.md`.
 - **F6 README:** Das README ist heute **deutsch**, nicht englisch. **Empfehlung:** README auf Englisch übersetzen
   (öffentlich auf GitHub) und keine zweite deutsche Fassung pflegen (One Way, One Truth). Alternative:
   `README.de.md` zusätzlich.
@@ -97,4 +97,5 @@ Englisch ist Grundsprache, Deutsch die Übersetzung. Die App folgt der Systemspr
 
 ## 7. Verlauf
 
-- 07.11.2026: E1–E4 von Christian; Messung und Spec (Kai). Bau wartet auf F1–F8.
+- 07.11.2026: E1–E4 von Christian; Messung und Spec (Kai, `cb424bc`).
+- 07.11.2026: F1–F8 von Christian nach Empfehlung entschieden; Bau gestartet (Kai). F7 als eigener Commit.
