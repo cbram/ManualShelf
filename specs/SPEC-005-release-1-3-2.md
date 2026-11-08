@@ -27,7 +27,7 @@ ManualShelf ist laut Christian im App Store, vermutlich mit dem Stand von 1.0 (J
 
 Seit `b2b35fc` keine Änderung mehr am Modell [HOCH, git log].
 
-**Folge:** Läuft im Store wirklich 1.0, kennt das **Production**-Schema von CloudKit diese Felder vermutlich nicht.
+**Folge:** Im Store ist 1.0 („Bereit für Vertrieb“, Christian 08.11.). Daher kennt das **Production**-Schema von CloudKit diese Felder vermutlich nicht.
 Die Store-Version würde Tags und Bilddrehung dann nicht synchronisieren. Deshalb das Schema **vor** der Einreichung
 nach Production bringen (§3 Schritt 1). Ob Christian es nach dem Juni 2025 schon einmal deployt hat, lässt sich
 nur in der CloudKit Console sehen.
@@ -56,16 +56,17 @@ nur in der CloudKit Console sehen.
    Lokalisierung im Store, rechts oben über die Sprachauswahl „Deutsch“ hinzufügen.
 6. [ ] **Screenshots** aus `/Users/chbram/Code/ManualShelf/AppStoreScreenshots/1.3.2/` hochladen
    (Ordner `en/` bzw. `de/`, je Gerät; PNG ohne Alpha). Maße nach Apples „Screenshot specifications“
-   (abgerufen 08.11.2026) [HOCH]:
-   - `iPhone-6.9/` 1320 × 2868 → „iPhone 6,9"“ (große Anzeige mit Dynamic Island)
-   - `iPhone-6.3/` 1206 × 2622 → „iPhone 6,3"“ (mittlere Anzeige). Apple nennt diese Größe als **Pflicht**
-     für iPhone; ob App Store Connect sie aus 6,9" herunterskaliert, sagt die Seite nicht eindeutig ⇒ beide
-     hochladen.
-   - `iPad-13/` 2064 × 2752 → „iPad 13"“ (Pflicht, da die App iPad unterstützt)
-   - Motive je Gerät: `01-list`, `02-detail`, `03-new-manual`. Aufgenommen mit `-uiTestSampleData`
-     (Beispieldaten „Beispiel-Manual 0–4“, Dateien ohne Inhalt ⇒ **keine Vorschaubilder**, deutsche Titel
-     auch in den englischen Bildern). Vor dem Hochladen ansehen; reichen sie nicht, eigene Aufnahmen vom
-     Gerät mit echten Manuals nehmen.
+   (abgerufen 08.11.2026) [HOCH], Plätze wie in Christians App Store Connect:
+   - „iPhone mit Dynamic Island (mittleres Display)“ ← `iPhone-6.3/` 1206 × 2622 (Simulator iPhone 18 Pro)
+   - „iPhone Duo“ ← `iPhone-Duo/` 1398 × 2034 = **äußeres Display** (Simulator iPhone Duo). Apple nimmt dort
+     außen 1398 × 2034 oder innen 2007 × 2853; Bilder vom inneren Display fehlen (siehe Verlauf). Laut Apple
+     sind Duo-Screenshots ab April 2027 Pflicht für Apps mit SDK iOS 27.1 oder neuer; heute zeigt der Platz
+     nur das Abzeichen „für iPhone Duo“.
+   - „iPad 13" Display“ ← `iPad-13/` 2064 × 2752 (Simulator iPad Pro 13" M5)
+   - Zusätzlich `iPhone-6.9/` 1320 × 2868 (großes Display), falls der Platz gebraucht wird.
+   - Motive: `01-list` (Liste mit Vorschaubildern und Tags), `02-detail`, `03-tag-filter`, `04-load-from-url`.
+     Aufgenommen mit dem Demo-Datensatz (`-storeScreenshotData`, nur DEBUG) über
+     `Scripts/store-screenshots.sh <Simulator-UDID> <Ordner>`; Statusleiste 9:41, Systemsprache je Lauf.
 7. [ ] **Datenschutzangaben (App-Datenschutz) prüfen:** Bisher „Keine Daten erfasst“. Das Laden per URL (neu
    in 1.3.0) ändert daran voraussichtlich nichts: Die App ruft die vom Nutzer eingegebene Adresse direkt auf,
    weder der Entwickler noch ein Partner erhält dabei Daten. Apple zählt als „Erfassen“ nur Daten, auf die der
@@ -85,6 +86,19 @@ nur in der CloudKit Console sehen.
 - 08.11.2026: Tests auf iPhone 18 Pro Max (iOS 27.2, Simulator) grün: alle Unit-Tests, alle UI-Tests (UI-Tests im
   zweiten Anlauf; erster Anlauf brach mit Simulator-Zeitüberschreitungen ab, Rechner stark ausgelastet).
   Gebautes `Info.plist`: `ITSAppUsesNonExemptEncryption` = false, Version 1.3.2, `UIBackgroundModes` unverändert.
-- Screenshots per temporärem UI-Test (nicht committet) aufgenommen, Statusleiste 9:41. Mängel: `iPhone-6.3/`
-  zeigt links oben „◀ Plattenschrank“ (Rest im geteilten Simulator); `iPad-13/en/` zeigt das Datum in der
-  Statusleiste deutsch; im iPad-Detailbild ist die ausgewählte Zeile blau, ihr Symbol darin unsichtbar.
+- Erste Screenshots mit `-uiTestSampleData` (Beispieldaten ohne Dateiinhalt) verworfen: keine Vorschaubilder,
+  deutsche Titel auch im Englischen, „◀ Plattenschrank“ im geteilten Simulator.
+- 08.11.2026: Christian gibt einen Demo-Datensatz frei (Code-Änderung ok). Der Satz der 1.0-Screenshots
+  („Manual Universal Device XY-2000“, Lorem-ipsum-PDF) liegt weder in der Git-Historie (alle Commits und Dateien
+  durchsucht) noch per Spotlight auf dem Mac ⇒ nachgebaut in `ManualShelf/StoreScreenshotData.swift` (nur DEBUG,
+  im Speicher, ohne CloudKit, im Release-Binary nicht enthalten): 6 erfundene Geräte, Titel/Dateinamen/Tags EN
+  und DE nach Systemsprache, Titelseiten und Kurzanleitungs-Bild werden zur Laufzeit gezeichnet (Okabe-Ito,
+  Lorem ipsum), keine Marken. Statt „iPhone User Guide“ (Apple-Marke) „Smartphone User Guide“.
+- `StoreScreenshotUITests` bleibt bewusst im UI-Test-Target, wird ohne `SHOT_DIR` übersprungen (normale
+  Testläufe unberührt). Christians Meldung „No such module 'XCTest'“ betraf die frühere temporäre Datei (lag
+  kurz im Ordner, inzwischen gelöscht); die neue Datei baut im UI-Test-Target fehlerfrei.
+- Eigener Simulator „ManualShelf Screens iPhone 18 Pro“ (iOS 27.2) angelegt, damit keine Rücksprung-Anzeige
+  einer anderen App erscheint; kein Simulator gelöscht.
+- iPhone Duo: Der Simulator zeigt nur das äußere Display. Ein Umschalten aufs innere Display per
+  `simctl io … screenConfig power` liefert nur ein schwarzes Bild; Aufklappen geht vermutlich nur über die
+  Simulator-App [NIEDRIG] ⇒ innere Bilder offen.
