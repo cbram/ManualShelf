@@ -1,6 +1,6 @@
 # SPEC-005 — ManualShelf 1.3.2: App-Store-Einreichung
 
-**Status:** in Arbeit · **Vorbereitung:** Kai · **Handschritte + Freigabe:** Christian
+**Status:** eingereicht (Warten auf Prüfung) · **Vorbereitung:** Kai · **Handschritte + Freigabe:** Christian
 **Version:** 1.3.2 (keine Funktionsänderung ⇒ Patch), Tag `v1.3.2` erst nach Christians Freigabe
 
 ## 1. Anlass und Umfang
@@ -101,6 +101,20 @@ nur in der CloudKit Console sehen.
   fehlerhaft; Duo-Bilder gelöscht. Inneres Display war im Simulator ohnehin nicht erreichbar (`simctl io …
   screenConfig power` ⇒ schwarzes Bild). Statusleisten der übrigen 24 Bilder geprüft: WLAN, Mobilfunk und Akku
   normal. Rest: `iPad-13/en/` zeigt das Datum in der Statusleiste deutsch („Sonntag 8. Nov.“).
+- 08.11.2026: CloudKit-Schema nach Production deployt (Production war leer ⇒ Sync lief in 1.0 nie), Archiv aus
+  Tag-Klon hochgeladen, Build 77. App Store Connect (Fritz im Browser, Christian schaut zu):
+  - Store hatte nur Deutsch. Englisch (USA) ließ sich mit dem Namen „ManualShelf“ nicht anlegen
+    (`STATE_ERROR.DUPLICATE_NAME.DIFFERENT_ACCOUNT`, Name auf Englisch von anderem Konto belegt) ⇒ Christian:
+    englischer Store-Name „ManualShelf: Manual Organizer“; Deutsch bleibt „ManualShelf“.
+  - Texte EN/DE ohne Markdown (App Store Connect zeigt `**` wörtlich). Deutsche Keywords aus dem Store
+    beibehalten („Bedienungsanleitung, Manuals, Handbuch, …“), weichen von `AppStoreInfo.de.md` ab.
+  - Screenshots EN/DE: iPhone mittleres Display + iPad 13"; alte 1.0-Bilder (iPad DE, iPhone 6,7"/6,9" DE)
+    aus 1.3.2 entfernt; Duo leer.
+  - Datenschutz-URL zeigte auf das gelöschte `Datenschutz.md` (404) ⇒ DE `PrivacyPolicy.de.md`,
+    EN `PrivacyPolicy.md`.
+  - Christian: neuen Lizenzvertrag akzeptiert, Altersfreigabe-Fragebogen selbst beantwortet (alles Nein,
+    „Uneingeschränkter Webzugriff: Nein“) ⇒ 4+. Prüfer-Hinweis mit Test-Link für „Load from URL“.
+  - Eingereicht 08.11.2026 23:29, Veröffentlichung automatisch nach Freigabe.
 
 ## 5. Offene Punkte
 
