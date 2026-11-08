@@ -1,6 +1,6 @@
 # SPEC-003 — ManualShelf 1.3.0: Vorschau, Download per URL, Titelvorschlag, Export
 
-**Status:** Gerätetest 1–5 bestanden (07.11.); Nachtrag N1 gebaut, wartet auf Christians Abnahme (#4 gestrichen 07.11.) · **Bau:** Kai · **Abnahme:** Christian
+**Status:** Abgenommen 08.11.2026 (Christian), Release 1.3.0, Tag `v1.3.0` = `affd394`; #4 gestrichen 07.11. · **Bau:** Kai · **Abnahme:** Christian
 **Version:** 1.3.0 (neue Funktionen ⇒ Minor), Tag `v1.3.0` erst nach Christians Abnahme
 **Umfang:** GitHub-Issues #3, #8, #9, #13 (#4 gestrichen 07.11.)
 
@@ -174,6 +174,7 @@ Reihenfolge im Bau: #9 → #13 → #3 → #8, je Issue ein Commit; danach `MARKE
   betroffen; der Manual-Titel wird in der Detailansicht nicht mit umbenannt. Gegenprobe per temporärem UI-Test:
   ohne Fix scheitert „neuer Name direkt sichtbar“, mit Fix grün (Kontextmenü und Wischen). Kein Unit-Test (reine
   SwiftUI-Invalidierung). 52 Testfunktionen grün; Debug, Release und Mac: 0 Warnungen; String Catalog unverändert.
+- 08.11.2026: Christian: Fix bestätigt, 1.3.0 abgenommen, Tag `v1.3.0` = `affd394`.
 - 07.11.2026, Prüfungen vor #8:
   - **F6 iCloud-Limit:** nicht schnell belegbar. Apple-Doku nennt keine aktuelle Obergrenze je Asset; Foren
     widersprechen sich (Apple-Forum: bis ≈ 50 GB je Asset bei genug iCloud-Speicher, developer.apple.com/forums/thread/827897;
