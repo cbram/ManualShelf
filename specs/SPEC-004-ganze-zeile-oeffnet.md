@@ -66,3 +66,7 @@ rechts. Ein Tipp irgendwo in das Feld des Manuals soll es öffnen.
     Simulator und Mac: 0 Warnungen. String Catalog unverändert.
   - Beobachtung: 8 Tags brauchen auf dem iPhone 3 Zeilen, die Zeile wird gut doppelt so hoch. Ab etwa 20 Tags
     würde eine Zeile einen großen Teil des Bildschirms füllen. Gedeckelt wird bewusst nicht (Entscheid Christian).
+- 08.11.2026: Christian (Gerätetest): In der Detailansicht des Manuals liefen die Tag-Chips noch einzeilig zum
+  Wischen. Kai: dort ebenfalls `FlowLayout` statt horizontaler ScrollView; ✕ im Chip und Eingabefeld unverändert.
+  „Neues Manual“ (`AddManualView`) wischt weiterhin seitlich (bewusst nicht angefasst), die Filterleiste oben
+  ebenso. Kein neuer Test; vorhandene Unit- und UI-Tests grün, Simulator und Mac Debug: 0 Warnungen.

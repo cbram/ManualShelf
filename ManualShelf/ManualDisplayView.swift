@@ -36,27 +36,26 @@ struct ManualDisplayView: View {
             // Tag editing
             Text("Tags")
                 .font(.headline)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(displayedTags, id: \.objectID) { tag in
-                        let tagColor = TagColor.forName(tag.name)
-                        // The remove button sits inside the chip so it shares the chip's
-                        // text colour and contrast.
-                        HStack(spacing: 4) {
-                            Text(tag.name ?? "")
+            // Chips wrap into additional lines like in the list row (SPEC-004)
+            FlowLayout(spacing: 8) {
+                ForEach(displayedTags, id: \.objectID) { tag in
+                    let tagColor = TagColor.forName(tag.name)
+                    // The remove button sits inside the chip so it shares the chip's
+                    // text colour and contrast.
+                    HStack(spacing: 4) {
+                        Text(tag.name ?? "")
+                            .foregroundColor(tagColor.foreground)
+                        Button(action: { removeTag(tag) }) {
+                            Image(systemName: "xmark.circle.fill")
                                 .foregroundColor(tagColor.foreground)
-                            Button(action: { removeTag(tag) }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(tagColor.foreground)
-                            }
-                            .accessibilityLabel("Remove tag \(tag.name ?? "")")
                         }
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(tagColor.background)
-                        .cornerRadius(12)
-                        .padding(2)
+                        .accessibilityLabel("Remove tag \(tag.name ?? "")")
                     }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(tagColor.background)
+                    .cornerRadius(12)
+                    .padding(2)
                 }
             }
             // Tag input with autocompletion
