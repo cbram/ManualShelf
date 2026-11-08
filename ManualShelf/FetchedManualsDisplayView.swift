@@ -105,21 +105,13 @@ struct ManualRow: View {
                 Text(manual.title ?? String(localized: "Unknown Manual"))
                     .font(.headline)
                     .foregroundColor(.primary)
-                // Show tags as coloured chips
+                // Show tags as coloured chips. A scroll view swallows taps, so it is only used
+                // when the chips do not fit; otherwise a tap on the chips opens the manual (SPEC-004).
                 if !tags.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 4) {
-                            ForEach(tags, id: \.objectID) { tag in
-                                let color = TagColor.forName(tag.name)
-                                Text(tag.name ?? "")
-                                    .font(.caption)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(color.background)
-                                    .foregroundColor(color.foreground)
-                                    .cornerRadius(8)
-                                    .allowsHitTesting(false)
-                            }
+                    ViewThatFits(in: .horizontal) {
+                        tagChips
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            tagChips
                         }
                     }
                 }
@@ -130,6 +122,22 @@ struct ManualRow: View {
             }
         }
         .padding(.vertical, 6)
+    }
+
+    private var tagChips: some View {
+        HStack(spacing: 4) {
+            ForEach(tags, id: \.objectID) { tag in
+                let color = TagColor.forName(tag.name)
+                Text(tag.name ?? "")
+                    .font(.caption)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(color.background)
+                    .foregroundColor(color.foreground)
+                    .cornerRadius(8)
+                    .allowsHitTesting(false)
+            }
+        }
     }
 }
 

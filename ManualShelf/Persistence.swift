@@ -16,6 +16,9 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
+        // One tag on the first manual so the tag chips of a row can be previewed and tested
+        let sampleTag = ManualTag(context: viewContext)
+        sampleTag.name = "Küche"
         for i in 0..<5 {
             let newItem = Manual(context: viewContext)
             newItem.title = "Beispiel-Manual \(i)"
@@ -27,6 +30,9 @@ struct PersistenceController {
             newFile.dateAdded = Date()
             
             newItem.addToFiles(newFile)
+            if i == 0 {
+                newFile.addToManualTags(sampleTag)
+            }
         }
         do {
             try viewContext.save()
@@ -46,6 +52,8 @@ struct PersistenceController {
         if inMemory {
             // Keeps data in memory only (e.g. for previews)
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+            // Never mirror sample or test data to the user's iCloud
+            container.persistentStoreDescriptions.first!.cloudKitContainerOptions = nil
         } else {
             // Enables history tracking and remote change notifications for CloudKit sync
             if let description = container.persistentStoreDescriptions.first {
