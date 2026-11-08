@@ -10,6 +10,11 @@ Mit ManualShelf hast du alle deine Bedienungsanleitungen immer griffbereit – e
 - Einfaches Hinzufügen von PDF-, JPG- und PNG-Dateien
 - Blättern durch mehrere Bilder pro Anleitung
 - Vollbildanzeige für PDFs und Bilder
+- **Vorschaubilder:** Vorschau für jedes Manual in der Liste und für jede Datei in der Detailansicht
+- **Aus dem Netz laden:** PDFs und Bilder direkt über eine https-Adresse hinzufügen
+- **Titelvorschlag:** Ein neues Manual heißt wie seine erste Datei, bis du einen eigenen Titel eingibst
+- **Dateien umbenennen** beim Laden aus dem Netz oder jederzeit später
+- **Teilen & Exportieren:** Dateien über das Teilen-Menü weitergeben
 - **Tag-System:** Manuals und Dateien können mit Tags versehen, gefiltert und nachträglich bearbeitet werden
 - **Barrierefreies Color Coding:** Tags werden farbenblindenfreundlich und kontrastreich dargestellt
 - **Filterung & Suche:** Manuals können nach Titel, Dateiname und Tags gefiltert werden
@@ -26,6 +31,21 @@ Mit ManualShelf hast du alle deine Bedienungsanleitungen immer griffbereit – e
 - Schluss mit Papierchaos und langem Suchen!
 - Alles digital, alles schnell auffindbar.
 - Deine Daten bleiben privat – synchronisiert wird nur über deine eigene iCloud.
+
+---
+
+## Werbetext
+Alle Manuals an einem Ort – jetzt mit Vorschaubildern, Laden per Web-Adresse, Teilen und Umbenennen. Privat synchronisiert über deine eigene iCloud.
+
+---
+
+## Neu in dieser Version (1.3.2)
+- Vorschaubilder in der Liste und in der Detailansicht
+- PDFs und Bilder per https-Adresse laden; der Titel wird aus dem Dateinamen vorgeschlagen
+- Dateien über das Teilen-Menü weitergeben und umbenennen
+- Tags, Tag-Filter und Bilddrehung
+- Auf Englisch und Deutsch
+- Ein Tipp irgendwo in die Zeile öffnet das Manual; viele Tags brechen in weitere Zeilen um
 
 ---
 

@@ -10,6 +10,11 @@ With ManualShelf, all your user manuals are always at hand – for household app
 - Easily add PDF, JPG and PNG files
 - Swipe through several images per manual
 - Full-screen view for PDFs and images
+- **Thumbnails:** See a preview of each manual in the list and of each file in the detail view
+- **Load from the web:** Add a PDF or image straight from an https address
+- **Title suggestion:** A new manual is named after its first file until you type your own title
+- **Rename files** when loading from the web or at any time later
+- **Share & export:** Pass files on through the system share sheet
 - **Tags:** Tag manuals and files, filter by tags and edit them later
 - **Accessible colour coding:** Tags use colour-blind-safe, high-contrast colours
 - **Filter & search:** Filter manuals by title, file name and tags
@@ -26,6 +31,21 @@ With ManualShelf, all your user manuals are always at hand – for household app
 - No more paper clutter and long searches!
 - Everything digital, everything quick to find.
 - Your data stays private – it only syncs through your own iCloud.
+
+---
+
+## Promotional Text
+All your manuals in one place – now with thumbnails, loading from a web address, sharing and renaming. Synced privately through your own iCloud.
+
+---
+
+## What's New in This Version (1.3.2)
+- Thumbnails in the list and in the detail view
+- Load PDFs and images from an https address; the title is suggested from the file name
+- Share files through the share sheet and rename them
+- Tags, tag filter and image rotation
+- Available in English and German
+- Tap anywhere in a row to open a manual; long tag lists wrap onto further lines
 
 ---
 
