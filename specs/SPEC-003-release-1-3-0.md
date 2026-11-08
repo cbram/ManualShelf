@@ -174,7 +174,6 @@ Reihenfolge im Bau: #9 → #13 → #3 → #8, je Issue ein Commit; danach `MARKE
   betroffen; der Manual-Titel wird in der Detailansicht nicht mit umbenannt. Gegenprobe per temporärem UI-Test:
   ohne Fix scheitert „neuer Name direkt sichtbar“, mit Fix grün (Kontextmenü und Wischen). Kein Unit-Test (reine
   SwiftUI-Invalidierung). 52 Testfunktionen grün; Debug, Release und Mac: 0 Warnungen; String Catalog unverändert.
-- 08.11.2026: Christian: Fix bestätigt, 1.3.0 abgenommen, Tag `v1.3.0` = `affd394`.
 - 07.11.2026, Prüfungen vor #8:
   - **F6 iCloud-Limit:** nicht schnell belegbar. Apple-Doku nennt keine aktuelle Obergrenze je Asset; Foren
     widersprechen sich (Apple-Forum: bis ≈ 50 GB je Asset bei genug iCloud-Speicher, developer.apple.com/forums/thread/827897;
@@ -184,3 +183,4 @@ Reihenfolge im Bau: #9 → #13 → #3 → #8, je Issue ein Commit; danach `MARKE
     iOS-Entitlements (CloudKit, Push), kein `com.apple.security.network.client`; „Designed for iPad“ nutzt das
     iOS-Rechtemodell, ausgehende Verbindungen brauchen dort kein Entitlement [MITTEL]. Starten konnte ich die App auf
     dem Mac nicht (ohne Signatur nicht lauffähig) ⇒ Download am Mac ist Punkt im Gerätetest.
+- 08.11.2026: Christian: Fix bestätigt, 1.3.0 abgenommen, Tag `v1.3.0` = `affd394`.
