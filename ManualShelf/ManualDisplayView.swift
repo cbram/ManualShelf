@@ -172,6 +172,9 @@ struct ManualDisplayView: View {
         let currentName = file.fileName ?? ""
         let newName = FileNaming.renamed(currentFileName: currentName, newBaseName: renameText, fallbackExtension: file.fileType)
         guard newName != currentName else { return }
+        // This view only observes the manual; a change on one of its files does not
+        // publish on the manual, so the row and the share copies would keep the old name.
+        manual.objectWillChange.send()
         file.fileName = newName
         do {
             try viewContext.save()

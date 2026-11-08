@@ -166,6 +166,14 @@ Reihenfolge im Bau: #9 → #13 → #3 → #8, je Issue ein Commit; danach `MARKE
   (Regeln, ersetzt auch die doppelte Zeichenersetzung in Export und Download), Umbenennen-Alert, Namensfeld im
   URL-Dialog; neue `FileNamingTests`. Debug und Release, Simulator und Mac: 0 Warnungen; 61 Testfälle grün;
   Deutsch vollständig. Screenshots EN/DE von Namensfeld, Wischen und Umbenennen-Dialog (temporärer UI-Test).
+- 08.11.2026: Christians Gerätetest N1: Umbenennen klappt, in der Detailansicht bleibt aber der alte Name stehen,
+  bis man das Manual neu öffnet. Ursache (Kai): `ManualDisplayView` beobachtet nur das `Manual`; die Zeile liest
+  `file.fileName` direkt, und eine Änderung an einer `ManualFile` meldet am `Manual` nichts ⇒ weder Zeile noch
+  Teilen-Kopien (`.task(id:)`) wurden neu berechnet. Fix: `applyRename` sendet `manual.objectWillChange` vor dem
+  Setzen. „Neues Manual“ (`@State`-Werttypen) und die Dateiansicht (`@ObservedObject manualFile`) waren nicht
+  betroffen; der Manual-Titel wird in der Detailansicht nicht mit umbenannt. Gegenprobe per temporärem UI-Test:
+  ohne Fix scheitert „neuer Name direkt sichtbar“, mit Fix grün (Kontextmenü und Wischen). Kein Unit-Test (reine
+  SwiftUI-Invalidierung). 52 Testfunktionen grün; Debug, Release und Mac: 0 Warnungen; String Catalog unverändert.
 - 07.11.2026, Prüfungen vor #8:
   - **F6 iCloud-Limit:** nicht schnell belegbar. Apple-Doku nennt keine aktuelle Obergrenze je Asset; Foren
     widersprechen sich (Apple-Forum: bis ≈ 50 GB je Asset bei genug iCloud-Speicher, developer.apple.com/forums/thread/827897;
