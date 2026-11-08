@@ -1,6 +1,6 @@
 # SPEC-004 — ManualShelf 1.3.1: Ein Tipp irgendwo in die Zeile öffnet das Manual
 
-**Status:** Gebaut auf main, wartet auf Christians Gerätetest · **Bau:** Kai · **Abnahme:** Christian
+**Status:** Abgenommen 08.11.2026 (Christian), Release 1.3.1, Tag `v1.3.1` = `97996f7` · **Bau:** Kai · **Abnahme:** Christian
 **Version:** 1.3.1 (Fehlerbehebung ⇒ Patch), Tag `v1.3.1` erst nach Christians Abnahme
 
 ## 1. Anlass
@@ -70,3 +70,4 @@ rechts. Ein Tipp irgendwo in das Feld des Manuals soll es öffnen.
   Wischen. Kai: dort ebenfalls `FlowLayout` statt horizontaler ScrollView; ✕ im Chip und Eingabefeld unverändert.
   „Neues Manual“ (`AddManualView`) wischt weiterhin seitlich (bewusst nicht angefasst), die Filterleiste oben
   ebenso. Kein neuer Test; vorhandene Unit- und UI-Tests grün, Simulator und Mac Debug: 0 Warnungen.
+- 08.11.2026: Christian: Gerätetest bestanden, 1.3.1 abgenommen; „Neues Manual“ bleibt einzeilig (Entscheid Christian).
