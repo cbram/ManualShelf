@@ -20,12 +20,20 @@ struct ManualShelfApp: App {
 
     // UI tests launch with this argument to get the in-memory sample data instead of the user's store
     static let uiTestSampleDataArgument = "-uiTestSampleData"
+    // App Store screenshots launch with this argument to get the localized demo data (SPEC-005)
+    static let storeScreenshotDataArgument = "-storeScreenshotData"
+    private static let germanLanguageCode = "de"
 
     @MainActor
     private static func makePersistenceController() -> PersistenceController {
         #if DEBUG
-        if ProcessInfo.processInfo.arguments.contains(uiTestSampleDataArgument) {
+        let arguments = ProcessInfo.processInfo.arguments
+        if arguments.contains(uiTestSampleDataArgument) {
             return PersistenceController.preview
+        }
+        if arguments.contains(storeScreenshotDataArgument) {
+            let isGerman = Locale.preferredLanguages.first?.hasPrefix(germanLanguageCode) ?? false
+            return PersistenceController.storeScreenshotData(german: isGerman)
         }
         #endif
         return PersistenceController.shared
