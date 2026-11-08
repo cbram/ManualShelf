@@ -58,10 +58,8 @@ nur in der CloudKit Console sehen.
    (Ordner `en/` bzw. `de/`, je Gerät; PNG ohne Alpha). Maße nach Apples „Screenshot specifications“
    (abgerufen 08.11.2026) [HOCH], Plätze wie in Christians App Store Connect:
    - „iPhone mit Dynamic Island (mittleres Display)“ ← `iPhone-6.3/` 1206 × 2622 (Simulator iPhone 18 Pro)
-   - „iPhone Duo“ ← `iPhone-Duo/` 1398 × 2034 = **äußeres Display** (Simulator iPhone Duo). Apple nimmt dort
-     außen 1398 × 2034 oder innen 2007 × 2853; Bilder vom inneren Display fehlen (siehe Verlauf). Laut Apple
-     sind Duo-Screenshots ab April 2027 Pflicht für Apps mit SDK iOS 27.1 oder neuer; heute zeigt der Platz
-     nur das Abzeichen „für iPhone Duo“.
+   - „iPhone Duo“ **leer lassen** (Christian 08.11.): Er kann es nicht testen; Pflicht laut Apple erst ab
+     April 2027 für Apps mit SDK iOS 27.1 oder neuer ⇒ neu prüfen, sobald es Pflicht wird.
    - „iPad 13" Display“ ← `iPad-13/` 2064 × 2752 (Simulator iPad Pro 13" M5)
    - Zusätzlich `iPhone-6.9/` 1320 × 2868 (großes Display), falls der Platz gebraucht wird.
    - Motive: `01-list` (Liste mit Vorschaubildern und Tags), `02-detail`, `03-tag-filter`, `04-load-from-url`.
@@ -99,6 +97,12 @@ nur in der CloudKit Console sehen.
   kurz im Ordner, inzwischen gelöscht); die neue Datei baut im UI-Test-Target fehlerfrei.
 - Eigener Simulator „ManualShelf Screens iPhone 18 Pro“ (iOS 27.2) angelegt, damit keine Rücksprung-Anzeige
   einer anderen App erscheint; kein Simulator gelöscht.
-- iPhone Duo: Der Simulator zeigt nur das äußere Display. Ein Umschalten aufs innere Display per
-  `simctl io … screenConfig power` liefert nur ein schwarzes Bild; Aufklappen geht vermutlich nur über die
-  Simulator-App [NIEDRIG] ⇒ innere Bilder offen.
+- iPhone Duo verworfen (Christian 08.11.): nicht testbar, WLAN-Symbol in der Statusleiste der Simulator-Bilder
+  fehlerhaft; Duo-Bilder gelöscht. Inneres Display war im Simulator ohnehin nicht erreichbar (`simctl io …
+  screenConfig power` ⇒ schwarzes Bild). Statusleisten der übrigen 24 Bilder geprüft: WLAN, Mobilfunk und Akku
+  normal. Rest: `iPad-13/en/` zeigt das Datum in der Statusleiste deutsch („Sonntag 8. Nov.“).
+
+## 5. Offene Punkte
+
+- iPhone Duo, Außendisplay: Die Tag-Filterleiste läuft unter die Uhr bzw. Statusleiste am rechten Rand
+  (gesehen im Simulator, iOS 27.2). Prüfen, wenn Duo-Screenshots Pflicht werden.
