@@ -16,9 +16,15 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        // One tag on the first manual so the tag chips of a row can be previewed and tested
+        // One tag on the first manual and more tags than fit into one line on the second,
+        // so the tag chips of a row can be previewed and tested (SPEC-004)
         let sampleTag = ManualTag(context: viewContext)
         sampleTag.name = "Küche"
+        let wrappingTags = sampleTagNamesThatWrap.map { name in
+            let tag = ManualTag(context: viewContext)
+            tag.name = name
+            return tag
+        }
         for i in 0..<5 {
             let newItem = Manual(context: viewContext)
             newItem.title = "Beispiel-Manual \(i)"
@@ -33,6 +39,9 @@ struct PersistenceController {
             if i == 0 {
                 newFile.addToManualTags(sampleTag)
             }
+            if i == 1 {
+                newFile.addToManualTags(NSSet(array: wrappingTags))
+            }
         }
         do {
             try viewContext.save()
@@ -42,6 +51,10 @@ struct PersistenceController {
         }
         return result
     }()
+
+    private static let sampleTagNamesThatWrap = [
+        "Badezimmer", "Garten", "Werkstatt", "Wohnmobil", "Elektro", "Garantie", "Heizung", "Büro"
+    ]
 
     let container: NSPersistentCloudKitContainer
 

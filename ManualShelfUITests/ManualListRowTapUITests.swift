@@ -14,6 +14,10 @@ final class ManualListRowTapUITests: XCTestCase {
     // Must match ManualShelfApp.uiTestSampleDataArgument and PersistenceController.preview
     private static let sampleDataArgument = "-uiTestSampleData"
     private static let sampleTitle = "Beispiel-Manual 0"
+    // This sample manual has more tags than fit into one line
+    private static let wrappingTagsTitle = "Beispiel-Manual 1"
+    private static let secondTagLineOffset: CGFloat = 16
+    private static let minimumWrapFactor: CGFloat = 1.5
     private static let gapBesideTitle: CGFloat = 24
     private static let thumbnailCenterInset: CGFloat = 42
     private static let chipInset: CGFloat = 16
@@ -65,26 +69,50 @@ final class ManualListRowTapUITests: XCTestCase {
         assertManualOpened()
     }
 
+    // Tags that do not fit wrap into further lines instead of a scroll view (SPEC-004, decision 08.11.)
+    func testTapOnSecondTagLineOpensManual() throws {
+        let oneLineBand = try tagBand(of: Self.sampleTitle)
+        let wrappedBand = try tagBand(of: Self.wrappingTagsTitle)
+        XCTAssertGreaterThan(wrappedBand.height, oneLineBand.height * Self.minimumWrapFactor, "tags did not wrap")
+        let title = try titleText(of: Self.wrappingTagsTitle)
+        tap(at: CGPoint(x: title.frame.minX + Self.chipInset, y: wrappedBand.maxY - Self.secondTagLineOffset))
+        assertManualOpened(Self.wrappingTagsTitle)
+    }
+
     // MARK: - Helpers
 
     private func sampleRow() throws -> XCUIElement {
-        let row = app.cells.containing(.staticText, identifier: Self.sampleTitle).firstMatch
-        XCTAssertTrue(row.waitForExistence(timeout: Self.timeout), "sample row not found")
-        return row
+        try row(of: Self.sampleTitle)
     }
 
     private func sampleTitleText() throws -> XCUIElement {
-        try existing(sampleRow().staticTexts[Self.sampleTitle].firstMatch, "title")
+        try titleText(of: Self.sampleTitle)
     }
 
-    // Vertical centre between the title and the date line ("1 file - Added: …")
     private func tagBandMidY() throws -> CGFloat {
-        let title = try sampleTitleText()
+        try tagBand(of: Self.sampleTitle).midY
+    }
+
+    private func row(of title: String) throws -> XCUIElement {
+        let row = app.cells.containing(.staticText, identifier: title).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: Self.timeout), "row \(title) not found")
+        return row
+    }
+
+    private func titleText(of title: String) throws -> XCUIElement {
+        try existing(row(of: title).staticTexts[title].firstMatch, "title")
+    }
+
+    // Area between the title and the date line ("1 file - Added: …") where the tag chips sit
+    private func tagBand(of title: String) throws -> CGRect {
+        let row = try row(of: title)
+        let titleFrame = try titleText(of: title).frame
         let dateLine = try existing(
-            sampleRow().staticTexts.matching(NSPredicate(format: "label CONTAINS %@", Self.dateLineMarker)).firstMatch,
+            row.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", Self.dateLineMarker)).firstMatch,
             "date line"
         )
-        return (title.frame.maxY + dateLine.frame.minY) / 2
+        return CGRect(x: row.frame.minX, y: titleFrame.maxY,
+                      width: row.frame.width, height: dateLine.frame.minY - titleFrame.maxY)
     }
 
     private func existing(_ element: XCUIElement, _ name: String) throws -> XCUIElement {
@@ -98,9 +126,9 @@ final class ManualListRowTapUITests: XCTestCase {
         origin.withOffset(CGVector(dx: point.x, dy: point.y)).tap()
     }
 
-    private func assertManualOpened() {
+    private func assertManualOpened(_ title: String = sampleTitle) {
         XCTAssertTrue(
-            app.navigationBars[Self.sampleTitle].waitForExistence(timeout: Self.timeout),
+            app.navigationBars[title].waitForExistence(timeout: Self.timeout),
             "manual view did not open"
         )
     }
